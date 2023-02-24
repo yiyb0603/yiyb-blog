@@ -29,6 +29,11 @@ const reset = css`
     line-height: 1.4;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-family: ${({ theme }) => theme.fontFamily.pretendard.BOLD};
+  }
+
   ol, ul {
     list-style: none;
   }

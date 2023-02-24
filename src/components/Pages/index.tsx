@@ -31,7 +31,7 @@ const HomePage: NextPage = () => {
               <PostRowItem
                 key={post._id}
                 {...post}
-                href={`${pageRoute.post}/${post._raw.flattenedPath}`}
+                href={`${pageRoute.POSTS}/${post._raw.flattenedPath}`}
               />
             ))
           }

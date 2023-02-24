@@ -1,4 +1,4 @@
 export const pageRoute = {
   HOME: '/',
-  post: '/post',
+  POSTS: '/posts',
 } as const;
