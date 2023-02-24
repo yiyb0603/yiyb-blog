@@ -13,6 +13,7 @@
     "@types/styled-components": "^5.1.26",
     "contentlayer": "^0.2.6",
     "cookies-next": "^2.1.1",
+    "dayjs": "^1.11.7",
     "next": "13.2.1",
     "next-contentlayer": "^0.2.6",
     "next-redux-wrapper": "^8.1.0",
