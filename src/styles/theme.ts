@@ -1,3 +1,5 @@
+import { fonts } from '@/assets/fonts';
+import { fontSize } from '@/styles/font';
 import {
   palette,
   generateCSSVariablePalette,
@@ -67,6 +69,8 @@ export const darkThemePalette = generateVariablePalette({
 });
 
 export type CustomTheme = {
+  fontSize: typeof fontSize;
+  fontFamily: typeof fonts;
   color: typeof lightThemePalette;
   device: typeof device;
   media: typeof media;

@@ -26,7 +26,7 @@ const reset = css`
   }
 
   body {
-    line-height: 1.2;
+    line-height: 1.4;
   }
 
   ol, ul {

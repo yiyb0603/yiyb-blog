@@ -20,6 +20,8 @@ export type Overflow = Global | 'scroll' | 'hidden' | 'auto' | 'visible';
 
 export type Visibility = Global | 'collapse' | 'visible' | 'hidden';
 
+export type WordBreak = Global | 'keep-all' | 'break-all' | 'break-word';
+
 type BorderValue = `${number}px solid ${string}`;
 
 export type CustomBorder = {

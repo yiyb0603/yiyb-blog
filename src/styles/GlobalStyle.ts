@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: ${fonts.pretendard.REGULAR};
+    font-family: ${({ theme }) => theme.fontFamily.pretendard.REGULAR}
   }
 
   html,
