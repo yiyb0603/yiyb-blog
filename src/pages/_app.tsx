@@ -1,5 +1,8 @@
 import { NextComponentType } from 'next';
 import { AppContext, AppInitialProps, AppProps } from 'next/app';
+import { wrapper } from '@/stores/nextStore';
+import GlobalStyle from '@/styles/GlobalStyle';
+import StyleProvider from '@/components/Providers/StyleProvider';
 
 type MyAppProps = AppProps & {};
 
@@ -10,8 +13,14 @@ const MyApp: CustomAppComponent = ({
   pageProps,
 }) => {
   return (
-    <Component {...pageProps} />
+    <>
+      <StyleProvider>
+        <Component {...pageProps} />
+      </StyleProvider>
+
+      <GlobalStyle />
+    </>
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);
