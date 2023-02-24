@@ -8,7 +8,6 @@ import Flex from '@/components/Common/Flex';
 
 const HomePage: NextPage = () => {
   const { posts } = usePosts();
-  console.log(posts);
 
   return (
     <Section

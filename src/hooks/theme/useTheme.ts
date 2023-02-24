@@ -1,9 +1,11 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { setCookie } from 'cookies-next';
 import { SystemTheme } from '@/enums/theme';
 import { themeAction } from '@/stores/theme';
 import useAppDispatch from '../redux/useAppDispatch';
 import useRootSelector from '../redux/useRootSelector';
+
+const OS_DARK_THEME = '(prefers-color-scheme: dark)' as const;
 
 const useTheme = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +22,17 @@ const useTheme = () => {
     dispatch(themeAction.changeTheme(theme));
   }, [dispatch]);
 
-  const toggleTheme = useCallback((): void => {
+  const detectSystemTheme = useCallback((): void => {
+    const systemDarkTheme = window.matchMedia(OS_DARK_THEME).matches;
+
+    if (systemDarkTheme) {
+      setTheme(SystemTheme.DARK);
+    } else {
+      setTheme(SystemTheme.LIGHT);
+    }
+  }, [setTheme]);
+
+  const toggleTheme = (): void => {
     switch (theme) {
       case SystemTheme.LIGHT:
         return void setTheme(SystemTheme.DARK);
@@ -29,15 +41,27 @@ const useTheme = () => {
         return void setTheme(SystemTheme.LIGHT);
 
       default:
-        const systemDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        if (systemDarkTheme) {
-          setTheme(SystemTheme.LIGHT);
-        } else {
-          setTheme(SystemTheme.DARK);
-        }
+        detectSystemTheme();
     }
-  }, [theme, setTheme]);
+  }
+
+  useEffect(() => {
+    if (theme === 'default') {
+      detectSystemTheme();
+    }
+  }, [theme, detectSystemTheme]);
+
+  useEffect(() => {
+    if (theme === 'default') {
+      window.matchMedia(OS_DARK_THEME).addEventListener('change', detectSystemTheme);
+    } else {
+      window.matchMedia(OS_DARK_THEME).removeEventListener('change', detectSystemTheme);
+    }
+
+    return () => {
+      window.matchMedia(OS_DARK_THEME).removeEventListener('change', detectSystemTheme);
+    };
+  }, [detectSystemTheme, theme]);
 
   return {
     theme,

@@ -16,9 +16,11 @@
     "dayjs": "^1.11.7",
     "next": "13.2.1",
     "next-contentlayer": "^0.2.6",
+    "next-cookies": "^2.0.3",
     "next-redux-wrapper": "^8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.7.1",
     "react-loader-spinner": "^5.3.4",
     "react-redux": "^8.0.5",
     "styled-components": "^5.3.6"

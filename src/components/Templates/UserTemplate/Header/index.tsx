@@ -1,8 +1,9 @@
+import { images } from '@/assets/images';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import Flex from '@/components/Common/Flex';
 import Section from '@/components/Common/Section';
 import Image from '@/components/Common/Image';
-import { images } from '@/assets/images';
+import ToggleTheme from './ToggleTheme';
 
 const Header = () => {
   const { color } = useStyledTheme();
@@ -19,6 +20,7 @@ const Header = () => {
         width='100%'
         height='100%'
         alignItems='center'
+        justifyContent='space-between'
         padding='0 2rem'
         border={{
           bottom: `1px solid ${color.border3}`,
@@ -29,6 +31,8 @@ const Header = () => {
           alt='권용빈 블로그'
           width='160px'
         />
+
+        <ToggleTheme />
       </Flex>
     </Section>
   )
