@@ -19,7 +19,7 @@ type SectionStyleProps = {
   hover?: FlattenSimpleInterpolation;
 }
 
-type AbleElementType = 'div' | 'section' | 'article' | 'aside';
+type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside';
 
 type SectionOwnProps<T extends AbleElementType> = {
   tagName: T | undefined;
