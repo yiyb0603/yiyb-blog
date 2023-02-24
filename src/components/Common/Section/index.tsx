@@ -16,10 +16,11 @@ type SectionStyleProps = {
   borderRadius?: string;
   backgroundColor?: string;
   overflow?: Overflow;
+  flex?: string;
   hover?: FlattenSimpleInterpolation;
 }
 
-type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside';
+type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside' | 'footer' | 'header';
 
 type SectionOwnProps<T extends AbleElementType> = {
   tagName: T | undefined;
@@ -62,9 +63,10 @@ const CustomSection = styled.div<SectionStyleProps>`
   border-left: ${({ border }) => border?.left};
   border-right: ${({ border }) => border?.right};
   border-bottom: ${({ border }) => border?.bottom};
-  border-radius: ${({ width }) => width};
+  border-radius: ${({ borderRadius }) => borderRadius};
   overflow: ${({ overflow }) => overflow};
-  background-color: ${({ width }) => width};
+  flex: ${({ flex }) => flex};
+  background-color: ${({ backgroundColor }) => backgroundColor};
 
   ${({ theme }) => theme.media.hoverable} {
     &:hover {

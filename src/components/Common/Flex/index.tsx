@@ -18,7 +18,7 @@ type FlexStyleProps = {
   width?: string;
   maxWidth?: string;
   height?: string;
-  flex?: number;
+  flex?: string;
   gap?: string;
   flexDirection?: FlexDirection;
   justifyContent?: JustifyContent;
@@ -32,7 +32,7 @@ type FlexStyleProps = {
   cursor?: Cursor;
 }
 
-type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside' | 'a';
+type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside' | 'header' | 'a' | 'footer';
 
 type FlexOwnProps<T extends AbleElementType> = {
   tagName: T | undefined;

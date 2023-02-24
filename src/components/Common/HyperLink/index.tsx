@@ -1,15 +1,7 @@
 import { ReactNode, RefObject, AnchorHTMLAttributes } from 'react';
 import Link, { LinkProps } from 'next/link';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
-import { CustomBorder } from '@/types/style';
-
-type HyperLinkOwnProps = {
-  external: boolean;
-  hyperLinkRef?: RefObject<HTMLAnchorElement>;
-  link?: LinkProps;
-  anchor?: AnchorHTMLAttributes<HTMLAnchorElement>;
-  children?: ReactNode;
-}
+import { CustomBorder, Display } from '@/types/style';
 
 type HyperLinkStyleProps = {
   margin?: string;
@@ -19,13 +11,24 @@ type HyperLinkStyleProps = {
   border?: CustomBorder;
   fontSize?: string;
   fontFamily?: string;
+  display?: Display;
   hover?: FlattenSimpleInterpolation;
+}
+
+type HyperLinkOwnProps = {
+  className?: string;
+  external: boolean;
+  hyperLinkRef?: RefObject<HTMLAnchorElement>;
+  link?: LinkProps;
+  anchor?: AnchorHTMLAttributes<HTMLAnchorElement>;
+  children?: ReactNode;
 }
 
 type HyperLinkProps = HyperLinkOwnProps &
   HyperLinkStyleProps
 
 const HyperLink = ({
+  className,
   external,
   hyperLinkRef,
   link,
@@ -36,6 +39,7 @@ const HyperLink = ({
   if (external) {
     return (
       <CustomHyperLink
+        className={className}
         ref={hyperLinkRef}
         {...anchor}
         {...props}
@@ -48,9 +52,11 @@ const HyperLink = ({
   return (
     <Link
       {...link!}
+      legacyBehavior
       passHref
     >
       <CustomHyperLink
+        className={className}
         ref={hyperLinkRef}
         {...anchor}
         {...props}
@@ -62,6 +68,7 @@ const HyperLink = ({
 }
 
 const CustomHyperLink = styled.a<HyperLinkStyleProps>`
+  display: ${({ display }) => display};
   margin: ${({ margin }) => margin};
   padding: ${({ padding }) => padding};
   color: ${({ color }) => color};
