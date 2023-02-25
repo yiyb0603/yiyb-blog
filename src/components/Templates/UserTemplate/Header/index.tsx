@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { images } from '@/assets/images';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
+import { pageRoute } from '@/libs/models/route';
 import Flex from '@/components/Common/Flex';
 import Section from '@/components/Common/Section';
+import HyperLink from '@/components/Common/HyperLink';
 import Image from '@/components/Common/Image';
 import ToggleTheme from './ToggleTheme';
 
@@ -12,23 +14,34 @@ const Header = () => {
   return (
     <HeaderWrapper
       tagName='header'
-      maxWidth='768px'
+      width='100%'
       height='70px'
-      margin='0 auto'
+      border={{
+        bottom: `1px solid ${color.border3}`,
+      }}
     >
       <Flex
         tagName='div'
         width='100%'
+        maxWidth='768px'
         height='100%'
         alignItems='center'
         justifyContent='space-between'
         padding='0 2rem'
+        margin='0 auto'
       >
-        <Image
-          src={images.logo.MAIN_TEXT_IMAGE}
-          alt='권용빈 블로그'
-          width='160px'
-        />
+        <HyperLink
+          external={false}
+          link={{
+            href: pageRoute.HOME,
+          }}
+        >
+          <Image
+            src={images.logo.MAIN_TEXT_IMAGE}
+            alt='권용빈 블로그'
+            width='160px'
+          />
+        </HyperLink>
 
         <ToggleTheme />
       </Flex>
