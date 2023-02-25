@@ -25,6 +25,9 @@
     "react-icons": "^4.7.1",
     "react-loader-spinner": "^5.3.4",
     "react-redux": "^8.0.5",
+    "rehype-highlight": "^6.0.0",
+    "rehype-pretty-code": "^0.9.4",
+    "shiki": "^0.14.1",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
