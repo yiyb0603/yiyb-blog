@@ -48,7 +48,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(({
     const {
       theme,
     } = cookies(ctx);
-  
+
     switch (theme) {
       case SystemTheme.LIGHT:
         dispatch(themeAction.changeTheme(SystemTheme.LIGHT));

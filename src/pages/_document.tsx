@@ -9,6 +9,8 @@ import Document, {
 import { ServerStyleSheet } from 'styled-components';
 import { fontPaths } from '@/assets/fonts';
 import { fontFamilies } from '@/styles/font';
+import { OS_DARK_THEME } from '@/constants/theme';
+import { SystemTheme } from '@/enums/theme';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
@@ -47,6 +49,10 @@ class MyDocument extends Document {
         lang='ko'
       >
         <Head>
+          <meta
+            charSet='utf-8'
+          />
+
           <meta
             httpEquiv='Content-Type'
             content='text/html; charset=utf-8'
@@ -106,8 +112,14 @@ class MyDocument extends Document {
                 const parts = value.split('; ' + 'theme' + '=');
                 const theme = parts.pop().split(';').shift();
 
-                if (theme !== null) {
+                if (theme) {
                   document.documentElement.setAttribute('data-theme', theme);
+                } else {
+                  const isDarkSystemTheme = window.matchMedia('${OS_DARK_THEME}').matches;
+
+                  const systemTheme = isDarkSystemTheme ? '${SystemTheme.DARK}' : '${SystemTheme.LIGHT}';
+
+                  document.documentElement.setAttribute('data-theme', systemTheme);
                 }
               `,
             }}

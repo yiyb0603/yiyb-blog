@@ -37,6 +37,10 @@ const contentSource = makeSource({
   documentTypes: [
     Post,
   ],
+  mdx: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
 });
 
 export default contentSource;

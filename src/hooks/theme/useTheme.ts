@@ -1,11 +1,10 @@
 import { useCallback, useEffect } from 'react';
 import { setCookie } from 'cookies-next';
+import { OS_DARK_THEME } from '@/constants/theme';
 import { SystemTheme } from '@/enums/theme';
 import { themeAction } from '@/stores/theme';
 import useAppDispatch from '../redux/useAppDispatch';
 import useRootSelector from '../redux/useRootSelector';
-
-const OS_DARK_THEME = '(prefers-color-scheme: dark)' as const;
 
 const useTheme = () => {
   const dispatch = useAppDispatch();

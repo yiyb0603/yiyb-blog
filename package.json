@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mdx-js/loader": "^2.3.0",
+    "@next/mdx": "^13.2.1",
     "@reduxjs/toolkit": "^1.6.2",
     "@types/styled-components": "^5.1.26",
-    "contentlayer": "^0.2.6",
+    "contentlayer": "^0.2.8",
     "cookies-next": "^2.1.1",
     "dayjs": "^1.11.7",
     "next": "13.2.1",
-    "next-contentlayer": "^0.2.6",
+    "next-contentlayer": "^0.2.8",
     "next-cookies": "^2.0.3",
     "next-redux-wrapper": "^8.1.0",
     "react": "18.2.0",
