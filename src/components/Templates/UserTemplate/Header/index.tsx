@@ -16,9 +16,7 @@ const Header = () => {
       tagName='header'
       width='100%'
       height='70px'
-      border={{
-        bottom: `1px solid ${color.border3}`,
-      }}
+      boxShadow='rgb(0 0 0 / 8%) 0px 1px 1px'
     >
       <Flex
         tagName='div'

@@ -30,16 +30,16 @@ export const palette = {
   red800: '#c62828',
   red900: '#b71c1c',
 
-  blue50: '#e3f2fd',
-  blue100: '#bbdefb',
-  blue200: '#90caf9',
-  blue300: '#64b5f6',
-  blue400: '#42a5f5',
-  blue500: '#2196f3',
-  blue600: '#1e88e5',
-  blue700: '#1976d2',
-  blue800: '#0064ff',
-  blue900: '#0d47a1',
+  main50: '#e3f2fd',
+  main100: '#bbdefb',
+  main200: '#90caf9',
+  main300: '#64b5f6',
+  main400: '#42a5f5',
+  main500: '#2196f3',
+  main600: '#1e88e5',
+  main700: '#1976d2',
+  main800: '#0064ff',
+  main900: '#0d47a1',
 
   lightBlue50: '#f4f7ff',
   lightBlue100: '#b3e5fc',
@@ -77,7 +77,7 @@ export const palette = {
   white: '#f2f2f2',
   black: '#1f2e3d',
   codeTheme: '#24292e',
-  main: '#ff9800',
+  main: '#2196f3',
 } as const;
 
 export const cssPalette = generateVariablePalette(palette);

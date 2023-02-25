@@ -45,9 +45,14 @@ const PostContentContainer = styled.div`
     font-size: ${({ theme }) => theme.fontSize.EXTRA_BIG};
   }
 
+  a {
+    color: ${({ theme }) => theme.color.main};
+  }
+
   p,
   li,
-  span {
+  span,
+  a {
     white-space: pre-wrap;
     word-break: break-all;
     line-height: 1.6;

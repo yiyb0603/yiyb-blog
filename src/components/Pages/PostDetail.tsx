@@ -9,12 +9,15 @@ import PostTitle from '@/components/Modules/Post/PostTitle';
 import PostContent from '@/components/Modules/Post/PostContent';
 import PostSubInfo from '@/components/Modules/Post/PostSubInfo';
 import PostComment from '@/components/Modules/Post/PostComment';
+import ScrollProgressBar from '@/components/Common/ScrollProgressBar';
 
 const PostDetailPage = ({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
+      <ScrollProgressBar />
+
       <Flex
         tagName='div'
         flexDirection='column'

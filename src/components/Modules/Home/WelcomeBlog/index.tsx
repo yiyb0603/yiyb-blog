@@ -1,9 +1,7 @@
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
-import { snsList } from '@/libs/models/sns';
 import Section from '@/components/Common/Section';
 import Text from '@/components/Common/Text';
 import Flex from '@/components/Common/Flex';
-import HyperLink from '@/components/Common/HyperLink';
 
 const WelcomeBlog = (): JSX.Element => {
   const {
@@ -33,7 +31,7 @@ const WelcomeBlog = (): JSX.Element => {
           tagName='div'
           padding='1.5rem'
           borderRadius='0.5rem'
-          backgroundColor={color.orange100}
+          backgroundColor={color.main100}
         >
           <Text
             tagName='p'
@@ -49,7 +47,7 @@ const WelcomeBlog = (): JSX.Element => {
           </Text>
         </Section>
 
-        <Flex
+        {/* <Flex
           tagName='div'
           gap='1rem'
           flexWrap='wrap'
@@ -69,13 +67,13 @@ const WelcomeBlog = (): JSX.Element => {
                 }}
                 fontSize={fontSize.MEDIUM}
                 fontFamily={fontFamily.pretendard.MEDIUM}
-                color={color.blue500}
+                color={color.main}
               >
                 {platform}
               </HyperLink>
             ))
           }
-        </Flex>
+        </Flex> */}
       </Flex>
     </Section>
   );
