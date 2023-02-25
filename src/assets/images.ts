@@ -4,4 +4,8 @@ export const images = {
   logo: {
     MAIN_TEXT_IMAGE: generateStaticPath('/images/logo/main_text_logo.webp'),
   },
+
+  opengraph: {
+    BASE: generateStaticPath('/images/base_opengraph.png'),
+  },
 };

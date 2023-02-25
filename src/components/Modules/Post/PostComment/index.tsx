@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import useUtterance from '@/hooks/utterance/useUtterance';
+import Section from '@/components/Common/Section';
 
 const PostComment = (): JSX.Element => {
   const commentRef = useRef<HTMLElement>(null);
@@ -7,9 +8,11 @@ const PostComment = (): JSX.Element => {
   useUtterance(commentRef);
 
   return (
-    <section
-      ref={commentRef}
-    ></section>
+    <Section
+      tagName='section'
+      sectionRef={commentRef}
+      margin='6rem 0 0 0'
+    ></Section>
   );
 }
 

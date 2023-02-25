@@ -5,6 +5,7 @@ import WelcomeBlog from '@/components/Modules/Home/WelcomeBlog';
 import PostList from '@/components/Modules/Home/PostList';
 import Flex from '@/components/Common/Flex';
 import PostCategories from '@/components/Modules/Home/PostCategories';
+import Helmet from '@/components/Common/Helmet';
 
 const HomePage: NextPage = () => {
   const { query } = useRouter();
@@ -41,6 +42,8 @@ const HomePage: NextPage = () => {
           posts={filterPosts}
         />
       </Flex>
+
+      <Helmet />
     </>
   );
 }

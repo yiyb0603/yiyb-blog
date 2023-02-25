@@ -23,7 +23,7 @@ const PostSubInfo = ({
 
   return (
     <Flex
-      tagName='div'
+      tagName='section'
       justifyContent='space-between'
     >
       <HyperLink

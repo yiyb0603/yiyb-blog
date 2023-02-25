@@ -73,6 +73,10 @@ const GlobalStyle = createGlobalStyle`
   input[type=number] {
     -moz-appearance: textfield;
   }
+
+  .utterances {
+    max-width: 100% !important;
+  }
 `;
 
 export default GlobalStyle;

@@ -10,6 +10,7 @@ import PostContent from '@/components/Modules/Post/PostContent';
 import PostSubInfo from '@/components/Modules/Post/PostSubInfo';
 import PostComment from '@/components/Modules/Post/PostComment';
 import ScrollProgressBar from '@/components/Common/ScrollProgressBar';
+import Helmet from '@/components/Common/Helmet';
 
 const PostDetailPage = ({
   post,
@@ -39,6 +40,12 @@ const PostDetailPage = ({
       />
 
       <PostComment />
+
+      <Helmet
+        title={post?.title || ''}
+        description={post?.description || ''}
+        createdAt={post?.createdAt || ''}
+      />
     </>
   );
 }

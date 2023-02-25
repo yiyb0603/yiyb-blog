@@ -8,9 +8,11 @@ import Document, {
 } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 import { fontPaths } from '@/assets/fonts';
-import { fontFamilies } from '@/styles/font';
+import { icons } from '@/assets/icons';
 import { OS_DARK_THEME } from '@/constants/theme';
 import { SystemTheme } from '@/enums/theme';
+import { fontFamilies } from '@/styles/font';
+import { palette } from '@/styles/palette';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
@@ -71,6 +73,51 @@ class MyDocument extends Document {
           <meta
             name='referrer'
             content='no-referrer-when-downgrade'
+          />
+
+          <meta
+            name='theme-color'
+            content={palette.main}
+          />
+
+          <meta
+            name='msapplication-TileColor'
+            content={palette.main}
+          />
+
+          <link
+            rel='shortcut icon'
+            href={icons.FAVICON}
+          />
+
+          <meta
+            property='og:type'
+            content='website'
+          />
+
+          <meta
+            property='og:locale'
+            content='ko_KR'
+          />
+
+          <meta
+            property='og:site_name'
+            content='yiyb-blog'
+          />
+
+          <meta
+            property='article:media_name'
+            content='yiyb-blog'
+          />
+
+          <meta
+            name='author'
+            content='yiyb0603'
+          />
+
+          <meta
+            name='apple-mobile-web-app-capable'
+            content='yes'
           />
 
           <link

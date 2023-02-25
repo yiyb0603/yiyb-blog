@@ -17,7 +17,7 @@ const PostContent = ({
   );
 }
 
-const PostContentContainer = styled.div`
+const PostContentContainer = styled.section`
   img {
     width: 100%;
     margin: 1.5rem 0;
@@ -30,6 +30,7 @@ const PostContentContainer = styled.div`
     overflow: auto;
     padding: 1.5rem;
     border-radius: 5px;
+    color: ${({ theme }) => theme.color.white};
     background-color: ${({ theme }) => theme.color.codeTheme};
   }
 
@@ -51,6 +52,7 @@ const PostContentContainer = styled.div`
 
   p,
   li,
+  code,
   span,
   a {
     white-space: pre-wrap;
