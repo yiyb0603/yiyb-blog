@@ -13,23 +13,27 @@ const useTheme = () => {
     theme,
   } = useRootSelector(({ theme }) => theme);
 
+  const setThemeWithoutCookie = useCallback((theme: SystemTheme): void => {
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    dispatch(themeAction.changeTheme(theme));
+  }, [dispatch]);
+
   const setTheme = useCallback((theme: SystemTheme): void => {
     setCookie('theme', theme);
 
-    document.documentElement.setAttribute('data-theme', theme);
-
-    dispatch(themeAction.changeTheme(theme));
-  }, [dispatch]);
+    setThemeWithoutCookie(theme);
+  }, [dispatch, setThemeWithoutCookie]);
 
   const detectSystemTheme = useCallback((): void => {
     const systemDarkTheme = window.matchMedia(OS_DARK_THEME).matches;
 
     if (systemDarkTheme) {
-      setTheme(SystemTheme.DARK);
+      setThemeWithoutCookie(SystemTheme.DARK);
     } else {
-      setTheme(SystemTheme.LIGHT);
+      setThemeWithoutCookie(SystemTheme.LIGHT);
     }
-  }, [setTheme]);
+  }, [setThemeWithoutCookie]);
 
   const toggleTheme = (): void => {
     switch (theme) {
@@ -40,7 +44,7 @@ const useTheme = () => {
         return void setTheme(SystemTheme.LIGHT);
 
       default:
-        detectSystemTheme();
+        return;
     }
   }
 
