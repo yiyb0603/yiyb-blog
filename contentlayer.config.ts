@@ -1,4 +1,6 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files';
+import highlight from 'rehype-highlight';
+import rehypePrettyCode from 'rehype-pretty-code';
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -17,6 +19,10 @@ export const Post = defineDocumentType(() => ({
       type: 'string',
       required: true,
     },
+    thumbnail: {
+      type: 'string',
+      required: false,
+    },
     createdAt: {
       type: 'date',
       required: true,
@@ -33,6 +39,18 @@ const contentSource = makeSource({
   documentTypes: [
     Post,
   ],
+  mdx: {
+    remarkPlugins: [],
+    rehypePlugins: [
+      [
+        rehypePrettyCode,
+        {
+          theme: 'github-dark',
+        },
+      ],
+      highlight,
+    ],
+  },
 });
 
 export default contentSource;
