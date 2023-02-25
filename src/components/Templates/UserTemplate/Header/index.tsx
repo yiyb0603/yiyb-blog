@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { images } from '@/assets/images';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import Flex from '@/components/Common/Flex';
@@ -9,7 +10,7 @@ const Header = () => {
   const { color } = useStyledTheme();
 
   return (
-    <Section
+    <HeaderWrapper
       tagName='header'
       maxWidth='768px'
       height='70px'
@@ -22,9 +23,6 @@ const Header = () => {
         alignItems='center'
         justifyContent='space-between'
         padding='0 2rem'
-        border={{
-          bottom: `1px solid ${color.border3}`,
-        }}
       >
         <Image
           src={images.logo.MAIN_TEXT_IMAGE}
@@ -34,8 +32,16 @@ const Header = () => {
 
         <ToggleTheme />
       </Flex>
-    </Section>
-  )
+    </HeaderWrapper>
+  );
 }
+
+const HeaderWrapper = styled(Section<'header'>)`
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: ${({ theme }) => theme.color.theme};
+`;
 
 export default Header;
