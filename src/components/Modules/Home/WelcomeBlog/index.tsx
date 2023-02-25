@@ -22,7 +22,6 @@ const WelcomeBlog = (): JSX.Element => {
         <Text
           tagName='h1'
           fontSize={fontSize.LARGE}
-          fontFamily={fontFamily.pretendard.BOLD}
         >
           Welcome to yiyb-blog 🖐️
         </Text>
