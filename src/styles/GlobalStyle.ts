@@ -1,5 +1,5 @@
 import { createGlobalStyle} from 'styled-components';
-import { fonts } from '@/assets/fonts';
+import { disableDrag } from '@/styles/utils';
 import reset from './reset';
 import {
   lightThemeScheme,
@@ -57,6 +57,10 @@ const GlobalStyle = createGlobalStyle`
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  img {
+    ${disableDrag};
   }
 
   input::-webkit-outer-spin-button,

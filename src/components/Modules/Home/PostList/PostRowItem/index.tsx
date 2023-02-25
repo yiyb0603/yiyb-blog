@@ -2,11 +2,9 @@ import dayjs from 'dayjs';
 import { Post } from '@/contentlayer/generated/types';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import isEmpty from '@/utils/is-packages/isEmpty';
-import { fontSize } from '@/styles/font';
 import HyperLink from '@/components/Common/HyperLink';
 import Image from '@/components/Common/Image';
 import Flex from '@/components/Common/Flex';
-import Section from '@/components/Common/Section';
 import Text from '@/components/Common/Text';
 
 import 'dayjs/locale/ko';
@@ -25,6 +23,8 @@ const PostRowItem = ({
 }: PostRowItemProps): JSX.Element => {
   const {
     color,
+    fontSize,
+    fontFamily,
   } = useStyledTheme();
 
   return (
@@ -35,7 +35,7 @@ const PostRowItem = ({
         href,
       }}
       padding='2rem'
-      borderRadius='5px'
+      borderRadius='10px'
       backgroundColor={color.background3}
     >
       <Flex
@@ -54,6 +54,7 @@ const PostRowItem = ({
             dateTime={createdAt}
             wordBreak='keep-all'
             fontSize={fontSize.SMALL}
+            letterSpacing='-0.4px'
           >
             {dayjs(createdAt).locale('ko').format('YYYY년 MM월 DD일 (dddd)')}
           </Text>
@@ -92,6 +93,7 @@ const PostRowItem = ({
       <Text
         tagName='span'
         fontSize={fontSize.NORMAL}
+        fontFamily={fontFamily.pretendard.BOLD}
         color={color.main}
         display='inline-block'
         margin='1rem 0 0 0'

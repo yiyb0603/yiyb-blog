@@ -12,6 +12,7 @@ type TextStyleProps = {
   letterSpacing?: string;
   wordBreak?: WordBreak;
   minHeight?: string;
+  backgroundColor?: string;
   margin?: string;
   padding?: string;
   maxLine?: number;
@@ -57,6 +58,7 @@ const CustomText = styled.div<TextStyleProps>`
   word-break: ${({ wordBreak }) => wordBreak};
   letter-spacing: ${({ letterSpacing }) => letterSpacing};
   line-height: ${({ lineHeight }) => lineHeight};
+  background-color: ${({ backgroundColor }) => backgroundColor};
   margin: ${({ margin }) => margin};
   padding: ${({ padding }) => padding};
   min-height: ${({ minHeight }) => minHeight};

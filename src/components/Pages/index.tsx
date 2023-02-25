@@ -1,43 +1,47 @@
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import usePosts from '@/hooks/post/usePosts';
-import Section from '@/components/Common/Section';
 import WelcomeBlog from '@/components/Modules/Home/WelcomeBlog';
-import PostRowItem from '@/components/Modules/Post/PostRowItem';
-import { pageRoute } from '@/libs/models/route';
+import PostList from '@/components/Modules/Home/PostList';
 import Flex from '@/components/Common/Flex';
+import PostCategories from '@/components/Modules/Home/PostCategories';
 
 const HomePage: NextPage = () => {
-  const { posts } = usePosts();
+  const { query } = useRouter();
+
+  const category = (query?.category) as string;
+
+  const {
+    allPosts,
+    filterPosts,
+  } = usePosts({
+    category: category === '전체' ? '' : category,
+  });
+
+  const postCategories = [
+    '전체',
+    ...allPosts.map(({ category }) => category),
+  ];
 
   return (
-    <Section
-      tagName='main'
-    >
-      <Section
+    <>
+      <Flex
         tagName='div'
-        maxWidth='768px'
-        padding='4rem 2rem'
-        margin='0 auto'
+        flexDirection='column'
+        gap='1.5rem'
       >
         <WelcomeBlog />
 
-        <Flex
-          tagName='div'
-          margin='1rem 0 0 0'
-          flexDirection='column'
-        >
-          {
-            posts.map((post) => (
-              <PostRowItem
-                key={post._id}
-                {...post}
-                href={`${pageRoute.POSTS}/${post._raw.flattenedPath}`}
-              />
-            ))
-          }
-        </Flex>
-      </Section>
-    </Section>
+        <PostCategories
+          selectCategory={category || '전체'}
+          categories={postCategories}
+        />
+
+        <PostList
+          posts={filterPosts}
+        />
+      </Flex>
+    </>
   );
 }
 

@@ -15,6 +15,7 @@ type SectionStyleProps = {
   border?: CustomBorder;
   borderRadius?: string;
   backgroundColor?: string;
+  boxShadow?: string;
   overflow?: Overflow;
   flex?: string;
   hover?: FlattenSimpleInterpolation;
@@ -64,6 +65,7 @@ const CustomSection = styled.div<SectionStyleProps>`
   border-right: ${({ border }) => border?.right};
   border-bottom: ${({ border }) => border?.bottom};
   border-radius: ${({ borderRadius }) => borderRadius};
+  box-shadow: ${({ boxShadow }) => boxShadow};
   overflow: ${({ overflow }) => overflow};
   flex: ${({ flex }) => flex};
   background-color: ${({ backgroundColor }) => backgroundColor};
