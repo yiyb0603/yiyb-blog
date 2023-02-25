@@ -20,33 +20,29 @@ const PostContent = ({
 const PostContentContainer = styled.div`
   img {
     width: 100%;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
   }
 
   pre {
     width: 100%;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     word-break: break-all;
     overflow: auto;
     padding: 1.5rem;
     border-radius: 5px;
-    background-color: ${({ theme }) => theme.color.black};
+    background-color: ${({ theme }) => theme.color.codeTheme};
   }
 
   h1 {
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     font-size: ${({ theme }) => theme.fontSize.LARGE};
   }
 
   h2,
   h3,
   h4 {
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     font-size: ${({ theme }) => theme.fontSize.EXTRA_BIG};
-  }
-
-  ol {
-    margin: 1rem 0;
   }
 
   p,
@@ -55,12 +51,13 @@ const PostContentContainer = styled.div`
     white-space: pre-wrap;
     word-break: break-all;
     line-height: 1.6;
-    font-size: ${({ theme }) => theme.fontSize.NORMAL};
+    font-size: ${({ theme }) => theme.fontSize.MEDIUM};
   }
 
   blockquote {
-    margin: 1rem 0;
-    padding: 1.5rem;
+    margin: 1.5rem 0;
+    padding: 2rem;
+    border-left: ${({ theme }) => `5px solid ${theme.color.main}`};
     border-radius: 5px;
     background-color: ${({ theme }) => theme.color.background3};
   }

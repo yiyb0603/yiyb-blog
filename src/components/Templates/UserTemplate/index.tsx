@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import Header from '@/components/Templates/UserTemplate/Header';
+import Section from '@/components/Common/Section';
 
 type UserTemplateProps = {
   children: ReactNode;
@@ -12,7 +13,18 @@ const UserTemplate = ({
     <>
       <Header />
 
-      {children}
+      <Section
+        tagName='main'
+      >
+        <Section
+          tagName='div'
+          maxWidth='768px'
+          margin='0 auto'
+          padding='4rem 2rem'
+        >
+          {children}
+        </Section>
+      </Section>
     </>
   );
 }

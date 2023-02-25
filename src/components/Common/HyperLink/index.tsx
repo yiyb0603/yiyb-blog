@@ -8,6 +8,7 @@ type HyperLinkStyleProps = {
   padding?: string;
   color?: string;
   backgroundColor?: string;
+  borderRadius?: string;
   border?: CustomBorder;
   fontSize?: string;
   fontFamily?: string;
@@ -73,6 +74,7 @@ const CustomHyperLink = styled.a<HyperLinkStyleProps>`
   padding: ${({ padding }) => padding};
   color: ${({ color }) => color};
   background-color: ${({ backgroundColor }) => backgroundColor};
+  border-radius: ${({ borderRadius }) => borderRadius};
   border: ${({ border }) => border?.all};
   border-top: ${({ border }) => border?.top};
   border-left: ${({ border }) => border?.left};

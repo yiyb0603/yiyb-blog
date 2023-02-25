@@ -4,35 +4,39 @@ import {
   GetStaticPropsContext,
 } from 'next';
 import { allPosts } from '@/contentlayer/generated';
-import Section from '@/components/Common/Section';
+import Flex from '@/components/Common/Flex';
 import PostTitle from '@/components/Modules/Post/PostTitle';
 import PostContent from '@/components/Modules/Post/PostContent';
-import Utterances from '../Modules/Utterances';
+import PostSubInfo from '@/components/Modules/Post/PostSubInfo';
+import PostComment from '@/components/Modules/Post/PostComment';
 
 const PostDetailPage = ({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Section
-      tagName='main'
-    >
-      <Section
+    <>
+      <Flex
         tagName='div'
-        maxWidth='768px'
-        margin='0 auto'
-        padding='6rem 2rem'
+        flexDirection='column'
+        gap='1.5rem'
+        margin='0 0 1.5rem 0'
       >
         <PostTitle
           title={post?.title || ''}
         />
 
-        <PostContent
-          code={post?.body.code || ''}
+        <PostSubInfo
+          category={post?.category || ''}
+          createdAt={post?.createdAt || ''}
         />
+      </Flex>
 
-        <Utterances />
-      </Section>
-    </Section>
+      <PostContent
+        code={post?.body.code || ''}
+      />
+
+      <PostComment />
+    </>
   );
 }
 

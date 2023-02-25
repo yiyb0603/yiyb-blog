@@ -34,10 +34,9 @@ const PostRowItem = ({
       link={{
         href,
       }}
-      padding='2rem 0'
-      border={{
-        bottom: `1px solid ${color.border3}`,
-      }}
+      padding='2rem'
+      borderRadius='5px'
+      backgroundColor={color.background3}
     >
       <Flex
         tagName='div'
@@ -93,7 +92,7 @@ const PostRowItem = ({
       <Text
         tagName='span'
         fontSize={fontSize.NORMAL}
-        color={color.orange500}
+        color={color.main}
         display='inline-block'
         margin='1rem 0 0 0'
       >
