@@ -7,6 +7,7 @@ import { allPosts } from '@/contentlayer/generated';
 import Section from '@/components/Common/Section';
 import PostTitle from '@/components/Modules/Post/PostTitle';
 import PostContent from '@/components/Modules/Post/PostContent';
+import Utterances from '../Modules/Utterances';
 
 const PostDetailPage = ({
   post,
@@ -28,6 +29,8 @@ const PostDetailPage = ({
         <PostContent
           code={post?.body.code || ''}
         />
+
+        <Utterances />
       </Section>
     </Section>
   );
