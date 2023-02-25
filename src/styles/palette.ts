@@ -68,14 +68,16 @@ export const palette = {
   orange200: '#ffcc80',
   orange300: '#ffb74d',
   orange400: '#ffa726',
-  orange500: '#ff9800',
-  orange600: '#fb8c00',
+  orange500: '#fb8c00',
+  orange600: '#ff8000',
   orange700: '#f57c00',
   orange800: '#ef6c00',
   orange900: '#e65100',
 
   white: '#f2f2f2',
   black: '#1f2e3d',
-};
+  codeTheme: '#24292e',
+  main: '#ff9800',
+} as const;
 
 export const cssPalette = generateVariablePalette(palette);

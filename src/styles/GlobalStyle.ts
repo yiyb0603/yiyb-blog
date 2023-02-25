@@ -2,9 +2,9 @@ import { createGlobalStyle} from 'styled-components';
 import { fonts } from '@/assets/fonts';
 import reset from './reset';
 import {
-  lightTheme,
+  lightThemeScheme,
   lightThemeVariables,
-  darkTheme,
+  darkThemeScheme,
   darkThemeVariables,
 } from './theme';
 
@@ -29,29 +29,29 @@ const GlobalStyle = createGlobalStyle`
   @media (prefers-color-scheme: light) {
     html {
       ${lightThemeVariables};
-      color: ${lightTheme.contrast};
-      background-color: ${lightTheme.theme};
+      color: ${lightThemeScheme.contrast};
+      background-color: ${lightThemeScheme.theme};
     }
   }
 
   @media (prefers-color-scheme: dark) {
     html {
       ${darkThemeVariables};
-      color: ${darkTheme.contrast};
-      background-color: ${darkTheme.theme};
+      color: ${darkThemeScheme.contrast};
+      background-color: ${darkThemeScheme.theme};
     }
   }
 
   html[data-theme='light'] {
     ${lightThemeVariables};
-    color: ${lightTheme.contrast};
-    background-color: ${lightTheme.theme};
+    color: ${lightThemeScheme.contrast};
+    background-color: ${lightThemeScheme.theme};
   }
 
   html[data-theme='dark'] {
     ${darkThemeVariables};
-    color: ${darkTheme.contrast};
-    background-color: ${darkTheme.theme};
+    color: ${darkThemeScheme.contrast};
+    background-color: ${darkThemeScheme.theme};
   }
 
   a {

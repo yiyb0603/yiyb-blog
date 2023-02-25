@@ -8,7 +8,7 @@ import {
 import { device } from './device';
 import { media } from './media';
 
-export const lightTheme = {
+export const lightThemeScheme = {
   theme: '#f2f2f2',
   contrast: '#1f2e3d',
 
@@ -28,7 +28,7 @@ export const lightTheme = {
   text4: '#121D27',
 };
 
-export const darkTheme = {
+export const darkThemeScheme = {
   theme: '#1f2e3d',
   contrast: '#f2f2f2',
 
@@ -49,22 +49,22 @@ export const darkTheme = {
 };
 
 export const lightThemeVariables = generateCSSVariablePalette({
-  ...lightTheme,
+  ...lightThemeScheme,
   ...palette,
 });
 
 export const lightThemePalette = generateVariablePalette({
-  ...lightTheme,
+  ...lightThemeScheme,
   ...palette,
 });
 
 export const darkThemeVariables = generateCSSVariablePalette({
-  ...darkTheme,
+  ...darkThemeScheme,
   ...palette,
 });
 
 export const darkThemePalette = generateVariablePalette({
-  ...darkTheme,
+  ...darkThemeScheme,
   ...palette,
 });
 
