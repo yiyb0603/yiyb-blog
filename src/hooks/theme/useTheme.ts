@@ -53,21 +53,25 @@ const useTheme = () => {
     }
   }, [setThemeWithoutCookie]);
 
-  const initializeToSystemTheme = useCallback((): void => {
-    const systemDarkTheme = window.matchMedia(OS_DARK_THEME).matches;
+  const initializeTheme = useCallback((): void => {
+    const cookieTheme = getCookie('theme');
 
-    if (systemDarkTheme) {
-      setThemeWithoutCookie(SystemTheme.DARK);
+    if (isEmpty(cookieTheme)) {
+      const systemDarkTheme = window.matchMedia(OS_DARK_THEME).matches;
+
+      if (systemDarkTheme) {
+        setThemeWithoutCookie(SystemTheme.DARK);
+      } else {
+        setThemeWithoutCookie(SystemTheme.LIGHT);
+      }
     } else {
-      setThemeWithoutCookie(SystemTheme.LIGHT);
+      setTheme(cookieTheme as SystemTheme);
     }
-  }, [setThemeWithoutCookie]);
+  }, [setTheme, setThemeWithoutCookie]);
 
   useEffect(() => {
-    if (theme === 'default') {
-      initializeToSystemTheme();
-    }
-  }, [theme, initializeToSystemTheme]);
+    initializeTheme();
+  }, [initializeTheme]);
 
   useEffect(() => {
     const matchMedia = window.matchMedia(OS_DARK_THEME);

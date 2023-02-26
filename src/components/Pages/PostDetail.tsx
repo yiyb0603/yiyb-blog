@@ -11,6 +11,7 @@ import PostSubInfo from '@/components/Modules/Post/PostSubInfo';
 import PostComment from '@/components/Modules/Post/PostComment';
 import ScrollProgressBar from '@/components/Common/ScrollProgressBar';
 import Helmet from '@/components/Common/Helmet';
+import { wrapper } from '@/stores/nextStore';
 
 const PostDetailPage = ({
   post,
@@ -62,18 +63,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
-  const postId = String(params?.slug || '');
-
-  const post = allPosts.find(({ _raw }) => {
-    return _raw.flattenedPath === postId;
-  });
-
-  return {
-    props: {
-      post,
-    },
+export const getStaticProps = wrapper.getStaticProps(() => {
+  return async ({ params }: GetStaticPropsContext) => {
+    const postId = String(params?.slug || '');
+  
+    const post = allPosts.find(({ _raw }) => {
+      return _raw.flattenedPath === postId;
+    });
+  
+    return {
+      props: {
+        post,
+      },
+    };
   };
-};
+});
 
 export default PostDetailPage;
