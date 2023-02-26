@@ -20,8 +20,10 @@ const HomePage: NextPage = () => {
   });
 
   const postCategories = [
-    '전체',
-    ...allPosts.map(({ category }) => category),
+    ...new Set([
+      '전체',
+      ...allPosts.map(({ category }) => category)
+    ]),
   ];
 
   return (
