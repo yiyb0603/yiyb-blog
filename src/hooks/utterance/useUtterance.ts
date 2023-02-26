@@ -1,10 +1,12 @@
-import { RefObject, useEffect } from 'react';
+import { RefObject, useRef, useEffect } from 'react';
 
 const useUtterance = <T extends HTMLElement>(
   utteranceRef: RefObject<T>,
 ): void => {
+  const initializedRef = useRef<boolean>(false);
+
   useEffect(() => {
-    if (utteranceRef.current === null) {
+    if (utteranceRef.current === null || initializedRef.current) {
       return;
     }
 
@@ -20,6 +22,8 @@ const useUtterance = <T extends HTMLElement>(
     utteranceScript.crossOrigin = 'anonymous';
 
     utteranceRef.current.appendChild(utteranceScript);
+
+    initializedRef.current = true;
   }, [utteranceRef]);
 }
 
