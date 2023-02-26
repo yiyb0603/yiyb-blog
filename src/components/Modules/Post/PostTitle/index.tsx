@@ -16,6 +16,7 @@ const PostTitle = ({
     <Text
       tagName='h1'
       fontSize={fontSize.EXTRA_LARGE}
+      letterSpacing='-0.8px'
     >
       {title}
     </Text>

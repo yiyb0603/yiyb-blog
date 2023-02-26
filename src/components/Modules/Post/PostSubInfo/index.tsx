@@ -18,6 +18,7 @@ const PostSubInfo = ({
 }: PostSubInfoProps): JSX.Element => {
   const {
     color,
+    fontFamily,
     fontSize,
   } = useStyledTheme();
 
@@ -25,6 +26,7 @@ const PostSubInfo = ({
     <Flex
       tagName='section'
       justifyContent='space-between'
+      alignItems='center'
     >
       <HyperLink
         external={false}
@@ -36,7 +38,8 @@ const PostSubInfo = ({
             },
           },
         }}
-        fontSize={fontSize.NORMAL}
+        fontSize={fontSize.MEDIUM}
+        fontFamily={fontFamily.pretendard.MEDIUM}
         color={color.main}
       >
         {category}
@@ -46,6 +49,7 @@ const PostSubInfo = ({
         tagName='time'
         dateTime={createdAt}
         fontSize={fontSize.NORMAL}
+        letterSpacing='-0.2px'
       >
         {dayjs(createdAt).locale('ko').format('YYYY년 MM월 DD일 (dddd)')}
       </Text>

@@ -37,7 +37,7 @@ const Header = () => {
           <Image
             src={images.logo.MAIN_TEXT_IMAGE}
             alt='권용빈 블로그'
-            width='160px'
+            width='130px'
           />
         </HyperLink>
 
