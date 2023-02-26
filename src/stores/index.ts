@@ -1,25 +1,35 @@
 import { AnyAction, CombinedState, combineReducers, Reducer } from 'redux';
 import { EnhancedStore, ThunkDispatch, Action } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
+import { configReducer, ConfigState } from './config';
 import { themeReducer, ThemeState } from './theme';
 
 export type StoreState = {
   theme: ThemeState;
+  config: ConfigState;
 }
 
-type RootReducer = Reducer<CombinedState<StoreState>, AnyAction>;
+type RootReducer = Reducer<StoreState, AnyAction>;
 
 export const rootReducer: RootReducer = (state, action) => {
   switch (action.type) {
     case HYDRATE:
+      if (state?.config.hydratedOnServer) {
+        return state;
+      }
+
       return {
         ...state,
         ...action.payload,
+        config: {
+          hydratedOnServer: true,
+        },
       };
 
     default:
       return combineReducers({
         theme: themeReducer,
+        config: configReducer,
       })(state, action);
   }
 }

@@ -11,6 +11,7 @@ import PostSubInfo from '@/components/Modules/Post/PostSubInfo';
 import PostComment from '@/components/Modules/Post/PostComment';
 import ScrollProgressBar from '@/components/Common/ScrollProgressBar';
 import Helmet from '@/components/Common/Helmet';
+import PostThumbnail from '@/components/Modules/Post/PostThumbnail';
 
 const PostDetailPage = ({
   post,
@@ -33,6 +34,11 @@ const PostDetailPage = ({
           category={post?.category || ''}
           createdAt={post?.createdAt || ''}
         />
+
+        <PostThumbnail
+          thumbnail={post?.thumbnail || ''}
+          alt={post?.title || ''}
+        />
       </Flex>
 
       <PostContent
@@ -44,7 +50,8 @@ const PostDetailPage = ({
       <Helmet
         title={post?.title || ''}
         description={post?.description || ''}
-        createdAt={post?.createdAt || ''}
+        createdAt={post?.createdAt || ''} 
+        thumbnail={post?.thumbnail || ''}
       />
     </>
   );
@@ -74,6 +81,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       post,
     },
   };
-};
+}
 
 export default PostDetailPage;

@@ -18,4 +18,9 @@ export const snsList: SNSInfo[] = [
     platform: 'Instagram',
     link: 'https://github.com/yiyb0603',
   },
-]
+
+  {
+    platform: 'Gmail',
+    link: 'mailto:yiyb0603@gmail.com',
+  },
+];

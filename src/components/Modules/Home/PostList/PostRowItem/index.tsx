@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import dayjs from 'dayjs';
 import { Post } from '@/contentlayer/generated/types';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
@@ -38,14 +39,14 @@ const PostRowItem = ({
       borderRadius='10px'
       backgroundColor={color.background3}
     >
-      <Flex
+      <ContentThumbnailWrapper
         tagName='div'
         gap='2rem'
         justifyContent='space-between'
       >
         <Flex
           tagName='div'
-          gap='1rem'
+          gap='0.5rem'
           flexDirection='column'
           flex='1'
         >
@@ -80,15 +81,15 @@ const PostRowItem = ({
 
         {
           !isEmpty(thumbnail) &&
-          <Image
+          <PostThumbnail
             src={thumbnail}
             alt={title}
-            width='120px'
-            height='120px'
+            width='200px'
+            height='110px'
             borderRadius='5px'
           />
         }
-      </Flex>
+      </ContentThumbnailWrapper>
 
       <Text
         tagName='span'
@@ -103,5 +104,18 @@ const PostRowItem = ({
     </HyperLink>
   );
 }
+
+const ContentThumbnailWrapper = styled(Flex<'div'>)`
+  ${({ theme }) => theme.device.mediumMobile} {
+    flex-direction: column-reverse;
+  };
+`;
+
+const PostThumbnail = styled(Image)`
+  ${({ theme }) => theme.device.mediumMobile} {
+    width: 100%;
+    height: 100%;
+  };
+`;
 
 export default PostRowItem;

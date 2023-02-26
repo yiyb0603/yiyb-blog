@@ -1,0 +1,44 @@
+name: Vercel Production Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.14.2'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Update Vercel Environment Variables
+        run: vercel pull --yes --environment=production --token=${{ env.VERCEL_TOKEN }}
+
+      # 프로젝트 빌드
+      - name: Build Next.js project
+        run: |
+          vercel build --prod --token=${{ env.VERCEL_TOKEN }}
+
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@v1.0.3
+
+      - name: Vercel Deploy
+        run: vercel deploy --prebuilt --prod --token=${{ env.VERCEL_TOKEN }}
+
+      - name: Deploy End
+        run: |
+          echo 'Deploy End'

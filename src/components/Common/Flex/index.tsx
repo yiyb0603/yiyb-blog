@@ -1,5 +1,4 @@
 import {
-  memo,
   ComponentPropsWithRef,
   ComponentPropsWithoutRef,
 } from 'react';
@@ -86,4 +85,4 @@ const FlexContainer = styled.div<FlexStyleProps>`
   cursor: ${({ cursor }) => cursor};
 `;
 
-export default memo(Flex);
+export default Flex;
