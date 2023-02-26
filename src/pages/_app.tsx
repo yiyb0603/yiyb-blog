@@ -36,4 +36,8 @@ const MyApp: CustomAppComponent = ({
   );
 }
 
+MyApp.getInitialProps = async (context) => {
+  return await App.getInitialProps(context);
+}
+
 export default MyApp;
