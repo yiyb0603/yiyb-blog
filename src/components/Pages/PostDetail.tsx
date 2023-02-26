@@ -1,7 +1,7 @@
 import {
   GetStaticPaths,
   InferGetStaticPropsType,
-  GetStaticPropsContext,
+  GetStaticProps,
 } from 'next';
 import { allPosts } from '@/contentlayer/generated';
 import Flex from '@/components/Common/Flex';
@@ -69,7 +69,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postId = String(params?.slug || '');
 
   const post = allPosts.find(({ _raw }) => {
