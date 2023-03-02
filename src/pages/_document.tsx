@@ -11,6 +11,7 @@ import { fontPaths } from '@/assets/fonts';
 import { icons } from '@/assets/icons';
 import { OS_DARK_THEME } from '@/constants/theme';
 import { SystemTheme } from '@/enums/theme';
+import dotenv from '@/libs/dotenv';
 import { fontFamilies } from '@/styles/font';
 import { palette } from '@/styles/palette';
 
@@ -68,6 +69,21 @@ class MyDocument extends Document {
           <meta
             httpEquiv='X-UA-Compatible'
             content='IE=edge'
+          />
+
+          <meta
+            name='google-site-verification'
+            content={dotenv.GOOGLE_SITE_VERIFICATION_ID}
+          />
+
+          <meta
+            name='naver-site-verification'
+            content={dotenv.NAVER_SITE_VERIFICATION_ID}
+          />
+
+          <meta
+            name='msvalidate.01'
+            content={dotenv.BING_SITE_VERIFICATION_ID}
           />
 
           <meta
@@ -168,6 +184,24 @@ class MyDocument extends Document {
 
                   document.documentElement.setAttribute('data-theme', systemTheme);
                 }
+              `,
+            }}
+          ></script>
+
+          <script
+            defer
+            src={`https://www.googletagmanager.com/gtag/js?id=${dotenv.GOOGLE_ANALYTICS_ID}`}
+          ></script>
+
+          <script
+            defer
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+    
+                gtag('config', '${dotenv.GOOGLE_ANALYTICS_ID}');
               `,
             }}
           ></script>
