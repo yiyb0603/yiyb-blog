@@ -11,12 +11,12 @@ export const snsList: SNSInfo[] = [
 
   {
     platform: 'Facebook',
-    link: 'https://github.com/yiyb0603',
+    link: 'https://www.facebook.com/profile.php?id=100010933171210',
   },
 
   {
     platform: 'Instagram',
-    link: 'https://github.com/yiyb0603',
+    link: 'https://instagram.com/yiyb0603',
   },
 
   {
