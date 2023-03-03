@@ -3,10 +3,12 @@ import { EnhancedStore, ThunkDispatch, Action } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 import { configReducer, ConfigState } from './config';
 import { themeReducer, ThemeState } from './theme';
+import { dialogReducer, DialogState } from './dialog';
 
 export type StoreState = {
   theme: ThemeState;
   config: ConfigState;
+  dialog: DialogState;
 }
 
 type RootReducer = Reducer<StoreState, AnyAction>;
@@ -30,6 +32,7 @@ export const rootReducer: RootReducer = (state, action) => {
       return combineReducers({
         theme: themeReducer,
         config: configReducer,
+        dialog: dialogReducer,
       })(state, action);
   }
 }

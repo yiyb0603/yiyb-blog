@@ -6,11 +6,14 @@ import App, {
   AppProps,
   NextWebVitalsMetric,
 } from 'next/app';
+import dynamic from 'next/dynamic';
 import gtag from '@/libs/gtag';
 import { wrapper } from '@/stores/nextStore';
 import GlobalStyle from '@/styles/GlobalStyle';
 import StyleProvider from '@/components/Providers/StyleProvider';
 import UserTemplate from '@/components/Templates/UserTemplate';
+
+const Dialog = dynamic(() => import('@/components/Common/Dialog'));
 
 type MyAppProps = AppProps & {};
 
@@ -36,7 +39,9 @@ const MyApp: CustomAppComponent = ({
           />
         </UserTemplate>
 
-        <GlobalStyle />
+        <Dialog />
+
+        <GlobalStyle />        
       </StyleProvider>
     </ReduxProvider>
   );
