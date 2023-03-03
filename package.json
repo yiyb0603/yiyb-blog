@@ -12,6 +12,7 @@
     "@mdx-js/loader": "^2.3.0",
     "@next/mdx": "^13.2.1",
     "@reduxjs/toolkit": "^1.6.2",
+    "@types/gtag.js": "^0.0.12",
     "@types/styled-components": "^5.1.26",
     "contentlayer": "^0.2.8",
     "cookies-next": "^2.1.1",
