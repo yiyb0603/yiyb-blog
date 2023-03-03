@@ -6,6 +6,7 @@ import isEmpty from '@/utils/is-packages/isEmpty';
 import { themeAction } from '@/stores/theme';
 import useAppDispatch from '../redux/useAppDispatch';
 import useRootSelector from '../redux/useRootSelector';
+import dayjs from 'dayjs';
 
 const useTheme = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +22,11 @@ const useTheme = () => {
   }, [dispatch]);
 
   const setTheme = useCallback((theme: SystemTheme): void => {
-    setCookie('theme', theme);
+    const nonExpireDate = dayjs().add(1000, 'years').toDate();    
+
+    setCookie('theme', theme, {
+      expires: nonExpireDate,
+    });
 
     setThemeWithoutCookie(theme);
   }, [setThemeWithoutCookie]);
