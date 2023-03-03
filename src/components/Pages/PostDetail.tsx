@@ -4,6 +4,7 @@ import {
   GetStaticProps,
 } from 'next';
 import { allPosts } from '@/contentlayer/generated';
+import useOnScreen from '@/hooks/utils/useOnScreen';
 import Flex from '@/components/Common/Flex';
 import PostTitle from '@/components/Modules/Post/PostTitle';
 import PostContent from '@/components/Modules/Post/PostContent';
@@ -12,10 +13,21 @@ import PostComment from '@/components/Modules/Post/PostComment';
 import ScrollProgressBar from '@/components/Common/ScrollProgressBar';
 import Helmet from '@/components/Common/Helmet';
 import PostThumbnail from '@/components/Modules/Post/PostThumbnail';
+import PostShare from '../Modules/Post/PostShare';
 
 const PostDetailPage = ({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const {
+    intersect,
+    isIntersecting,
+  } = useOnScreen({
+    rootMargin: '-70px 0px 0px 0px',
+    defaultValue: true,
+    threshold: 0,
+    disable: false,
+  });
+
   return (
     <>
       <ScrollProgressBar />
@@ -25,6 +37,7 @@ const PostDetailPage = ({
         flexDirection='column'
         gap='1.5rem'
         margin='0 0 1.5rem 0'
+        flexRef={intersect}
       >
         <PostTitle
           title={post?.title || ''}
@@ -44,6 +57,11 @@ const PostDetailPage = ({
       <PostContent
         code={post?.body.code || ''}
       />
+
+      {
+        !isIntersecting &&
+        <PostShare />
+      }
 
       <PostComment />
 

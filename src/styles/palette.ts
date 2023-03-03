@@ -78,6 +78,7 @@ export const palette = {
   black: '#1f2e3d',
   codeTheme: '#24292e',
   main: '#2196f3',
+  overlay: 'rgba(30, 30, 30, 0.6)',
 } as const;
 
 export const cssPalette = generateVariablePalette(palette);
