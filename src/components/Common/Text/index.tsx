@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, ComponentPropsWithRef } from 'react';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
 import { ellipsisLine } from '@/styles/utils';
-import { Display, TextAlign, WordBreak } from '@/types/style';
+import { Cursor, Display, TextAlign, WordBreak } from '@/types/style';
 
 type TextStyleProps = {
   fontSize?: string;
@@ -16,6 +16,7 @@ type TextStyleProps = {
   backgroundColor?: string;
   margin?: string;
   padding?: string;
+  cursor?: Cursor;
   maxLine?: number;
   hover?: FlattenSimpleInterpolation;
 }
@@ -64,6 +65,7 @@ const CustomText = styled.div<TextStyleProps>`
   margin: ${({ margin }) => margin};
   padding: ${({ padding }) => padding};
   min-height: ${({ minHeight }) => minHeight};
+  cursor: ${({ cursor }) => cursor};
 
   ${({ maxLine }) => maxLine && ellipsisLine(maxLine)}
 

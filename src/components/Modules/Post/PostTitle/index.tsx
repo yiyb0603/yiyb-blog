@@ -1,5 +1,5 @@
-import Text from '@/components/Common/Text';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
+import Text from '@/components/Common/Text';
 
 type PostTitleProps = {
   title: string;

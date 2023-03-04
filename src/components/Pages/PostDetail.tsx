@@ -1,9 +1,10 @@
+import { useState, useRef, useEffect } from 'react';
 import {
   GetStaticPaths,
   InferGetStaticPropsType,
   GetStaticProps,
 } from 'next';
-import { allPosts } from '@/contentlayer/generated';
+import { allPosts, Post } from '@/contentlayer/generated';
 import Flex from '@/components/Common/Flex';
 import PostTitle from '@/components/Modules/Post/PostTitle';
 import PostContent from '@/components/Modules/Post/PostContent';
@@ -12,10 +13,24 @@ import PostComment from '@/components/Modules/Post/PostComment';
 import ScrollProgressBar from '@/components/Common/ScrollProgressBar';
 import Helmet from '@/components/Common/Helmet';
 import PostThumbnail from '@/components/Modules/Post/PostThumbnail';
+import PostShare from '@/components/Modules/Post/PostShare';
+import PostToc from '@/components/Modules/Post/PostToc';
 
 const PostDetailPage = ({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const [postElement, setPostElement] = useState<HTMLElement | null>(null);
+
+  const postContentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (postContentRef.current === null) {
+      return;
+    }
+
+    setPostElement(postContentRef.current);
+  }, []);
+
   return (
     <>
       <ScrollProgressBar />
@@ -42,8 +57,15 @@ const PostDetailPage = ({
       </Flex>
 
       <PostContent
+        postContentRef={postContentRef}
         code={post?.body.code || ''}
       />
+
+        <PostToc
+          postElement={postElement}
+        />
+
+      <PostShare />
 
       <PostComment />
 
@@ -69,7 +91,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<{ post: Post | undefined; }> = async ({ params }) => {
   const postId = String(params?.slug || '');
 
   const post = allPosts.find(({ _raw }) => {

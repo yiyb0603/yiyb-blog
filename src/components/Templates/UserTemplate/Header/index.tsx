@@ -53,6 +53,7 @@ const HeaderWrapper = styled(Section<'header'>)`
   left: 0;
   right: 0;
   background-color: ${({ theme }) => theme.color.theme};
+  z-index: 1;
 `;
 
 export default Header;

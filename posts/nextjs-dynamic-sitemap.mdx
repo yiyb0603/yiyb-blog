@@ -10,9 +10,9 @@ thumbnail: https://velog.velcdn.com/images/yiyb0603/post/812c2dcb-4f2f-451c-a0f9
 
 이번 시간에는 이전에 회사 프로젝트를 진행하면서 가장 핵심적인 액션중 하나인 **동적 사이트맵 제작**을 주제로 글을 적어보려고 합니다.
 
-# 1. 사이트맵이 뭐야? 🧐
+## 1. 사이트맵이 뭐야? 🧐
 
-## 1-1. 검색엔진 최적화에서의 중요성
+### 1-1. 검색엔진 최적화에서의 중요성
 
 ![](https://velog.velcdn.com/images/yiyb0603/post/b5e8623a-2edc-4a39-a228-6c5e9b0dc445/image.png)
 
@@ -41,7 +41,7 @@ Velog 서비스로 예시를 들면, 검색엔진에 노출되기 위해서 수�
 
 > **이외의 사이트맵에 대한 정보를 알고싶다면 아래의 구글 사이트맵 가이드라인을 통해서 더 알아볼 수 있습니다.** [https://developers.google.com/search/docs/advanced/sitemaps/overview?hl=ko](https://developers.google.com/search/docs/advanced/sitemaps/overview?hl=ko)
 
-# 2. Next.js를 사용한 동적 사이트맵 구현
+## 2. Next.js를 사용한 동적 사이트맵 구현
 
 사이트맵에 등록할 페이지들이 정적인 페이지들에 대한 사이트맵의 경우에는 온라인 sitemap generator, npm 라이브러리 등 다양한 손쉬운 방법들이 검색하면 나오나, **동적인 URL에 대한 사이트맵의 경우에는 직접 구현해야하는 경우가 대다수 입니다.**
 
@@ -271,11 +271,11 @@ export default PostPage;
 
 API로 불러왔던 글들의 정보들이 모두 사이트맵에 등록되었습니다. 짝짝짝 🎶
 
-# 3. 사이트맵 참고사항 💡
+## 3. 사이트맵 참고사항 💡
 
 위에서 만들어진 사이트맵은 구글의 경우에는 [Google Search Console](https://search.google.com/search-console)에다가 제작한 사이트맵과 사이트의 정보를 등록하면 되고, 네이버의 경우에는 [네이버 서치어드바이저](https://searchadvisor.naver.com/)에다가 사이트맵과 사이트의 정보를 등록하면 각 검색엔진의 크롤러 봇이 사이트를 방문할 수 있습니다.
 
-## 3-1. 사이트맵에 대한 각종 Q&A
+### 3-1. 사이트맵에 대한 각종 Q&A
 
 기본적으로 [google 검색 센터](https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap?hl=ko)에 사이트맵에 대한 각종 정보들이 많이 담겨있습니다.
 

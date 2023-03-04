@@ -214,6 +214,10 @@ class MyDocument extends Document {
         </Head>
 
         <body>
+          <div
+            id='modal-portal'
+          ></div>
+
           <Main />
           <NextScript />
         </body>

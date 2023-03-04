@@ -41,7 +41,7 @@ type ButtonStyleProps = {
 
 type ButtonOwnProps = {
   className?: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   buttonRef?: RefObject<HTMLButtonElement>;
 }
 
@@ -50,7 +50,6 @@ type ButtonProps = ButtonStyleProps &
   ButtonHTMLAttributes<HTMLButtonElement>
 
 const Button = ({
-  fontSize = fontSizeStyle.TINY,
   spinnerColor = cssPalette.white,
   justifyContent = 'center',
   isLoading = false,

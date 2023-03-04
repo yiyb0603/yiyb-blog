@@ -1,17 +1,22 @@
-import { useMDXComponent } from 'next-contentlayer/hooks';
+import { RefObject } from 'react';
 import styled from 'styled-components';
+import { useMDXComponent } from 'next-contentlayer/hooks';
 
 type PostContentProps = {
+  postContentRef: RefObject<HTMLDivElement>;
   code: string;
 }
 
 const PostContent = ({
+  postContentRef,
   code,
 }: PostContentProps) => {
   const MDXComponent = useMDXComponent(code);
 
   return (
-    <PostContentContainer>
+    <PostContentContainer
+      ref={postContentRef}
+    >
       <MDXComponent />
     </PostContentContainer>
   );

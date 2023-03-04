@@ -3,7 +3,11 @@ import {
   ComponentPropsWithRef,
 } from 'react';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
-import { CustomBorder, Overflow } from '@/types/style';
+import {
+  CustomBorder,
+  Overflow,
+  Position,
+} from '@/types/style';
 
 type SectionStyleProps = {
   width?: string;
@@ -16,6 +20,7 @@ type SectionStyleProps = {
   borderRadius?: string;
   backgroundColor?: string;
   boxShadow?: string;
+  position?: Position;
   overflow?: Overflow;
   flex?: string;
   hover?: FlattenSimpleInterpolation;
@@ -66,6 +71,7 @@ const CustomSection = styled.div<SectionStyleProps>`
   border-bottom: ${({ border }) => border?.bottom};
   border-radius: ${({ borderRadius }) => borderRadius};
   box-shadow: ${({ boxShadow }) => boxShadow};
+  position: ${({ position }) => position};
   overflow: ${({ overflow }) => overflow};
   flex: ${({ flex }) => flex};
   background-color: ${({ backgroundColor }) => backgroundColor};
