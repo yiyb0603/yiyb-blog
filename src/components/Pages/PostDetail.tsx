@@ -1,10 +1,10 @@
+import { useState, useRef, useEffect } from 'react';
 import {
   GetStaticPaths,
   InferGetStaticPropsType,
   GetStaticProps,
 } from 'next';
-import { allPosts } from '@/contentlayer/generated';
-import useOnScreen from '@/hooks/utils/useOnScreen';
+import { allPosts, Post } from '@/contentlayer/generated';
 import Flex from '@/components/Common/Flex';
 import PostTitle from '@/components/Modules/Post/PostTitle';
 import PostContent from '@/components/Modules/Post/PostContent';
@@ -13,20 +13,24 @@ import PostComment from '@/components/Modules/Post/PostComment';
 import ScrollProgressBar from '@/components/Common/ScrollProgressBar';
 import Helmet from '@/components/Common/Helmet';
 import PostThumbnail from '@/components/Modules/Post/PostThumbnail';
-import PostShare from '../Modules/Post/PostShare';
+import PostShare from '@/components/Modules/Post/PostShare';
+import PostToc from '@/components/Modules/Post/PostToc';
 
 const PostDetailPage = ({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const {
-    intersect,
-    isIntersecting,
-  } = useOnScreen({
-    rootMargin: '-70px 0px 0px 0px',
-    defaultValue: true,
-    threshold: 0,
-    disable: false,
-  });
+  const [postElement, setPostElement] = useState<HTMLElement | null>(null);
+
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const postContentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (postContentRef.current === null) {
+      return;
+    }
+
+    setPostElement(postContentRef.current);
+  }, []);
 
   return (
     <>
@@ -37,10 +41,10 @@ const PostDetailPage = ({
         flexDirection='column'
         gap='1.5rem'
         margin='0 0 1.5rem 0'
-        flexRef={intersect}
       >
         <PostTitle
           title={post?.title || ''}
+          titleRef={titleRef}
         />
 
         <PostSubInfo
@@ -55,13 +59,19 @@ const PostDetailPage = ({
       </Flex>
 
       <PostContent
+        postContentRef={postContentRef}
         code={post?.body.code || ''}
       />
 
       {
-        !isIntersecting &&
-        <PostShare />
+        postElement &&
+        <PostToc
+          postElement={postElement}
+          titleShowing={false}
+        />
       }
+
+      <PostShare />
 
       <PostComment />
 
@@ -87,7 +97,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<{ post: Post | undefined; }> = async ({ params }) => {
   const postId = String(params?.slug || '');
 
   const post = allPosts.find(({ _raw }) => {
