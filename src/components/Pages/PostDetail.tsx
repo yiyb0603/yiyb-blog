@@ -21,7 +21,6 @@ const PostDetailPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [postElement, setPostElement] = useState<HTMLElement | null>(null);
 
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const postContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,7 +43,6 @@ const PostDetailPage = ({
       >
         <PostTitle
           title={post?.title || ''}
-          titleRef={titleRef}
         />
 
         <PostSubInfo
@@ -63,13 +61,9 @@ const PostDetailPage = ({
         code={post?.body.code || ''}
       />
 
-      {
-        postElement &&
         <PostToc
           postElement={postElement}
-          titleShowing={false}
         />
-      }
 
       <PostShare />
 

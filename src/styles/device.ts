@@ -1,4 +1,4 @@
-export const deviceSizes = {
+export const deviceSize = {
   smallMobile: '350px',
   mobile: '400px',
   mediumMobile: '500px',
@@ -10,11 +10,11 @@ export const deviceSizes = {
   mediumLaptop: '1200px',
 } as const;
 
-type DeviceSizes = keyof typeof deviceSizes;
+type DeviceSizes = keyof typeof deviceSize;
 
-type Device = Record<DeviceSizes, `@media only screen and (max-width: ${typeof deviceSizes[DeviceSizes]})`>;
+type Device = Record<DeviceSizes, `@media only screen and (max-width: ${typeof deviceSize[DeviceSizes]})`>;
 
-export const device: Device = Object.entries(deviceSizes).reduce((device, [deviceName, deviceSize]) => {
+export const device: Device = Object.entries(deviceSize).reduce((device, [deviceName, deviceSize]) => {
   device[deviceName as DeviceSizes] = `@media only screen and (max-width: ${deviceSize})`;
 
   return device;

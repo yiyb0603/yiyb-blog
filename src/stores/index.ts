@@ -4,11 +4,13 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { configReducer, ConfigState } from './config';
 import { themeReducer, ThemeState } from './theme';
 import { dialogReducer, DialogState } from './dialog';
+import { userReducer, UserState } from './user';
 
 export type StoreState = {
   theme: ThemeState;
   config: ConfigState;
   dialog: DialogState;
+  user: UserState;
 }
 
 type RootReducer = Reducer<StoreState, AnyAction>;
@@ -33,6 +35,7 @@ export const rootReducer: RootReducer = (state, action) => {
         theme: themeReducer,
         config: configReducer,
         dialog: dialogReducer,
+        user: userReducer,
       })(state, action);
   }
 }

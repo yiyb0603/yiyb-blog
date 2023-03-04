@@ -9,6 +9,7 @@ import App, {
 import dynamic from 'next/dynamic';
 import gtag from '@/libs/gtag';
 import { wrapper } from '@/stores/nextStore';
+import { userAction } from '@/stores/user';
 import GlobalStyle from '@/styles/GlobalStyle';
 import StyleProvider from '@/components/Providers/StyleProvider';
 import UserTemplate from '@/components/Templates/UserTemplate';
@@ -47,9 +48,19 @@ const MyApp: CustomAppComponent = ({
   );
 }
 
-MyApp.getInitialProps = async (context) => {
-  return await App.getInitialProps(context);
-}
+MyApp.getInitialProps = wrapper.getInitialAppProps(({
+  dispatch,
+}) => {
+  return async (context) => {
+    const { ctx } = context;
+
+    const userAgent = ctx?.req?.headers['user-agent'] || '';
+
+    dispatch(userAction.setUserAgent(userAgent));
+
+    return await App.getInitialProps(context);
+  };
+});
 
 export const reportWebVitals = (metric: NextWebVitalsMetric): void => {
   gtag.reportWebVitals(metric);

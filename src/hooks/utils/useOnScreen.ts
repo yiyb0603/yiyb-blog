@@ -1,25 +1,20 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, RefObject } from 'react';
 
-type UseOnScreenProps = {
-  callback?: Function;
+type Props<T extends HTMLElement> = {
+  ref: RefObject<T>;
   defaultValue: boolean;
   rootMargin: string;
   threshold: number;
   disable: boolean;
 }
 
-const useOnScreen = ({
-  callback,
+const useOnScreen = <T extends HTMLElement>({
+  ref,
   defaultValue,
   rootMargin,
   threshold,
   disable,
-}: UseOnScreenProps) => {
-  const [
-    intersect,
-    setIntersect,
-  ] = useState<HTMLElement | null>(null);
-
+}: Props<T>) => {
   const [
     isIntersecting,
     setIntersecting,
@@ -27,19 +22,12 @@ const useOnScreen = ({
 
   const intersectingCallback = useCallback((
     [entry]: IntersectionObserverEntry[],
-    observer: IntersectionObserver,
   ) => {
-    if (entry.isIntersecting) {
-      if (typeof callback === 'function') {
-        callback(entry.target);
-      }
-    }
-
     setIntersecting(entry.isIntersecting);
-  }, [callback]);
+  }, []);
 
   useEffect(() => {
-    if (intersect === null || disable) {
+    if (ref.current === null || disable) {
       return;
     }
 
@@ -48,17 +36,14 @@ const useOnScreen = ({
       threshold,
     });
 
-    observer.observe(intersect);
+    observer.observe(ref.current);
 
     return () => {
       observer.disconnect();
     };
-  }, [intersect, disable, rootMargin, threshold, intersectingCallback]);
+  }, [disable, intersectingCallback, ref, rootMargin, threshold]);
 
-  return {
-    intersect: setIntersect,
-    isIntersecting,
-  };
+  return isIntersecting;
 }
 
 export default useOnScreen;

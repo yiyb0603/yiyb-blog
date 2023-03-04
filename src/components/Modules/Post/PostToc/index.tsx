@@ -1,20 +1,18 @@
-import { useState, useEffect, useCallback, memo } from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
-import { Heading } from '@/types/component';
-import isEmpty from '@/utils/is-packages/isEmpty';
-import removeHTMLString from '@/utils/string/removeHTMLString';
+import useResponsiveDevice from '@/hooks/utils/useResponsiveDevice';
+import usePostToc from '@/hooks/post/usePostToc';
+import { deviceSize } from '@/styles/device';
 import Flex from '@/components/Common/Flex';
 import Text from '@/components/Common/Text';
 import Section from '@/components/Common/Section';
 
 type PostTocProps = {
-  titleShowing: boolean;
   postElement: HTMLElement | null;
 }
 
 const PostToc = ({
-  titleShowing,
   postElement,
 }: PostTocProps): JSX.Element => {
   const {
@@ -23,78 +21,18 @@ const PostToc = ({
     fontSize,
   } = useStyledTheme();
 
-  const [
-    activeId,
-    setActiveId,
-  ] = useState<string>('');
+  const isMediumLaptop = useResponsiveDevice({
+    maxWidth: deviceSize.mediumLaptop,
+  });
 
-  const [
+  const {
     headings,
-    setHeadings,
-  ] = useState<Heading[]>([]);
-  console.log(activeId, titleShowing);
-
-  const handleHeadingClick = (id: string): void => {
-    const element = document.getElementById(id);
-
-    if (element === null) {
-      return;
-    }
-
-    window.scrollTo({
-      top: element.offsetTop - 20,
-      behavior: 'smooth',
-    });
-  }
-
-  const callback = useCallback((entries: IntersectionObserverEntry[]): void => {
-    const intersectEntries = entries.filter(({ isIntersecting }) => isIntersecting);
-
-    if (!isEmpty(intersectEntries)) {
-      setActiveId(intersectEntries[0].target.id);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!postElement) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(callback, {
-      threshold: 1,
-      rootMargin: '-70px 0px -50% 0px',
-    });
-
-    const headingElements = Array.from(postElement.querySelectorAll('h2, h3'));
-
-    let headings: Heading[] = [];
-
-    for (const headingElement of headingElements) {
-      headings = [
-        ...headings,
-        {
-          id: headingElement.id,
-          level: +(headingElement.tagName.toLowerCase().replace('h', '')),
-          text: removeHTMLString(headingElement.innerHTML),
-          element: headingElement,
-        },
-      ];
-
-      observer.observe(headingElement);
-    }
-
-    setHeadings(headings);
-
-    return () => {
-      observer.disconnect();
-    }
-  }, [callback, postElement]);
-
-  // useEffect(() => {
-  //   if (titleShowing) {
-  //     setActiveId('');
-  //   }
-  // }, [titleShowing]);
+    activeId,
+    handleHeadingClick,
+  } = usePostToc({
+    postElement,
+    disable: isMediumLaptop,
+  });
 
   return (
     <PostTocWrapper
@@ -135,7 +73,11 @@ const PostToc = ({
 
 const PostTocWrapper = styled(Section<'aside'>)`
   position: absolute;
-  left: 103%;
+  left: 102%;
+
+  ${({ theme }) => theme.device.mediumLaptop} {
+    display: none;
+  };
 `;
 
 const FixedWrapper = styled(Flex<'div'>)`
@@ -144,4 +86,4 @@ const FixedWrapper = styled(Flex<'div'>)`
   max-width: 250px;
 `;
 
-export default PostToc;
+export default memo(PostToc);
