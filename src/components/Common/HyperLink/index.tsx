@@ -1,7 +1,7 @@
 import { ReactNode, RefObject, AnchorHTMLAttributes } from 'react';
 import Link, { LinkProps } from 'next/link';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
-import { CustomBorder, Display } from '@/types/style';
+import { CustomBorder, Display, WhiteSpace } from '@/types/style';
 
 type HyperLinkStyleProps = {
   margin?: string;
@@ -10,6 +10,7 @@ type HyperLinkStyleProps = {
   backgroundColor?: string;
   borderRadius?: string;
   border?: CustomBorder;
+  whiteSpace?: WhiteSpace;
   fontSize?: string;
   fontFamily?: string;
   display?: Display;
@@ -82,6 +83,7 @@ const CustomHyperLink = styled.a<HyperLinkStyleProps>`
   border-bottom: ${({ border }) => border?.bottom};
   font-size: ${({ fontSize }) => fontSize};
   font-family: ${({ fontFamily }) => fontFamily};
+  white-space: ${({ whiteSpace }) => whiteSpace};
 
   ${({ theme }) => theme.media.hoverable} {
     &:hover {

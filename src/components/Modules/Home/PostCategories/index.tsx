@@ -38,6 +38,7 @@ const PostCategories = ({
             }}
             padding='1rem 1.75rem'
             borderRadius='10px'
+            whiteSpace='pre'
             color={category === selectCategory ? color.white : color.contrast}
             backgroundColor={category === selectCategory ? color.main : color.background3}
           >
