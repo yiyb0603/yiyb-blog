@@ -1,5 +1,6 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files';
-import highlight from 'rehype-highlight';
+import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
+import rehypeHighlight from 'rehype-highlight';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 
@@ -50,7 +51,8 @@ const contentSource = makeSource({
           theme: 'github-dark',
         },
       ],
-      highlight,
+      rehypeHighlight,
+      rehypeAccessibleEmojis,
     ],
   },
 });
