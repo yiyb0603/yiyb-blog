@@ -17,6 +17,7 @@ const PostTitle = ({
       tagName='h1'
       fontSize={fontSize.EXTRA_LARGE}
       letterSpacing='-0.8px'
+      wordBreak='keep-all'
     >
       {title}
     </Text>

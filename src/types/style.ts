@@ -22,6 +22,8 @@ export type Visibility = Global | 'collapse' | 'visible' | 'hidden';
 
 export type WordBreak = Global | 'keep-all' | 'break-all' | 'break-word';
 
+export type WhiteSpace = Global | 'pre' | 'pre-wrap' | 'pre-line';
+
 type BorderValue = `${number}px solid ${string}`;
 
 export type CustomBorder = {

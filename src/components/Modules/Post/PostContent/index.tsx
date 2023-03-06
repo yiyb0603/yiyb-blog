@@ -59,8 +59,9 @@ const PostContentContainer = styled.section`
   }
 
   img {
-    width: 100%;
-    margin: 1.5rem 0;
+    display: block;
+    max-width: 100%;
+    margin: 1.5rem auto;
   }
 
   pre {

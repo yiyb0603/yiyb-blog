@@ -1,7 +1,13 @@
 import { ComponentPropsWithoutRef, ComponentPropsWithRef } from 'react';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
 import { ellipsisLine } from '@/styles/utils';
-import { Cursor, Display, TextAlign, WordBreak } from '@/types/style';
+import {
+  Cursor,
+  Display,
+  TextAlign,
+  WhiteSpace,
+  WordBreak,
+} from '@/types/style';
 
 type TextStyleProps = {
   fontSize?: string;
@@ -12,6 +18,7 @@ type TextStyleProps = {
   lineHeight?: string;
   letterSpacing?: string;
   wordBreak?: WordBreak;
+  whiteSpace?: WhiteSpace;
   minHeight?: string;
   backgroundColor?: string;
   margin?: string;
@@ -58,6 +65,7 @@ const CustomText = styled.div<TextStyleProps>`
   font-family: ${({ fontFamily }) => fontFamily};
   color: ${({ color }) => color};
   word-break: ${({ wordBreak }) => wordBreak};
+  white-space: ${({ whiteSpace }) => whiteSpace};
   letter-spacing: ${({ letterSpacing }) => letterSpacing};
   line-height: ${({ lineHeight }) => lineHeight};
   text-align: ${({ textAlign }) => textAlign};

@@ -33,9 +33,6 @@ jobs:
         run: |
           vercel build --prod --token=${{ env.VERCEL_TOKEN }}
 
-      - name: Install AWS CLI
-        uses: unfor19/install-aws-cli-action@v1.0.3
-
       - name: Vercel Deploy
         run: vercel deploy --prebuilt --prod --token=${{ env.VERCEL_TOKEN }}
 

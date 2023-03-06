@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { Post } from '@/contentlayer/generated/types';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import isEmpty from '@/utils/is-packages/isEmpty';
+import { ellipsisLine } from '@/styles/utils';
 import HyperLink from '@/components/Common/HyperLink';
 import Image from '@/components/Common/Image';
 import Flex from '@/components/Common/Flex';
@@ -60,13 +61,13 @@ const PostRowItem = ({
             {dayjs(createdAt).locale('ko').format('YYYY년 MM월 DD일 (dddd)')}
           </Text>
 
-          <Text
+          <PostTitle
             tagName='h3'
             fontSize={fontSize.MEDIUM}
-            maxLine={1}
+            wordBreak='keep-all'
           >
             {title}
-          </Text>
+          </PostTitle>
 
           <Text
             tagName='p'
@@ -115,6 +116,14 @@ const PostThumbnail = styled(Image)`
   ${({ theme }) => theme.device.mediumMobile} {
     width: 100%;
     height: 100%;
+  };
+`;
+
+const PostTitle = styled(Text<'h3'>)`
+  ${ellipsisLine(1)};  
+
+  ${({ theme }) => theme.device.mediumMobile} {
+    ${ellipsisLine(2)};
   };
 `;
 
