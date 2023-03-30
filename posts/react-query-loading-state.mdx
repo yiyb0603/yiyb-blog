@@ -1,0 +1,164 @@
+---
+title: React-Query의 isLoading, isFetching 그리고 isInitialLoading
+description: 안녕하세요! 오늘은 React-Query의 상태를 표현하는 isLoading, isFetching 그리고 isInitialLoading에 대해서 알아보겠습니다.
+createdAt: 2023-03-30
+category: React-Query
+thumbnail: https://user-images.githubusercontent.com/50941453/228815735-4dd016c3-eab4-4fc9-ab90-38b2ade05dcc.png
+---
+안녕하세요! 오늘은 React-Query의 상태를 표현하는 isLoading, isFetching 그리고 isInitialLoading에 대해서 알아보겠습니다. 😃 세개의 속성모두 React-Query에서 API 호출을 했을때 상태가 변경된다는 공통점이 있는데요, 하지만 특정 상황에 따라서 세개의 속성은 각기 다르게 동작합니다. 그 이유를 함께 알아봅시다.
+
+## 1. staleTime과 cacheTime ⏰
+본격적으로 알아보기전, React-Query의 `staleTime`과 `cacheTime`의 개념을 먼저 알고가야합니다. React-Query에서 제공하는 `useQuery` hooks의 사용법은 아래와 같습니다.
+
+```typescript
+import { useQuery } from '@tanstack/react-query';
+
+const fetchData = async () => {
+  return 'some data';
+}
+
+const {} = useQuery({
+  queryKey: ['some', 'query'],
+  queryFn: fetchData,
+  staleTime: 60 * 1000,
+  cacheTime: Infinity,
+});
+```
+
+useQuery에 지정하는 옵션들중 `staleTime`과 `cacheTime`에 주목을 해야하는데요, 이 두 속성의 의미는 다음과 같습니다.
+> **staleTime**: 동일한 queryKey에 대해서 중복요청을 제거할 밀리세컨드 시간, 캐시에 저장된 데이터의 신선도를 의미
+**cacheTime**: queryKey를 통해서 불러온 데이터를 캐시에 언제까지 저장할것인지를 지정하는 밀리세컨드 시간, 이 시간이 지나면 가비지 컬렉터(GC)가 캐시안의 데이터를 수집하게된다.
+
+위의 예제에서 staleTime을 `60 * 1000`으로 지정했는데요, 이는 1분동안 동일한 요청에 대해서 API 요청을 날리지 않게 됩니다. (캐시에 저장되어있는 데이터 사용)
+<br />
+cacheTime의 경우에는 `Infinity`로 지정했는데요, 이는 영구적으로 캐시에 저장하고 있겠다라는 의미입니다. 만약 cacheTime을 `60 * 1000`을 지정하게 되면, 1분뒤에 가비지 컬렉터가 수집하게 되어 API 데이터가 undefined로 처리됩니다.
+<br />
+위에서 설명드린 `staleTime`과 `cacheTime`의 개념을 가진상태로 이제 본격적인 내용으로 넘어가보겠습니다.
+
+## 2. 차이점 알아보기 📌
+
+### 2-1. isFetching
+isFetching 속성이 true가 되는 조건은 다음과 같습니다.
+- 캐시에 저장된 데이터가 없거나, cacheTime을 지정한 시간이 지나고나서 재요청이 일어날때
+- staleTime을 지정한 시간이 지나서 재요청이 일어날때
+<br />
+일반적으로 isFetching 속성은 모든 API 요청이 일어나면 상태가 변경됩니다.
+
+### 2-2. isLoading
+isLoading 속성이 true가 되는 조건은 다음과 같습니다.
+- 캐시에 저장된 데이터가 없거나, cacheTime을 지정한 시간이 지나고나서 재요청이 일어날때
+
+isLoading 속성은 무조건 *캐시에 데이터가 저장되어 있지 않다면*(cacheTime이 지났다면) true로 변경이 됩니다.
+<br />
+하지만 isLoading 속성은 사용할때 불편한점이 하나 있는데요, 바로 useQuery의 `enabled` 속성을 사용할때입니다. 
+> **enabled**: 지정한 조건이 참인 경우에만 요청을 수행합니다.
+
+특정 조건에서만 useQuery의 실행이 가능하도록 해주는 `enabled` 속성이 `isLoading` 속성과 무슨 관련이 있을까요? 🤔 코드를 통해서 예시를 보도록 하겠습니다.
+
+```typescript
+import { useQuery } from '@tanstack/react-query';
+
+const fetchTodo = async (todoId: number) => {
+  // return something
+}
+
+const useFetchTodo = (todoId: number) => {
+  const {
+    isLoading,
+    isFetching,
+    data,
+  } = useQuery({
+    queryKey: ['some', 'query'],
+    queryFn: fetchTodo,
+    enabled: todoId > 0,
+  });
+
+  console.log(`isLoading: ${isLoading}, isFetching: ${isFetching}`);
+
+  return {
+    data,
+  };
+}
+
+useFetchTodo(1);
+useFetchTodo(-1);
+```
+만약 특정 id를 받아서 요청을하는 기능을 만들때 위와 같이 구현할 수 있습니다. 그리고 저는 `enabled` 속성을 통해서 `todoId` 값이 0보다 클때만 요청이 가능하도록 설정했는데요, 각각 1과 -1을 넘겼을때 실행 결과는 아래와 같습니다.
+```shell
+isLoading: true, isFetching: true,
+isLoading: true, isFetching: false,
+```
+올바른 값(1)을 넘겨주었을때는 요청이 정상적으로 되었기에 `isLoading`과 `isFetching` 모두 true가 되었습니다.
+<br />
+하지만 올바르지 않은 값(-1)을 넘겼을때는 API 요청은 가지 않았지만, `isLoading` 속성이 true로 찍힘을 알 수 있습니다. 일반적으로 생각해볼때, 만약 요청상황이 중단된다면 로딩상태는 false가 되어야 하는것이 맞습니다. `isFetching`의 동작처럼 말이죠.
+그렇기에 만약 isLoading을 사용하는 개발자가 로딩처리 UI를 구현할때는 아래와 같이 작성해야합니다.
+
+```tsx
+const todoId = createRandomNumber();
+
+const { data, isLoading } = useFetchTodo(todoId);
+
+if (isLoading && todoId !== -1) {
+  return <LoadingComponent /> 
+}
+
+return (
+  // ...
+);
+```
+그냥 나는 로딩 상태변수만 사용해서 로딩처리를 하고싶은데, 왜 인자로 전달하는 값까지 불러와서 로딩처리를 해야하는거야?? 하는 불만이 개발자에게 생기기 마련입니다.
+<br />
+*그래서!* 이를 해결할 수 있는 또다른 상태 속성이 있는데요, 이것이 바로 `isInitialLoading` 속성입니다.
+
+### 2-3. isInitialLoading
+isInitialLoading 속성이 true가 되는 조건은 다음과 같습니다.
+- 캐시에 저장된 데이터가 없거나, cacheTime을 지정한 시간이 지나고나서 재요청이 일어날때
+<br />
+isInitialLoading 속성은 무조건 *캐시에 데이터가 저장되어 있지 않다면* (cacheTime이 지났다면) true로 변경이 됩니다. `isLoading`과 기본적으로 동일하지만, `enabled`의 결과에 따라서 알아서 false로 숨어주는 모습을 갖췄기에 훨씬 더 좋은 속성이라고 생각합니다.
+staleTime이 지나서 요청되는건에 대해서는 영향을 끼치지 않습니다.
+> isInitialLoading === (isLoading && isFetching)과 동일한 결과를 가집니다.
+
+코드를 통해 실행결과를 확인해봅시다.
+```typescript
+import { useQuery } from '@tanstack/react-query';
+
+const fetchTodo = async (todoId: number) => {
+  // return something
+}
+
+const useFetchTodo = (todoId: number) => {
+  const {
+    isLoading,
+    isInitialLoading,
+    isFetching,
+    data,
+  } = useQuery({
+    queryKey: ['some', 'query'],
+    queryFn: fetchTodo,
+    enabled: todoId > 0,
+  });
+
+  console.log(`isLoading: ${isLoading}, isInitialLoading: ${isInitialLoading}, isFetching: ${isFetching}`);
+
+  return {
+    data,
+  };
+}
+
+useFetchTodo(1);
+useFetchTodo(-1);
+```
+코드의 실행 결과는 아래와 같습니다.
+```shell
+isLoading: true, isInitialLoading: true, isFetching: true
+isLoading: true, isInitialLoading: false, isFetching: false
+```
+
+아까 isLoading 속성이 enabled 속성의 영향을 받으면 올바르게 동작하지 않던 단점을 `isInitialLoading` 속성이 완벽하게 커버 해줍니다. 👍
+
+### 3. 글을 마치며 😃
+몇달전부터 React-Query를 사용하면서 기존에 사용하던 SWR보다 더 좋다라는 생각이 자주들만큼, 가장 좋아하는 API 상태관리 라이브러리인듯 합니다.
+<br />
+이전에 `isLoading` 속성만 알고 사용할때는 로딩처리를 할때 불필요한 조건도 같이 들어갔었는데, 앞으로 `isInitialLoading`을 사용하면 불필요한 코드들이 줄어서 좋을것 같습니다 👍
+<br />
+혹시나 글에서 잘못된 부분이 있다면, 피드백 주시면 감사드리겠습니다! 😀 이상으로 글을 마치도록 하겠습니다. 감사합니다.
