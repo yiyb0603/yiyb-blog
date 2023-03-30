@@ -51,6 +51,14 @@ const PostContentContainer = styled.section`
     font-size: ${({ theme }) => theme.fontSize.MEDIUM};
   }
 
+  ul {
+    margin: 1rem 0;
+  }
+
+  li {
+    margin-left: 2rem;
+  }
+
   code:not([data-language]) {
     font-size: ${({ theme }) => theme.fontSize.NORMAL};
     padding: 0.25rem 0.5rem;

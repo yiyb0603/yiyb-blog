@@ -47,7 +47,7 @@ const usePostToc = ({
         setActiveId(intersectEntries[0].target.id);
       }
     }, {
-      threshold: 1,
+      threshold: 0.95,
       rootMargin: '-70px 0px -70% 0px',
     });
 

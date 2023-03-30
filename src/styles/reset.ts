@@ -34,10 +34,6 @@ const reset = css`
     font-family: ${({ theme }) => theme.fontFamily.pretendard.BOLD};
   }
 
-  ol, ul {
-    list-style: none;
-  }
-
   blockquote, q {
     quotes: none;
   }
