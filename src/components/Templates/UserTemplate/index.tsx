@@ -17,15 +17,7 @@ const UserTemplate = ({
       <Section
         tagName='main'
       >
-        <Section
-          tagName='div'
-          maxWidth='768px'
-          position='relative'
-          margin='0 auto'
-          padding='4rem 2rem'
-        >
-          {children}
-        </Section>
+        {children}
       </Section>
 
       <Footer />

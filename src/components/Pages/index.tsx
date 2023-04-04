@@ -4,13 +4,16 @@ import usePosts from '@/hooks/post/usePosts';
 import WelcomeBlog from '@/components/Modules/Home/WelcomeBlog';
 import PostList from '@/components/Modules/Home/PostList';
 import Flex from '@/components/Common/Flex';
-import PostCategories from '@/components/Modules/Home/PostCategories';
 import Helmet from '@/components/Common/Helmet';
+import MobilePostCategories from '../Modules/Home/PostCategories/Mobile';
+import DesktopPostCategories from '../Modules/Home/PostCategories/Desktop';
+import StickyContents from '../Modules/Home/StickyContents';
+import Section from '../Common/Section';
 
 const HomePage: NextPage = () => {
   const { query } = useRouter();
 
-  const category = (query?.category) as string;
+  const category = (query?.category || '전체') as string;
 
   const {
     allPosts,
@@ -28,22 +31,52 @@ const HomePage: NextPage = () => {
 
   return (
     <>
-      <Flex
+      <Section
         tagName='div'
-        flexDirection='column'
-        gap='1.5rem'
+        maxWidth='1200px'
+        margin='0 auto'
+        padding='4rem 2rem'
       >
-        <WelcomeBlog />
+        <Flex
+          tagName='div'
+          gap='3rem'
+          flexWrap='wrap'
+          alignItems='flex-start'
+        >
+          <DesktopPostCategories
+            selectCategory={category}
+            categories={postCategories}
+          />
 
-        <PostCategories
-          selectCategory={category || '전체'}
-          categories={postCategories}
-        />
+          <Flex
+            tagName='div'
+            flex='3.5'
+            gap='2.5rem'
+            flexDirection='column'
+            width='100%'
+          >
+            <Flex
+              tagName='div'
+              gap='1.5rem'
+              flexDirection='column'
+            >
+              <WelcomeBlog />
 
-        <PostList
-          posts={filterPosts}
-        />
-      </Flex>
+              <MobilePostCategories
+                selectCategory={category}
+                categories={postCategories}
+              />
+            </Flex>
+
+            <PostList
+              category={category === '전체' ? 'All Posts' : category}
+              posts={filterPosts}
+            />
+          </Flex>
+
+          <StickyContents />
+        </Flex>
+      </Section>
 
       <Helmet />
     </>

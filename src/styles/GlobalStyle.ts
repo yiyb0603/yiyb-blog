@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     min-height: 100vh;
     font-size: 62.5%;
+    letter-spacing: -0.2px;
   }
 
   @media (prefers-color-scheme: light) {

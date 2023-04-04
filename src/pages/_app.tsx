@@ -27,7 +27,7 @@ const MyApp: CustomAppComponent = ({
 }) => {
   const {
     store,
-  } = wrapper.useWrappedStore(reduxProps)
+  } = wrapper.useWrappedStore(reduxProps);
 
   return (
     <ReduxProvider

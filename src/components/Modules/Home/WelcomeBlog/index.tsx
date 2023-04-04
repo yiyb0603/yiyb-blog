@@ -17,7 +17,7 @@ const WelcomeBlog = (): JSX.Element => {
       <Flex
         tagName='div'
         flexDirection='column'
-        gap='1.25rem'
+        gap='1rem'
       >
         <Text
           tagName='h1'
@@ -39,40 +39,11 @@ const WelcomeBlog = (): JSX.Element => {
             fontFamily={fontFamily.pretendard.MEDIUM}
             color={color.black}
             lineHeight='1.6'
-            letterSpacing='-0.2px'
           >
-            권용빈의 블로그에 오신것을 환영합니다. 이곳에는 개발뿐만이 아닌, 다양한 카테고리의 글들이 올라올 예정입니다.
+            ℹ️ 권용빈의 블로그에 오신것을 환영합니다. 이곳에는 개발뿐만이 아닌, 다양한 카테고리의 글들이 올라올 예정입니다.
             재미있게 봐주세요. 😀
           </Text>
         </Section>
-
-        {/* <Flex
-          tagName='div'
-          gap='1rem'
-          flexWrap='wrap'
-        >
-          {
-            snsList.map(({
-              platform,
-              link,
-            }) => (
-              <HyperLink
-                key={platform}
-                external
-                anchor={{
-                  href: link,
-                  target: '_blank',
-                  rel: 'noopener noreferrer'
-                }}
-                fontSize={fontSize.MEDIUM}
-                fontFamily={fontFamily.pretendard.MEDIUM}
-                color={color.main}
-              >
-                {platform}
-              </HyperLink>
-            ))
-          }
-        </Flex> */}
       </Flex>
     </Section>
   );

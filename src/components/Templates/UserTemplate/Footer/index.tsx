@@ -24,13 +24,13 @@ const Footer = (): JSX.Element => {
         width='100%'
         maxWidth='768px'
         margin='0 auto'
-        padding='2rem'
+        padding='3rem'
       >
         <Flex
           tagName='div'
           gap='2rem'
           justifyContent='center'
-          margin='0 0 1.5rem 0'
+          margin='0 0 1.25rem 0'
         >
           {
             snsList.map(({
@@ -58,10 +58,9 @@ const Footer = (): JSX.Element => {
           tagName='p'
           textAlign='center'
           fontSize={fontSize.NORMAL}
-          letterSpacing='-0.2px'
           wordBreak='keep-all'
         >
-          Copyright © 2023 yiyb0603 All rights reserved.
+          Copyright ©2023 yiyb0603 All rights reserved.
         </Text>
       </Section>
     </Section>

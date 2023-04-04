@@ -1,17 +1,23 @@
+import styled from 'styled-components';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
+import { FlexDirection, WhiteSpace } from '@/types/style';
+import HyperLink from '@/components/Common/HyperLink';
 import Flex from '@/components/Common/Flex';
 import Text from '@/components/Common/Text';
-import HyperLink from '@/components/Common/HyperLink';
 
 type PostCategoriesProps = {
+  flexDirection: FlexDirection;
+  whiteSpace: WhiteSpace;
   selectCategory: string;
   categories: string[];
 }
 
 const PostCategories = ({
+  flexDirection,
+  whiteSpace,
   selectCategory,
   categories,
-}: PostCategoriesProps): JSX.Element => {
+}: PostCategoriesProps) => {
   const {
     color,
     fontSize,
@@ -20,40 +26,49 @@ const PostCategories = ({
 
   return (
     <Flex
-      tagName='div'
+      tagName='ul'
       gap='1rem'
+      flexDirection={flexDirection}
       overflow='auto'
     >
       {
         categories.map((category) => (
-          <HyperLink
+          <CategoryItemWrapper
             key={category}
-            external={false}
-            link={{
-              href: {
-                query: {
-                  category,
-                },
-              },
-            }}
-            padding='1rem 1.75rem'
-            borderRadius='10px'
-            whiteSpace='pre'
-            color={category === selectCategory ? color.white : color.contrast}
-            backgroundColor={category === selectCategory ? color.main : color.background3}
           >
-            <Text
-              tagName='span'
-              fontSize={fontSize.SMALL}
-              fontFamily={fontFamily.pretendard.MEDIUM}
+            <HyperLink
+              external={false}
+              link={{
+                href: {
+                  query: category === '전체' ? {} : {
+                    category,
+                  },
+                },
+              }}
+              display='block'
+              padding='1rem 1.75rem'
+              borderRadius='5px'
+              whiteSpace={whiteSpace}
+              color={category === selectCategory ? color.white : color.contrast}
+              backgroundColor={category === selectCategory ? color.main : color.background3}
             >
-              {category}
-            </Text>
-          </HyperLink>
+              <Text
+                tagName='span'
+                fontSize={fontSize.NORMAL}
+                fontFamily={fontFamily.pretendard.MEDIUM}
+              >
+                {category}
+              </Text>
+            </HyperLink>
+          </CategoryItemWrapper>
         ))
       }
     </Flex>
-  );
+  )
 }
+
+const CategoryItemWrapper = styled.li`
+  list-style: none;
+`;
 
 export default PostCategories;

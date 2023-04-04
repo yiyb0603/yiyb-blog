@@ -31,7 +31,7 @@ type FlexStyleProps = {
   cursor?: Cursor;
 }
 
-type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside' | 'header' | 'a' | 'footer';
+type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside' | 'header' | 'a' | 'footer' | 'ul';
 
 type FlexOwnProps<T extends AbleElementType> = {
   tagName: T | undefined;
