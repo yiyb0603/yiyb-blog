@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { images } from '@/assets/images';
-import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import { pageRoute } from '@/libs/models/route';
 import Flex from '@/components/Common/Flex';
 import Section from '@/components/Common/Section';
@@ -9,8 +8,6 @@ import Image from '@/components/Common/Image';
 import ToggleTheme from './ToggleTheme';
 
 const Header = () => {
-  const { color } = useStyledTheme();
-
   return (
     <HeaderWrapper
       tagName='header'
@@ -21,7 +18,7 @@ const Header = () => {
       <Flex
         tagName='div'
         width='100%'
-        maxWidth='768px'
+        maxWidth='1000px'
         height='100%'
         alignItems='center'
         justifyContent='space-between'

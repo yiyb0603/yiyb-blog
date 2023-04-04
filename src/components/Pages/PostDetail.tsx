@@ -15,6 +15,7 @@ import Helmet from '@/components/Common/Helmet';
 import PostThumbnail from '@/components/Modules/Post/PostThumbnail';
 import PostShare from '@/components/Modules/Post/PostShare';
 import PostToc from '@/components/Modules/Post/PostToc';
+import Section from '../Common/Section';
 
 const PostDetailPage = ({
   post,
@@ -32,7 +33,13 @@ const PostDetailPage = ({
   }, []);
 
   return (
-    <>
+    <Section
+      tagName='div'
+      maxWidth='768px'
+      position='relative'
+      margin='0 auto'
+      padding='4rem 2rem'
+    >
       <ScrollProgressBar />
 
       <Flex
@@ -75,7 +82,7 @@ const PostDetailPage = ({
         createdAt={post?.createdAt || ''} 
         thumbnail={post?.thumbnail || ''}
       />
-    </>
+    </Section>
   );
 }
 

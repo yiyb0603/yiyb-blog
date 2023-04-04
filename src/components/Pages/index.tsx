@@ -4,8 +4,10 @@ import usePosts from '@/hooks/post/usePosts';
 import WelcomeBlog from '@/components/Modules/Home/WelcomeBlog';
 import PostList from '@/components/Modules/Home/PostList';
 import Flex from '@/components/Common/Flex';
-import PostCategories from '@/components/Modules/Home/PostCategories';
 import Helmet from '@/components/Common/Helmet';
+import MobilePostCategories from '../Modules/Home/PostCategories/Mobile';
+import DesktopPostCategories from '../Modules/Home/PostCategories/Desktop';
+import Section from '../Common/Section';
 
 const HomePage: NextPage = () => {
   const { query } = useRouter();
@@ -28,23 +30,43 @@ const HomePage: NextPage = () => {
 
   return (
     <>
-      <Flex
+      <Section
         tagName='div'
-        flexDirection='column'
-        gap='1.5rem'
+        maxWidth='1000px'
+        margin='0 auto'
+        padding='4rem 2rem'
       >
-        <WelcomeBlog />
+        <Flex
+          tagName='div'
+          gap='2rem'
+          alignItems='flex-start'
+        >
+          <DesktopPostCategories
+            selectCategory={category || '전체'}
+            categories={postCategories}
+          />
 
-        <PostCategories
-          selectCategory={category || '전체'}
-          categories={postCategories}
-        />
+          <Flex
+            tagName='div'
+            flexDirection='column'
+            gap='1.5rem'
+            width='100%'
+          >
+            <WelcomeBlog />
 
-        <PostList
-          posts={filterPosts}
-        />
-      </Flex>
+            <MobilePostCategories
+              selectCategory={category || '전체'}
+              categories={postCategories}
+            />
 
+            <PostList
+              posts={filterPosts}
+            />
+          </Flex>
+        </Flex>
+
+        
+      </Section>
       <Helmet />
     </>
   );

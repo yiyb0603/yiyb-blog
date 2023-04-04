@@ -1,5 +1,6 @@
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { fonts } from '@/assets/fonts';
+import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import useDialog from '@/hooks/dialog/useDialog';
 import { fontSize } from '@/styles/font';
 import Flex from '../Flex';
@@ -8,7 +9,9 @@ import Modal from '../Modal';
 import Section from '../Section';
 
 const Dialog = (): JSX.Element => {
-  const { color } = useTheme();
+  const {
+    color,
+  } = useStyledTheme();
 
   const {
     isDialog,
