@@ -18,7 +18,7 @@ const Header = () => {
       <Flex
         tagName='div'
         width='100%'
-        maxWidth='1000px'
+        maxWidth='1200px'
         height='100%'
         alignItems='center'
         justifyContent='space-between'
@@ -49,7 +49,7 @@ const HeaderWrapper = styled(Section<'header'>)`
   top: 0;
   left: 0;
   right: 0;
-  background-color: ${({ theme }) => theme.color.theme};
+  backdrop-filter: blur(15px);
   z-index: 1;
 `;
 

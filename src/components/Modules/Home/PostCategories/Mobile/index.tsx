@@ -1,6 +1,6 @@
-import { CategoriesProps } from '../common';
 import styled from 'styled-components';
 import Section from '@/components/Common/Section';
+import { CategoriesProps } from '../common';
 import PostCategories from '..';
 
 type MobilePostCategoriesProps = CategoriesProps & {}
@@ -26,7 +26,7 @@ const MobilePostCategories = ({
 const CategoriesWrapper = styled(Section<'section'>)`
   display: none;
 
-  ${({ theme }) => theme.device.tablet} {
+  ${({ theme }) => theme.device.smallLaptop} {
     display: flex;
   };
 `;

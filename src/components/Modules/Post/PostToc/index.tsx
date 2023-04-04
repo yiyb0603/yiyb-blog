@@ -54,7 +54,6 @@ const PostToc = ({
               key={id}
               fontSize={level > 2 ? fontSize.SMALL : fontSize.NORMAL}
               lineHeight='1.5'
-              letterSpacing='-0.2px'
               wordBreak='keep-all'
               fontFamily={fontFamily.pretendard.MEDIUM}
               color={id === activeId ? color.main : color.contrast}

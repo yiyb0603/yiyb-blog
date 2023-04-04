@@ -77,7 +77,6 @@ const Dialog = (): JSX.Element => {
 const DialogContentWrapper = styled(Section<'div'>)`
   min-height: 46px;
   font-size: ${fontSize.NORMAL};
-  letter-spacing: -0.2px;
   line-height: 1.5;
   white-space: pre-line;
   word-break: keep-all;

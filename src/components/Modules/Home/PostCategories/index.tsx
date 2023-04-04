@@ -40,7 +40,7 @@ const PostCategories = ({
               external={false}
               link={{
                 href: {
-                  query: {
+                  query: category === '전체' ? {} : {
                     category,
                   },
                 },
@@ -54,7 +54,7 @@ const PostCategories = ({
             >
               <Text
                 tagName='span'
-                fontSize={fontSize.SMALL}
+                fontSize={fontSize.NORMAL}
                 fontFamily={fontFamily.pretendard.MEDIUM}
               >
                 {category}

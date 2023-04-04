@@ -82,7 +82,6 @@ const Modal = ({
             tagName='h2'
             fontSize={fontSize.MEDIUM}
             fontFamily={fonts.pretendard.BOLD}
-            letterSpacing='-0.2px'
           >
             {title}
           </Text>

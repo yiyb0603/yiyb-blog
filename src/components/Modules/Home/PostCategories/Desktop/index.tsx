@@ -26,11 +26,11 @@ const DesktopPostCategories = ({
 const CategoriesWrapper = styled(Section<'aside'>)`
   position: sticky;
   top: 100px;
-  min-width: 130px;
-  max-width: 130px;
-  margin-top: 5.5rem;
+  min-width: 145px;
+  max-width: 145px;
+  margin-top: 1rem;
 
-  ${({ theme }) => theme.device.tablet} {
+  ${({ theme }) => theme.device.smallLaptop} {
     display: none;
   };
 `;

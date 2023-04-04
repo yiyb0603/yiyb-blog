@@ -37,7 +37,6 @@ const ScrollProgressLineWrapper = styled.div`
   right: ${envSafeArea.right};
   top: calc(${envSafeArea.top} + 66px);
   z-index: 3;
-  background-color: ${({ theme }) => theme.color.theme};
   cursor: pointer;
 `;
 
