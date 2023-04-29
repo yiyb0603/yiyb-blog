@@ -53,6 +53,9 @@ const PostContentContainer = styled.section`
 
   ul {
     margin: 1rem 0;
+    padding: 2rem;
+    border-radius: 5px;
+    background-color: ${({ theme }) => theme.color.background3};
   }
 
   li {
