@@ -4,6 +4,9 @@ const { withContentlayer } = require('next-contentlayer');
 const options = {
   reactStrictMode: false,
   swcMinify: false,
+  experimental: {
+    scrollRestoration: true,
+  },
 };
 
 module.exports = withContentlayer(options);

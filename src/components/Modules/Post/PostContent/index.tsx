@@ -24,29 +24,31 @@ const PostContent = ({
 
 const PostContentContainer = styled.section`
   h1 {
-    margin: 1.5rem 0;
+    margin: 2rem 0 1rem 0;
     font-size: ${({ theme }) => theme.fontSize.LARGE};
   }
 
   h2,
   h3,
   h4 {
-    margin: 1.5rem 0;
+    margin: 2rem 0 1rem 0;
     font-size: ${({ theme }) => theme.fontSize.EXTRA_BIG};
   }
 
   a {
+    font-size: ${({ theme }) => theme.fontSize.MEDIUM};
     font-family: ${({ theme }) => theme.fontFamily.pretendard.BOLD};
     color: ${({ theme }) => theme.color.main};
+    line-height: 1.6;
+    word-break: break-all;
   }
 
   p,
   li,
   span,
-  code,
-  a {
+  code {
     white-space: pre-wrap;
-    word-break: break-all;
+    word-break: keep-all;
     line-height: 1.6;
     font-size: ${({ theme }) => theme.fontSize.MEDIUM};
   }
