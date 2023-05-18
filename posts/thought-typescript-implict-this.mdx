@@ -1,0 +1,211 @@
+---
+title: 타입스크립트의 this 바인딩에 대한 고찰
+description: 타입스크립트의 암시적 바인딩과 관련한 개발 중 이슈 및 이에대한 고찰을 정리합니다.
+category: TypeScript
+createdAt: 2023-05-18
+thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/8e018cdb-a7cc-41c7-9eee-5c6e1eb6e64c
+---
+
+안녕하세요! 오늘은 타입스크립트의 암시적 바인딩과 관련한 개발 중 이슈 및 이에대한 고찰에 대해서 정리해보려고 합니다. TIL 느낌으로 작성해보았습니다.
+
+## 1. 개요 🧪
+며칠전 회사에서 프로젝트 개발(프론트엔드)을 여느 때와 같이 하고 있었다.
+그중에서 API 통신쪽 코드를 작성하고 있었는데, 나의 코드 구조는 API 주소 및 axios 형식을 정리해둔 `Repository` 파일 -> react-query를 사용하여 데이터를 받아오는 `Custom hooks` 파일 -> 받은 데이터를 렌더링 하는 `Component` 파일 순서로 이루어진다.
+<br />
+예를 들어, Repository 파일 형식은 아래와 같다.
+
+```typescript
+class PostRepository {
+  private readonly BASE_URL = '/posts';
+
+  async fetchPosts(): Promise<Post[]> {
+    const { data } = await commonAxios.get<Post[]>(this.BASE_URL);
+
+    return data;
+  }
+
+  async fetchPost(postId: number): Promise<Post> {
+    const url = `${this.BASE_URL}/${postId}`;
+
+    const { data } = await commonAxios.get<Post>(url);
+
+    return data;
+  }
+}
+
+export const postRepository = new PostRepository();
+```
+
+원래 각 메소드마다 클래스 멤버 변수를 사용하지 않고 url을 지정했었는데, **이 도메인의 API들은 대부분 주소가 비슷한 거 같아서 한번 멤버 변수로 사용해 보려고 했다.**
+<br />
+그리고 커스텀 훅 파일은 아래와 같이 작성했다. 그중에서 fetchPosts 메소드를 사용하는 커스텀 훅이다.
+```typescript
+import { useQuery } from '@tanstack/react-query';
+import { postCacheKey } from '@/libs/models/query/post.ts';
+import { postRepository } from '@/repositories/post';
+
+const useFetchPosts = () => {
+  const {
+    data,
+  } = useQuery({
+    queryKey: postCacheKey.posts,
+    queryFn: postRepository.fetchPosts,
+  });
+
+  // ...
+}
+```
+
+이제 커스텀 훅도 다 적었겠다, 나는 이제 커스텀 훅을 컴포넌트에서 렌더링 하기위해서 호출하였는데 예상하지 못한 오류가 있었다. 😲
+
+```typescript
+class PostRepository {
+  private readonly BASE_URL = '/posts';
+
+  async fetchPosts(): Promise<Post[]> {
+    console.log(this.BASE_URL) // undefined
+    const { data } = await commonAxios.get<Post[]>(this.BASE_URL);
+
+    return data;
+  }
+}
+```
+
+그것은 바로, 중복 코드를 줄이기 위해서 클래스 멤버 변수로 선언된 `BASE_URL`의 값이 **undefined로 출력되는 문제**였다. 😥
+
+## 2. 해결방법 먼저! 📘
+해결 방법은 두가지 중 하나를 선택하여 해결할 수 있었다.
+<br />
+첫번째는 `fetchPosts` 메소드를 **화살표 함수로 선언** 하는것이다.
+```typescript
+class PostRepository {
+  private readonly BASE_URL = '/posts';
+
+  fetchPosts = async (): Promise<Post[]> => {
+    console.log(this.BASE_URL) // '/posts' 정상출력
+    const { data } = await commonAxios.get<Post[]>(this.BASE_URL);
+
+    return data;
+  }
+}
+```
+
+두번째는 `useQuery` hooks의 인자 queryFn 속성에다가 **새로운 함수를 생성하여 넘기는 방식**을 통하여 해결이 가능하다.
+```typescript
+const {
+  data,
+} = useQuery({
+  queryKey: postCacheKey.posts,
+  queryFn: () => postRepository.fetchPosts(),
+});
+```
+혹은 아래의 방법으로 **함수를 선언하여** 넘기는것도 가능하다.
+```typescript
+const fetchPosts = async () => {
+  return await postRepository.fetchPosts();
+}
+
+const {
+  data,
+} = useQuery({
+  queryKey: postCacheKey.posts,
+  queryFn: fetchPosts,
+});
+```
+## 3. 그런데 원인이 무엇일까? 🤔
+이슈는 해결했지만, 나는 당연히 동작할것이라고 예상했던 코드가 동작하지 않았던 점에 대해서 궁금증이 생겼다. this를 사용한 멤버 변수 사용에서 문제가 생겼기에 나는 **this 바인딩**과 관련해서 문제가 있을것이다고 생각했고, 타입스크립트의 this 바인딩에 대해서 한번 더 공부했다.
+
+### 3-1. 함수 선언 방식에 따른 this 바인딩
+JavaScript에서 함수를 선언하는 두 가지 방식인 일반 함수와 화살표 함수는 this 바인딩에 대해 서로 다른 동작을 한다. this 바인딩은 함수가 어떤 객체를 참조하는지를 결정하는 중요한 개념이다.
+<br />
+일반 함수는 `function` 키워드로 선언되며, 함수 내에서 this 키워드를 사용하면 현재 실행 중인 메서드나 함수가 속한 객체를 참조하게된다.
+
+```typescript
+const myObject = {
+  name: 'John',
+
+  sayHello: function() {
+    console.log('Hello, ' + this.name);
+  },
+};
+
+myObject.sayHello(); // 출력: "Hello, John"
+```
+위 예시에서 `myObject` 객체의 `sayHello` 메서드를 호출하면 this는 `myObject`를 참조한다. 따라서 this.name은 `myObject` 객체의 `name` 속성 **John을 출력**합니다.
+<br />
+화살표 함수는 ES6에서 도입된 새로운 함수 선언 방식이고, `=>` 기호를 사용하여 선언한다.
+<br />
+일반 함수와 달리 자체적인 this를 갖지 않는다. 대신, 화살표 함수는 함수가 선언된 위치에서 상위 스코프로부터 this가 정해진다.
+
+```typescript
+const myObject = {
+  name: 'John',
+
+  sayHello: () => {
+    console.log('Hello, ' + this.name);
+  },
+};
+
+myObject.sayHello(); // 출력: "Hello, undefined"
+```
+위 예시에서 화살표 함수인 `sayHello` 내부의 this.name은 `myObject` 객체의 name 속성을 참조하지 않는다. 그리고, 상위 스코프인 전역 스코프의 this를 상속받는데, 전역 스코프에는 name 속성이 정의되어 있지 않으므로 undefined가 출력된다.
+<br />
+위에서 알아본 this 바인딩의 특징들을 통해서 1번에서 마주친 이슈에 대해서 분석해보자.
+
+### 3-2. 암시적 바인딩
+타입스크립트의 `암시적 바인딩`이란 this를 결정하는 방법 중 하나이며, 함수가 호출될때 함수의 주변 컨텍스트를 기반으로 this를 바인딩 하는 개념이고, 이때 `주변 컨텍스트`란 함수가 호출되는 시점에서 해당 함수를 감싸는 객체 혹은 메소드이다.
+<br />
+간단한 예시로, 아래의 코드를 실행하면 결과는 다음과 같다.
+```typescript
+const myObject = {
+  name: 'John',
+
+  sayHello() {
+    console.log('Hello, ' + this.name);
+  },
+};
+
+myObject.sayHello(); // Hello, John
+```
+
+그러나 암시적 바인딩을 사용했을때 this로 가리킨 객체의 값이 변할 수 있다는 것인데, 이 문제는 메소드를 콜백함수로 넘기거나, 변수에 메소드를 할당하는 경우에 발생한다.
+<br />
+이와 관련해서 나는 **왜 할당연산 등의 동작이 일어났을때 this가 손실되는걸까?** 하는 궁금증이 생겼고, 알아본결과 아래와 같은 결론을 얻을 수 있었다.
+> 할당연산과 같은 동작의 특징때문인데 **참조 타입이 통째로 버려지고, 값만 함수에게 전달하기 때문이다.** 참조 타입이 날아간다는 의미는 this 객체가 사라진다는 의미이고, 코드 실행에 따른 동적으로 this가 결정되는 일반함수에게는 위험요소가 따르게 된다.
+
+```typescript
+const myObject = {
+  name: 'John',
+
+  sayHello() {
+    console.log('Hello, ' + this.name);
+  },
+};
+
+const sayHello = myObject.sayHello;
+
+sayHello(); // TypeError: this.name is undefined
+```
+
+콜백함수와 암시적 바인딩의 예제는 아래와 같다.
+
+```typescript
+const myObject = {
+  name: 'John',
+
+  sayHello() {
+    console.log('Hello, ' + this.name);
+  },
+};
+
+const sayHello = myObject.sayHello;
+
+setTimeout(myObject.sayHello, 500); // TypeError: this.name is undefined
+```
+
+1번 글 섹션에서 미리 얘기했던 것처럼, 위와 같은 문제를 해결하려면 **화살표 함수**를 사용하거나 `명시적 바인딩` (call, apply, bind)을 사용하여 this가 변경되는 문제를 해결할 수 있다.
+
+## 4. 마치며 📌
+오늘은 개발중에 마주친 this 바인딩 문제에 대해서 정리한 글을 작성해보았는데요, 예전에 이론상으로 공부한적이 있는 this 바인딩이였지만 실제로 마주쳐보니 정확한 원인을 찾기가 어려웠네요. 다음부터 일반함수를 사용할때는 this 키워드 사용에 유의해야겠습니다.
+<br />
+이상으로 글을 마치겠습니다. 긴 글 읽어주셔서 감사합니다!
