@@ -66,7 +66,8 @@ const PostContentContainer = styled.section`
 
   code:not([data-language]) {
     font-size: ${({ theme }) => theme.fontSize.NORMAL};
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem 0.75rem;
+    margin-right: 0.25rem;
     border-radius: 5px;
     background-color: ${({ theme }) => theme.color.background3};
   }
