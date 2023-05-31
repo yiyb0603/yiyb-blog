@@ -56,6 +56,7 @@ const PostRowItem = ({
             dateTime={createdAt}
             wordBreak='keep-all'
             fontSize={fontSize.SMALL}
+            fontFamily={fontFamily.pretendard.MEDIUM}
             letterSpacing='-0.4px'
           >
             {dayjs(createdAt).locale('ko').format('YYYY년 MM월 DD일 (dddd)')}
@@ -85,6 +86,7 @@ const PostRowItem = ({
           <PostThumbnail
             src={thumbnail}
             alt={title}
+            loading='lazy'
             width='200px'
             height='110px'
             borderRadius='5px'

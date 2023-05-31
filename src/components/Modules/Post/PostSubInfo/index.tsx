@@ -49,6 +49,7 @@ const PostSubInfo = ({
         tagName='time'
         dateTime={createdAt}
         fontSize={fontSize.NORMAL}
+        letterSpacing='-0.4px'
       >
         {dayjs(createdAt).locale('ko').format('YYYY년 MM월 DD일 (dddd)')}
       </Text>
