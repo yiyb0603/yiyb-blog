@@ -1,6 +1,7 @@
 import { RefObject } from 'react';
-import styled from 'styled-components';
 import { useMDXComponent } from 'next-contentlayer/hooks';
+import styled from 'styled-components';
+import CustomTable from '@/components/Common/Table';
 
 type PostContentProps = {
   postContentRef: RefObject<HTMLDivElement>;
@@ -17,7 +18,11 @@ const PostContent = ({
     <PostContentContainer
       ref={postContentRef}
     >
-      <MDXComponent />
+      <MDXComponent
+        components={{
+          table: ({ children }) => <CustomTable>{children}</CustomTable>,
+        }}
+      />
     </PostContentContainer>
   );
 }
@@ -49,7 +54,7 @@ const PostContentContainer = styled.section`
   code {
     white-space: pre-wrap;
     word-break: keep-all;
-    line-height: 1.6;
+    line-height: 1.7;
     font-size: ${({ theme }) => theme.fontSize.MEDIUM};
   }
 
@@ -65,10 +70,11 @@ const PostContentContainer = styled.section`
   }
 
   code:not([data-language]) {
-    font-size: ${({ theme }) => theme.fontSize.NORMAL};
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem;
     margin-right: 0.25rem;
     border-radius: 5px;
+    font-size: ${({ theme }) => theme.fontSize.NORMAL};
+    color: ${({ theme }) => theme.color.main};
     background-color: ${({ theme }) => theme.color.background3};
   }
 
@@ -76,6 +82,20 @@ const PostContentContainer = styled.section`
     display: block;
     max-width: 100%;
     margin: 1.5rem auto;
+  }
+
+  th {
+    text-align: start;
+    padding: 1.25rem 1.75rem;
+    font-size: ${({ theme }) => theme.fontSize.NORMAL};
+    border: ${({ theme }) => `1px solid ${theme.color.border3}`};
+    background-color: ${({ theme }) => theme.color.background3};
+  }
+
+  td {
+    padding: 1.25rem 1.75rem;
+    font-size: ${({ theme }) => theme.fontSize.NORMAL};
+    border: ${({ theme }) => `1px solid ${theme.color.border3}`};
   }
 
   pre {
