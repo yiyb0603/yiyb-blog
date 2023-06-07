@@ -3,6 +3,7 @@ import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 import rehypeHighlight from 'rehype-highlight';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -42,7 +43,9 @@ const contentSource = makeSource({
     Post,
   ],
   mdx: {
-    remarkPlugins: [],
+    remarkPlugins: [
+      remarkGfm,
+    ],
     rehypePlugins: [
       rehypeSlug,
       [

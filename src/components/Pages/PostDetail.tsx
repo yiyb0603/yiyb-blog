@@ -68,9 +68,9 @@ const PostDetailPage = ({
         code={post?.body.code || ''}
       />
 
-        <PostToc
-          postElement={postElement}
-        />
+      <PostToc
+        postElement={postElement}
+      />
 
       <PostShare />
 
