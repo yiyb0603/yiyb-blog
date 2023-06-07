@@ -28,9 +28,7 @@ const Contacts = (): JSX.Element => {
         tagName='div'
         padding='1.5rem'
         borderRadius='5px'
-        border={{
-          all: `1px solid ${color.border3}`,
-        }}
+        backgroundColor={color.background3}
       >
         <Flex
           tagName='ul'
