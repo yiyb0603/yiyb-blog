@@ -73,6 +73,7 @@ const PostRowItem = ({
           <Text
             tagName='p'
             fontSize={fontSize.NORMAL}
+            wordBreak='keep-all'
             minHeight='55px'
             maxLine={2}
             lineHeight='1.6'
