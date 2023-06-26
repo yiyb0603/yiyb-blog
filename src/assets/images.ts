@@ -6,6 +6,8 @@ export const images = {
   },
 
   opengraph: {
-    BASE: generateStaticPath('/images/base_opengraph.png'),
+    BASE: generateStaticPath('/images/opengraph/base_opengraph.png'),
   },
+
+  EMPTY_BOARD: generateStaticPath('/images/empty_board.svg'),
 };

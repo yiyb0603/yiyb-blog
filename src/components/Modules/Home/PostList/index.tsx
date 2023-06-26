@@ -1,19 +1,23 @@
 import { Post } from '@/contentlayer/generated';
+import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import { pageRoute } from '@/libs/models/route';
+import isEmpty from '@/utils/is-packages/isEmpty';
 import Flex from '@/components/Common/Flex';
 import Section from '@/components/Common/Section';
 import Text from '@/components/Common/Text';
 import PostRowItem from './PostRowItem';
-import useStyledTheme from '@/hooks/theme/useStyledTheme';
+import NoPosts from './NoPosts';
 
 type PostListProps = {
   category: string;
   posts: Post[];
+  postsCount: number;
 }
 
 const PostList = ({
   category,
   posts,
+  postsCount,
 }: PostListProps) => {
   const {
     fontSize,
@@ -28,24 +32,29 @@ const PostList = ({
         fontSize={fontSize.BIG}
         margin='0 0 1.25rem 0'
       >
-        📝 {category} ({posts.length.toLocaleString()})
+        📝 {category} ({postsCount.toLocaleString()})
       </Text>
 
-      <Flex
-        tagName='div'
-        gap='2rem'
-        flexDirection='column'
-      >
-        {
-          posts.map((post) => (
-            <PostRowItem
-              key={post._id}
-              {...post}
-              href={`${pageRoute.POSTS}/${post._raw.flattenedPath}`}
-            />
-          ))
-        }
-      </Flex>
+      {
+        isEmpty(posts) ?
+        <NoPosts />
+        :
+        <Flex
+          tagName='div'
+          gap='2rem'
+          flexDirection='column'
+        >
+          {
+            posts.map((post) => (
+              <PostRowItem
+                key={post._id}
+                {...post}
+                href={`${pageRoute.POSTS}/${post._raw.flattenedPath}`}
+              />
+            ))
+          }
+        </Flex>
+      }
     </Section>
   );
 }

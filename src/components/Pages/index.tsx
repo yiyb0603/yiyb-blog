@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { PER_PAGE_COUNT } from '@/constants/post';
 import usePosts from '@/hooks/post/usePosts';
 import WelcomeBlog from '@/components/Modules/Home/WelcomeBlog';
 import PostList from '@/components/Modules/Home/PostList';
@@ -9,15 +10,21 @@ import MobilePostCategories from '../Modules/Home/PostCategories/Mobile';
 import DesktopPostCategories from '../Modules/Home/PostCategories/Desktop';
 import StickyContents from '../Modules/Home/StickyContents';
 import Section from '../Common/Section';
+import Pagination from '../Common/Pagination';
 
 const HomePage: NextPage = () => {
-  const { query } = useRouter();
+  const {
+    query,
+    push,
+  } = useRouter();
 
   const category = (query?.category || '전체') as string;
+  const currentPage = Number(query?.page || 1);
 
   const {
     allPosts,
     filterPosts,
+    chunkPosts,
   } = usePosts({
     category: category === '전체' ? '' : category,
   });
@@ -25,9 +32,21 @@ const HomePage: NextPage = () => {
   const postCategories = [
     ...new Set([
       '전체',
-      ...allPosts.map(({ category }) => category)
+      ...allPosts.map(({ category }) => category),
     ]),
   ];
+
+  const handlePageClick = (page: number): void => {
+    push({
+      query: {
+        ...query,
+        page,
+      },
+    }, undefined, {
+      scroll: true,
+      shallow: true,
+    });
+  }
 
   return (
     <>
@@ -70,7 +89,16 @@ const HomePage: NextPage = () => {
 
             <PostList
               category={category === '전체' ? 'All Posts' : category}
-              posts={filterPosts}
+              posts={chunkPosts[currentPage - 1] || []}
+              postsCount={filterPosts.length}
+            />
+
+            <Pagination
+              currentPage={currentPage}
+              perPage={PER_PAGE_COUNT}
+              totalPages={Math.ceil(filterPosts.length / PER_PAGE_COUNT)}
+              hiddenOnSinglePage
+              onPageClick={handlePageClick}
             />
           </Flex>
 

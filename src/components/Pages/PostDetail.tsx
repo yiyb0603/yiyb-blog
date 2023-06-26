@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import {
   GetStaticPaths,
   InferGetStaticPropsType,
   GetStaticProps,
 } from 'next';
 import { allPosts, Post } from '@/contentlayer/generated';
+import usePosts from '@/hooks/post/usePosts';
 import Flex from '@/components/Common/Flex';
 import PostTitle from '@/components/Modules/Post/PostTitle';
 import PostContent from '@/components/Modules/Post/PostContent';
@@ -15,22 +16,26 @@ import Helmet from '@/components/Common/Helmet';
 import PostThumbnail from '@/components/Modules/Post/PostThumbnail';
 import PostShare from '@/components/Modules/Post/PostShare';
 import PostToc from '@/components/Modules/Post/PostToc';
+import PrevNextPost from '../Modules/Post/PrevNextPost';
 import Section from '../Common/Section';
 
 const PostDetailPage = ({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [postElement, setPostElement] = useState<HTMLElement | null>(null);
+  const [
+    postElement,
+    setPostElement,
+  ] = useState<HTMLElement | null>(null);
 
-  const postContentRef = useRef<HTMLDivElement>(null);
+  const {
+    allPosts,
+  } = usePosts();
 
-  useEffect(() => {
-    if (postContentRef.current === null) {
-      return;
-    }
+  const currentPostIndex = allPosts.findIndex((allPost) => allPost._id === post?._id);
 
-    setPostElement(postContentRef.current);
-  }, []);
+  // 최신순으로 정렬되므로 prevPost는 인덱스 + 1
+  const prevPost = allPosts[currentPostIndex + 1];
+  const nextPost = allPosts[currentPostIndex - 1];
 
   return (
     <Section
@@ -64,15 +69,21 @@ const PostDetailPage = ({
       </Flex>
 
       <PostContent
-        postContentRef={postContentRef}
+        postContentRef={setPostElement}
         code={post?.body.code || ''}
       />
 
       <PostToc
+        postId={post?._id || ''}
         postElement={postElement}
       />
 
       <PostShare />
+
+      <PrevNextPost
+        prev={prevPost}
+        next={nextPost}
+      />
 
       <PostComment />
 

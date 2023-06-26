@@ -4,6 +4,7 @@ import {
 } from 'react';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
 import {
+  Cursor,
   CustomBorder,
   Overflow,
   Position,
@@ -22,6 +23,7 @@ type SectionStyleProps = {
   boxShadow?: string;
   position?: Position;
   overflow?: Overflow;
+  cursor?: Cursor;
   flex?: string;
   hover?: FlattenSimpleInterpolation;
 }
@@ -74,7 +76,9 @@ const CustomSection = styled.div<SectionStyleProps>`
   position: ${({ position }) => position};
   overflow: ${({ overflow }) => overflow};
   flex: ${({ flex }) => flex};
+  color: ${({ color }) => color};
   background-color: ${({ backgroundColor }) => backgroundColor};
+  cursor: ${({ cursor }) => cursor};
 
   ${({ theme }) => theme.media.hoverable} {
     &:hover {
