@@ -17,6 +17,7 @@ type FlexStyleProps = {
   width?: string;
   maxWidth?: string;
   height?: string;
+  maxHeight?: string;
   flex?: string;
   gap?: string;
   flexDirection?: FlexDirection;
@@ -28,6 +29,8 @@ type FlexStyleProps = {
   border?: CustomBorder;
   margin?: string;
   padding?: string;
+  borderRadius?: string;
+  backgroundColor?: string;
   cursor?: Cursor;
 }
 
@@ -66,6 +69,7 @@ const FlexContainer = styled.div<FlexStyleProps>`
   width: ${({ width }) => width};
   max-width: ${({ maxWidth }) => maxWidth};
   height: ${({ height }) => height};
+  max-height: ${({ maxHeight }) => maxHeight};
   position: ${({ position }) => position};
   display: flex;
   flex-direction: ${({ flexDirection }) => flexDirection};
@@ -80,6 +84,8 @@ const FlexContainer = styled.div<FlexStyleProps>`
   border-left: ${({ border }) => border?.left};
   border-right: ${({ border }) => border?.right};
   border-bottom: ${({ border }) => border?.bottom};
+  border-radius: ${({ borderRadius }) => borderRadius};
+  background-color: ${({ backgroundColor }) => backgroundColor};
   margin: ${({ margin }) => margin};
   padding: ${({ padding }) => padding};
   cursor: ${({ cursor }) => cursor};
