@@ -1,10 +1,10 @@
-import { RefObject } from 'react';
+import { Ref } from 'react';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import styled from 'styled-components';
 import CustomTable from '@/components/Common/Table';
 
 type PostContentProps = {
-  postContentRef: RefObject<HTMLDivElement>;
+  postContentRef: Ref<HTMLDivElement>;
   code: string;
 }
 
@@ -70,12 +70,12 @@ const PostContentContainer = styled.section`
   }
 
   code:not([data-language]) {
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
     margin-right: 0.25rem;
     border-radius: 5px;
     font-size: ${({ theme }) => theme.fontSize.NORMAL};
     color: ${({ theme }) => theme.color.main};
-    background-color: ${({ theme }) => theme.color.background3};
+    background-color: ${({ theme }) => theme.color.main50};
   }
 
   img {

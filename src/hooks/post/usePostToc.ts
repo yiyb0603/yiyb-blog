@@ -4,11 +4,13 @@ import isEmpty from '@/utils/is-packages/isEmpty';
 import removeHTMLString from '@/utils/string/removeHTMLString';
 
 type Props = {
+  postId: string;
   postElement: HTMLElement | null;
   disable: boolean;
 }
 
 const usePostToc = ({
+  postId,
   postElement,
   disable,
 }: Props) => {
@@ -36,7 +38,7 @@ const usePostToc = ({
   }
 
   useEffect(() => {
-    if (!postElement || disable) {
+    if (!postElement || disable || isEmpty(postId)) {
       return;
     }
 
@@ -73,8 +75,8 @@ const usePostToc = ({
 
     return () => {
       observer.disconnect();
-    }
-  }, [postElement, disable]);
+    };
+  }, [postElement, postId, disable]);
 
   return {
     headings,

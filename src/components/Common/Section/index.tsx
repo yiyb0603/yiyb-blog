@@ -76,6 +76,7 @@ const CustomSection = styled.div<SectionStyleProps>`
   position: ${({ position }) => position};
   overflow: ${({ overflow }) => overflow};
   flex: ${({ flex }) => flex};
+  color: ${({ color }) => color};
   background-color: ${({ backgroundColor }) => backgroundColor};
   cursor: ${({ cursor }) => cursor};
 

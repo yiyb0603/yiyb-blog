@@ -46,7 +46,7 @@ const Contacts = (): JSX.Element => {
                   href: link,
                   target: '_blank',
                 }}
-                padding='1.25rem 1.75rem'
+                padding='1rem 1.5rem'
                 borderRadius='5px'
                 color={color.contrast}
                 backgroundColor={color.background3}

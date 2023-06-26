@@ -9,10 +9,12 @@ import Text from '@/components/Common/Text';
 import Section from '@/components/Common/Section';
 
 type PostTocProps = {
+  postId: string;
   postElement: HTMLElement | null;
 }
 
 const PostToc = ({
+  postId,
   postElement,
 }: PostTocProps): JSX.Element => {
   const {
@@ -30,6 +32,7 @@ const PostToc = ({
     activeId,
     handleHeadingClick,
   } = usePostToc({
+    postId,
     postElement,
     disable: isMediumLaptop,
   });

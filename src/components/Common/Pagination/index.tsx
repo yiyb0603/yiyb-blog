@@ -1,11 +1,12 @@
 import { useState, useMemo, useEffect } from 'react';
+import { IconBaseProps } from 'react-icons';
+import { css } from 'styled-components';
 import { fonts } from '@/assets/fonts';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
+import chunkArray from '@/utils/array/chunkArray';
 import LeftArrowIcon from '../Icon/Arrow/LeftArrowIcon';
 import RightArrowIcon from '../Icon/Arrow/RightArrowIcon';
 import Flex from '../Flex';
-import chunkArray from '@/utils/array/chunkArray';
-import { IconBaseProps } from 'react-icons';
 import Text from '../Text';
 import Section from '../Section';
 
@@ -104,15 +105,20 @@ const Pagination = ({
                 border={{
                   all: `1px solid ${selected ? color.main : color.border2}`,
                 }}
+                color={selected ? color.white : color.contrast}
                 backgroundColor={selected ? color.main : color.theme}
                 cursor='pointer'
                 onClick={() => onPageClick(page)}
+                hover={css`
+                  transition: all 0.15s ease-in-out;
+                  color: ${color.white};
+                  background-color: ${color.main};
+                `}
               >
                 <Text
                   tagName='span'
                   fontSize={fontSize.SMALL}
                   fontFamily={fonts.pretendard.MEDIUM}
-                  color={selected ? color.white : color.contrast}
                 >
                   {page}
                 </Text>

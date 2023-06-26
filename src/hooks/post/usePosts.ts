@@ -10,7 +10,7 @@ type Props = {
 
 const usePosts = ({
   category,
-}: Props) => {
+}: Props = {}) => {
   const basePosts = [...allPosts].sort((prev, next) => {
     return Date.parse(next.createdAt) - Date.parse(prev.createdAt);
   });

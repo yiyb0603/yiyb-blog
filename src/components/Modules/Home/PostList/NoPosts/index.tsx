@@ -1,8 +1,8 @@
+import { images } from '@/assets/images';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import Section from '@/components/Common/Section';
 import Text from '@/components/Common/Text';
 import Image from '@/components/Common/Image';
-import { images } from '@/assets/images';
 
 const NoPosts = (): JSX.Element => {
   const {
