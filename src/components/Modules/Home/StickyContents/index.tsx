@@ -13,7 +13,7 @@ const StickyContents = (): JSX.Element => {
 }
 
 const StickyContentsWrapper = styled(Section<'aside'>)`
-  min-width: 230px;
+  min-width: 210px;
   position: sticky;
   top: 100px;
   flex: 1;

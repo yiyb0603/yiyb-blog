@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import { FlexDirection, WhiteSpace } from '@/types/style';
 import HyperLink from '@/components/Common/HyperLink';
@@ -25,10 +25,12 @@ const PostCategories = ({
   } = useStyledTheme();
 
   return (
-    <Flex
+    <CategoriesWrapper
       tagName='ul'
       gap='1rem'
       flexDirection={flexDirection}
+      padding='0 1rem 1rem 0'
+      maxHeight='365px'
       overflow='auto'
     >
       {
@@ -51,6 +53,11 @@ const PostCategories = ({
               whiteSpace={whiteSpace}
               color={category === selectCategory ? color.white : color.contrast}
               backgroundColor={category === selectCategory ? color.main : color.background3}
+              hover={css`
+                transition: all 0.15s ease-in-out;
+                color: ${color.white};
+                background-color: ${color.main};
+              `}
             >
               <Text
                 tagName='span'
@@ -63,9 +70,23 @@ const PostCategories = ({
           </CategoryItemWrapper>
         ))
       }
-    </Flex>
+    </CategoriesWrapper>
   )
 }
+
+const CategoriesWrapper = styled(Flex<'ul'>)`
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 3px;
+    border-radius: 5px;
+    background-color: ${({ theme }) => theme.color.background3};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: ${({ theme }) => theme.color.main};
+  }
+`;
 
 const CategoryItemWrapper = styled.li`
   list-style: none;
