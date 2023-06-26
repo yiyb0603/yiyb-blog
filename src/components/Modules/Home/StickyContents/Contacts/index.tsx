@@ -1,3 +1,4 @@
+import { css } from 'styled-components';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import { snsList } from '@/libs/models/sns';
 import Flex from '@/components/Common/Flex';
@@ -26,13 +27,10 @@ const Contacts = (): JSX.Element => {
 
       <Section
         tagName='div'
-        padding='1.5rem'
-        borderRadius='5px'
-        backgroundColor={color.background3}
       >
         <Flex
           tagName='ul'
-          gap='1.75rem'
+          gap='1rem'
           flexDirection='column'
         >
           {
@@ -48,10 +46,19 @@ const Contacts = (): JSX.Element => {
                   href: link,
                   target: '_blank',
                 }}
+                padding='1.25rem 1.75rem'
+                borderRadius='5px'
+                color={color.contrast}
+                backgroundColor={color.background3}
+                hover={css`
+                  transition: all 0.15s ease-in-out;
+                  color: ${color.white};
+                  background-color: ${color.main};
+                `}
               >
                 <Flex
                   tagName='div'
-                  gap='0.5rem'
+                  gap='0.75rem'
                   alignItems='flex-end'
                 >
                   <Icon
