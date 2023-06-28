@@ -38,20 +38,19 @@ const PostShare = (): JSX.Element => {
     >
       <Button
         width='100%'
-        height='50px'
+        height='46px'
         gap='1rem'
         backgroundColor={color.main}
         onClick={handleShare}
       >
         <ClipIcon
           color={color.white}
-          fontSize={fontSize.BIG}
+          fontSize={fontSize.MEDIUM}
         />
 
         <Text
           tagName='p'
           fontSize={fontSize.NORMAL}
-          fontFamily={fontFamily.pretendard.MEDIUM}
           color={color.white}
         >
           게시글 공유하기
