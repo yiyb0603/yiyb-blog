@@ -48,17 +48,20 @@ const PostContentContainer = styled.section`
     word-break: break-all;
   }
 
+  p {
+    white-space: pre-wrap;
+  }
+
   p,
   li,
   span,
   code {
-    white-space: pre-wrap;
     word-break: keep-all;
     line-height: 1.7;
     font-size: ${({ theme }) => theme.fontSize.MEDIUM};
   }
 
-  ul {
+  ol, ul {
     margin: 1rem 0;
     padding: 2rem;
     border-radius: 5px;
@@ -70,7 +73,7 @@ const PostContentContainer = styled.section`
   }
 
   code:not([data-language]) {
-    padding: 0.5rem 0.75rem;
+    padding: 0.25rem 0.75rem;
     margin-right: 0.25rem;
     border-radius: 5px;
     font-size: ${({ theme }) => theme.fontSize.NORMAL};
@@ -107,6 +110,18 @@ const PostContentContainer = styled.section`
     border-radius: 5px;
     color: ${({ theme }) => theme.color.white};
     background-color: ${({ theme }) => theme.color.codeTheme};
+
+    &::-webkit-scrollbar {
+      width: 100%;
+      height: 7.5px;
+      border-radius: 0 0 5px 5px;
+      background-color: ${({ theme }) => theme.color.background3};
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0 0 5px 5px;
+      background-color: ${({ theme }) => theme.color.main};
+    }
   }
 
   blockquote {
