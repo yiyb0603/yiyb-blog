@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: ${({ theme }) => theme.fontFamily.pretendard.REGULAR};
+    font-family: inherit;
   }
 
   html,
@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     min-height: 100vh;
     font-size: 62.5%;
+    font-family: ${({ theme }) => theme.fontFamily.pretendard.REGULAR};
     letter-spacing: -0.2px;
   }
 
@@ -62,6 +63,10 @@ const GlobalStyle = createGlobalStyle`
 
   img {
     ${disableDrag};
+  }
+
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
 
   input::-webkit-outer-spin-button,

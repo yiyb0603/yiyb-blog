@@ -1,0 +1,448 @@
+---
+title: Error Boundary, React-Query와 함께 사용해보기
+description: 리액트의 Error Boundary를 React-Query 라이브러리와 함께 사용해봅시다.
+category: React-Query
+createdAt: 2023-06-28
+thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/154a16c2-f5a6-489f-9639-85685bfe794a
+---
+
+안녕하세요! 오늘은 리액트의 주요 기능중 하나인 `Error Boundary`를 `React-Query` 상태 관리 라이브러리와 함께 사용해보는 방법을 알아보겠습니다. 😃
+
+## 1. Error Boundary란? 🤔
+`Error Boundary (에러 바운더리)`는 리액트 16버전에서 추가된 기능으로, **하위 컴포넌트에서 발생한 에러를 잡아주는** 컴포넌트 역할을 수행합니다.
+<br />
+물론, `Error Boundary`를 사용하지 않아도 아래 코드처럼 기본적인 오류처리는 가능합니다.
+
+```tsx
+const MyComponent = () => {
+  const {
+    data,
+    error,
+  } = useQuery(...);
+
+  if (error) {
+    return <p>오류가 발생했어요!</p>
+  }
+
+  return (
+    <div>
+      {data.data.map(...)}
+    </div>
+  );
+}
+```
+
+위와 같은 형식의 코드는 **명령형** 코드로 분류가 되는데요. 물론 명령형 코드가 나쁘진 않지만, 명령에 대한 코드를 작성하게되면 코드 라인이 점점 증가할 수 있습니다.
+<br />
+그리고 위와같은 명령형 코드를 `Error Boundary`를 사용하면 간편하게, 그리고 **선언적**인 오류처리 코드를 작성할 수 있습니다. 어떻게 처리할 수 있는지는 아래 섹션을 통해서 알아봅시다!
+
+## 2. 컴포넌트 제작 ⚒️
+참고로 `Error Boundary` 컴포넌트는 리액트 패키지에서 그저 띡! import! 만 해서 사용할 수 있는것이 아니고, 리액트의 **클래스형 컴포넌트의 메소드**를 오버라이딩 해서 만들 수 있습니다.
+따라서, 현재는 **함수형 컴포넌트**를 사용해서 `Error Boundary`를 구현 하는것은 불가능합니다. 😥
+<br />
+먼저, **ErrorBoundary.tsx** 라는 컴포넌트 파일을 만들고, 아래의 코드를 작성해주세요. 각 코드에 대한 설명은 주석을 참고하시면 됩니다. 😛
+
+```tsx
+import { Component, ReactNode, ErrorInfo } from 'react';
+
+type ErrorBoundaryState = {
+  hasError: boolean;
+  error: Error | null;
+}
+
+type ErrorBoundaryProps = {
+  children: ReactNode;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+
+    this.state = {
+      hasError: false, // 오류가 발생했는지 여부를 state 상태로 저장합니다.
+      error: null, // 발생한 오류의 정보를 state 상태로 저장합니다.
+    };
+  }
+
+  /*
+    getDerivedStateFromError 메소드는 하위 컴포넌트에서 오류의 정보를 return을 통해서 State에 저장하는 역할을 합니다.
+    error 파라미터는 발생한 오류의 정보를 담고 있습니다.
+  */
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    // 오류 상태 업데이트
+    return {
+      hasError: true,
+      error,
+    };
+  }
+
+  /* componentDidCatch 메소드는 오류 정보와 상세 정보를 파라미터로 얻을 수 있습니다.
+    주로 오류를 로깅해야 할때 해당 메소드에 접근해서 로깅할 수 있습니다. 
+  */
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.log({ error, errorInfo })
+  }
+
+  render() {
+    const { state, props } = this;
+
+    const { hasError } = state;
+
+    const { children } = props;
+
+    // 오류 발생 여부를 체크하여, 오류가 발생했을때 조건부 렌더링 처리를 해줍니다.
+    return hasError ? <div>오류가 발생했어요!</div> : children;
+  }
+}
+```
+
+일단 위처럼 코드를 작성하여 간단하게 `Error Boundary`를 구현할 수는 있는데요, 하지만 위의 코드를 보면 단점이 몇개 존재합니다.
+
+1. 오류가 발생했을때 보여주는 UI가 제한적이다.
+2. A라는 오류일때는 B를 보여주고, C라는 오류일때는 D를 보여주고 싶다.
+3. 만약 API 오류가 났을때 재요청 처리를 해야하는데, 어떻게 구현해야 하는가?
+
+위 두가지 문제중 가장 먼저 1번과 2번 문제를 해결해보도록 하겠습니다. `fallback` props에는 **인자를 넘겨주는 컴포넌트** 형태로 props를 받도록 지정하면 됩니다.
+<br />
+`Error Boundary`를 사용하는 컴포넌트 쪽에서 오류의 정보를 전달하는 목적으로요.
+
+```tsx
+import {
+  Component,
+  ComponentType,
+  createElement,
+  ReactNode,
+  ErrorInfo,
+} from 'react';
+
+type ErrorBoundaryState = {
+  hasError: boolean;
+  error: Error | null;
+}
+
+type FallbackProps = {
+  error: Error | null;
+}
+
+type ErrorBoundaryProps = {
+  // fallback 용도의 컴포넌트는 Error 정보를 props로 받을 수 있는 컴포넌트여야 한다.
+  fallback: ComponentType<FallbackProps>;
+  children: ReactNode;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+
+    this.state = {
+      hasError: false,
+      error: null,
+    };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return {
+      hasError: true,
+      error,
+    };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.log({ error, errorInfo })
+  }
+
+  render() {
+    const { state, props } = this;
+
+    const { hasError, error } = state;
+
+    const { fallback, children } = props;
+
+    const fallbackProps: FallbackProps = {
+      error,
+    };
+
+    // fallback 컴포넌트 측에서 오류 정보를 props로 받을 수 있도록 설정
+    const fallbackComponent = createElement(fallback, fallbackProps);
+
+    // 오류 발생 여부를 체크하여, 오류가 발생했을때 조건부 렌더링 처리를 해줍니다.
+    return hasError ? fallbackComponent : children;
+  }
+}
+```
+
+위처럼 오류 정보를 **사용하는 측에서 알 수 있도록** props를 설정하면 아래와 같이 사용할 수 있습니다.
+
+```tsx
+const ChildComponent = () => {
+  return (
+    ...
+  );
+}
+
+const ParentComponent = () => {
+  return (
+    <ErrorBoundary
+      fallback={(({ error }) => {
+        // ErrorBoundary에서 캐치된 오류 정보를 매개변수를 통해서 받을 수 있기에, 오류별 케이스 처리가 가능합니다.
+        if (error.status === 404) {
+          return <p>404 오류입니다.</p>
+        }
+
+        else if (error.status === 500) {
+          return <p>500 오류에요!</p>
+        }
+      })}
+    >
+      <ChildComponent />
+    </ErrorBoundary>
+  );
+}
+```
+
+`Error Boundary` 컴포넌트를 설계할때, 오류에 대한 정보를 `매개변수`로 받을 수 있기때문에 오류 케이스별로 조건부 렌더링이 가능해집니다. 정말 편리하죠?
+<br />
+하지만 아직 해결한 단점이 하나 남아있는데요, **만약 API 오류가 났을때 재요청 처리를 해야하는데, 어떻게 구현해야 하는가?** 항목입니다. 이 항목의 해결법은 밑 섹션에서 추가로 함께 다루겠습니다.
+
+## 3. React-Query와 함께 사용 🚀
+React-Query는 `Error Boundary` 사용을 지원하는데요, 사용방법은 정말 간단합니다. `useQuery` 훅의 `useErrorBoundary` 옵션을 `true`로 지정해주시면 됩니다. 아래처럼 말이죠.
+
+```typescript
+import { useQuery } from '@tanstack/react-query';
+
+const { data } = useQuery({
+  queryKey: ['some key'],
+  ...
+  useErrorBoundary: true, // 상위 컴포넌트에서 감싼 Error Boundary의 처리 허용여부
+});
+```
+
+위처럼 `useErrorBoundary` 속성을 `true`로 설정한 다음, 해당 hook을 호출하는 컴포넌트를 `Error Boundary`로 감싸보겠습니다.
+
+```tsx
+const fetchData = async () => {
+  // return something
+}
+
+const ChildComponent = () => {
+  const { data } = useQuery({
+    queryKey: ['some key'],
+    queryFn: fetchData,
+    useErrorBoundary: true, // 상위 컴포넌트에서 감싼 Error Boundary의 처리 허용여부
+  });
+
+  return (
+    <div>
+      <h1>제목: {data.title}</h1>
+      <p>글 내용: {data.content}</p>
+    </div>
+  );
+}
+
+const ParentComponent = () => {
+  return (
+    <ErrorBoundary
+      fallback={(({ error }) => {
+        const status = error?.status;
+
+        switch (status) {
+          case 404:
+            return (
+              <p>404 오류가 발생했습니다!</p>
+            );
+
+          case 500:
+            return (
+              <p>서버 오류에요!</p>
+            );
+        }
+      })}
+    >
+      <ChildComponent />
+    </ErrorBoundary>
+  );
+}
+```
+
+`React Query`와 함께 사용하는 경우에는, `useQuery` hook을 호출한 **컴포넌트의 상위에서 감싸야한다**는 규칙을 꼭 알아두셔야 합니다.
+
+### 3-1. 재요청 처리하기
+일반적으로 서비스에서 갑작스럽게 오류가 발생한경우 **다시 시도하기** 버튼을 통해서 재요청 동작이 필요한 서비스에서는 `Error Boundary`를 어떻게 사용해야 할까요?
+<br />
+참고로 `React Query` 에서는 가장 가까운곳에서 `Error Boundary`를 사용하는 `useQuery` hook의 오류 상태를 초기화 시켜주는 `QueryErrorResetBoundary` 컴포넌트가 있습니다.
+
+> Query Error Reset Boundary 컴포넌트에 대해 알고싶다면?
+https://tanstack.com/query/v4/docs/react/reference/QueryErrorResetBoundary
+
+`QueryErrorResetBoundary`는 `reset` 함수를 매개변수로 받아서 JSX를 렌더링하도록 설계된 컴포넌트인데요, `reset` 함수는 아까전에 말씀드린 `useQuery` hook의 오류 상태를 초기화하는 함수입니다.
+<br />
+이제 위의 코드를 조금 수정해보겠습니다.
+
+```tsx
+return (
+  <QueryErrorResetBoundary>
+    {(({ reset }) => (
+      <ErrorBoundary
+        onReset={reset}
+        fallback={renderFallback}
+      >
+        <ChildComponent />
+      </ErrorBoundary>
+    ))}
+  </QueryErrorResetBoundary>
+);
+```
+
+코드를 보시면 `Error Boundary`에 `onReset` 이라는 이름으로 `reset` 함수를 props로 넘겨주려고 하는 이유는, `Error Boundary` 컴포넌트 내에 정의된 `hasError` 상태를 `false`로 리셋하기 위함 입니다.
+<br />
+만약 사용자가 **재시도 요청**을 보냈을때는 오류 UI가 아닌 로딩 UI를 보여주거나 해야겠죠? 따라서 UI가 변경되어야함을 `Error Boundary` 컴포넌트에게 알리기 위해서 `reset` 함수를 넘겨줍니다.
+<br />
+`Error Boundary` 컴포넌트에 `onReset` props를 넘겨주기 위해서 `ErrorBoundary.tsx` 파일을 아래처럼 수정해줍니다.
+
+```tsx
+import {
+  Component,
+  ComponentType,
+  createElement,
+  ReactNode,
+  ErrorInfo,
+} from 'react';
+
+type ErrorBoundaryState = {
+  hasError: boolean;
+  error: Error | null;
+}
+
+type FallbackProps = {
+  error: Error | null;
+  resetErrorBoundary: () => void; // resetErrorBoundary 함수를 사용하는쪽에서 사용 가능하도록 props로 전달
+}
+
+type ErrorBoundaryProps = {
+  fallback: ComponentType<FallbackProps>;
+  onReset: () => void;
+  children: ReactNode;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+
+    this.state = {
+      hasError: false,
+      error: null,
+    };
+
+    this.resetErrorBoundary = this.resetErrorBoundary.bind(this); // this 바인딩 처리
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    // 오류 상태 업데이트
+    return {
+      hasError: true,
+      error,
+    };
+  }
+
+  resetErrorBoundary(): void {
+    this.props.onReset();
+
+    // 에러 상태를 기본으로 초기화합니다.
+    this.setState({
+      hasError: false,
+      error: null,
+    });
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.log({ error, errorInfo })
+  }
+
+  render() {
+    const { state, props, resetErrorBoundary } = this;
+
+    const { hasError, error } = state;
+
+    const { fallback, children } = props;
+
+    const fallbackProps: FallbackProps = {
+      error,
+      resetErrorBoundary, // props 추가
+    };
+
+    const fallbackComponent = createElement(fallback, fallbackProps);
+
+    return hasError ? fallbackComponent : children;
+  }
+}
+```
+
+그러면 최종적으로 `Error Boundary`를 사용하는 측에서는 아래처럼 코드를 작성할 수 있겠네요.
+
+```tsx
+return (
+  <QueryErrorResetBoundary>
+    {(({ reset }) => (
+      <ErrorBoundary
+        onReset={reset}
+        fallback={(({ error, resetErrorBoundary }) => {
+          const status = error?.status;
+
+          switch (status) {
+            case 404:
+              return (
+                <p>404 오류가 발생했습니다!</p>
+              );
+
+            case 500:
+              return (
+                <div>
+                  <p>서버 오류에요!</p>
+
+                  <button onClick={resetErrorBoundary}>재시도</button>
+                </div>
+              );
+          }
+        })}
+      >
+        <ChildComponent />
+      </ErrorBoundary>
+    ))}
+  </QueryErrorResetBoundary>
+);
+```
+
+위에서 `resetErrorBoundary` 함수 또한 이전에 `error` 변수처럼 props용 함수에서 매개변수로 받을 수 있도록 처리해주었는데요. 이는 `Error Boundary`의 `hasError` 상태 초기화 동작, `reset` 함수의 동작이 합쳐진 함수를 `Error Boundary`를 사용하는 쪽에서 사용할 수 있도록 제공하기위함 입니다.
+<br />
+보통 오류 UI안에 `재시도 하기` 버튼이 위치할 수 있는 상황이 많기 때문에 이를 대비할 수 있죠.
+
+### 3-2. 선택적 useErrorBoundary
+만약 `Error Boundary`를 사용하시다가 이런상황에 마주하실 수도 있습니다.
+
+> 저는 400과 500 Status 에러일때는 Error Boundary를 사용하고 싶은데, 나머지 Status 에러일때는 사용하고 싶지 않아요.
+
+참고로 위에서 말씀드린 `useQuery` hook의 `useErrorBoundary` 속성은 단순 `boolean` 타입이 아닌, `boolean` 타입을 반환하는 함수로도 작성할 수 있습니다.
+
+```typescript
+{
+  useErrorBoundary: boolean | ((error: unknown) => boolean);
+}
+```
+
+그리고 함수에서는 오류 정보를 매개변수로 받을 수 있기때문에, 이를 바탕으로 조건부 처리를 하시면 됩니다.
+
+```typescript
+useQuery({
+  useErrorBoundary: (error) => {
+    // 오류 Status가 400이거나 500일때만 Error Boundary 사용하도록.
+    return error.status === 400 || error.status === 500;
+  }
+})
+```
+
+## 4. 마치며 📌
+오늘은 리액트의 `Error Boundary`란 무엇이며, 이를 `React Query`와 함께 활용해보면서 각 케이스별로 코드를 작성하는 방법에 대해 알아보았습니다.
+<br />
+지금 당장은 이해하기 어려우실수도 있지만, 직접 도전해보면서 여러번 읽으시면 도움이 됩니다. 😛
+<br />
+이상으로 글을 마무리 하겠습니다. 긴 글 읽어주셔서 감사합니다! 🧑‍🏫
