@@ -15,19 +15,18 @@ const PostShare = (): JSX.Element => {
   const {
     color,
     fontSize,
-    fontFamily,
   } = useStyledTheme();
 
   const {
     showAlert,
   } = useDialog();
 
-  const handleShare = () => {
+  const handleShare = (): void => {
     copyToClipboard(generateFullURL(asPath));
 
     showAlert({
       title: '게시글 공유',
-      content: '링크가 클립보드에 복사되었습니다.',
+      content: '게시글 링크를 클립보드에 복사했습니다.',
     });
   }
 

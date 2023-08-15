@@ -30,6 +30,7 @@ const Header = () => {
           link={{
             href: pageRoute.HOME,
           }}
+          margin='0.5rem 0 0 0'
         >
           <Image
             src={images.logo.MAIN_TEXT_IMAGE}
