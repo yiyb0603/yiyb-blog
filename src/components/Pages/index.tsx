@@ -29,6 +29,11 @@ const HomePage: NextPage = () => {
     category: category === '전체' ? '' : category,
   });
 
+  const postCategories = [
+    '전체',
+    ...categories,
+  ];
+
   const handlePageClick = (page: number): void => {
     push({
       query: {
@@ -57,7 +62,7 @@ const HomePage: NextPage = () => {
         >
           <DesktopPostCategories
             selectCategory={category}
-            categories={categories}
+            categories={postCategories}
           />
 
           <Flex
@@ -76,7 +81,7 @@ const HomePage: NextPage = () => {
 
               <MobilePostCategories
                 selectCategory={category}
-                categories={categories}
+                categories={postCategories}
               />
             </Flex>
 

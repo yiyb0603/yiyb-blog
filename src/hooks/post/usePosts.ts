@@ -36,7 +36,7 @@ const usePosts = ({
       const prevPosts = prev[1];
   
       return nextPosts.length - prevPosts.length;
-    }).map(([category]) => category)
+    }).map(([category]) => category);
   }, [postsByCategory]);
 
   const chunkPosts = useMemo<Post[][]>(() => chunkArray({
@@ -45,6 +45,7 @@ const usePosts = ({
   }), [filterPosts]);
 
   return {
+    allPosts: basePosts,
     filterPosts,
     chunkPosts,
     categories,

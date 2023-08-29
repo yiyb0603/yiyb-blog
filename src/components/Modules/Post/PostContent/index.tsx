@@ -65,7 +65,8 @@ const PostContentContainer = styled.section`
     margin: 1rem 0;
     padding: 2rem;
     border-radius: 5px;
-    background-color: ${({ theme }) => theme.color.background3};
+    border: ${({ theme }) => `1px solid ${theme.color.border2}`};
+    background-color: ${({ theme }) => theme.color.main50};
   }
 
   li {
