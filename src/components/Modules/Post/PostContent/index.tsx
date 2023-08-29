@@ -71,6 +71,7 @@ const PostContentContainer = styled.section`
 
   li {
     margin-left: 2rem;
+    color: ${({ theme }) => theme.color.black};
   }
 
   code:not([data-language]) {
