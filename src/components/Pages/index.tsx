@@ -22,19 +22,12 @@ const HomePage: NextPage = () => {
   const currentPage = Number(query?.page || 1);
 
   const {
-    allPosts,
     filterPosts,
     chunkPosts,
+    categories,
   } = usePosts({
     category: category === '전체' ? '' : category,
   });
-
-  const postCategories = [
-    ...new Set([
-      '전체',
-      ...allPosts.map(({ category }) => category),
-    ]),
-  ];
 
   const handlePageClick = (page: number): void => {
     push({
@@ -64,7 +57,7 @@ const HomePage: NextPage = () => {
         >
           <DesktopPostCategories
             selectCategory={category}
-            categories={postCategories}
+            categories={categories}
           />
 
           <Flex
@@ -83,7 +76,7 @@ const HomePage: NextPage = () => {
 
               <MobilePostCategories
                 selectCategory={category}
-                categories={postCategories}
+                categories={categories}
               />
             </Flex>
 
