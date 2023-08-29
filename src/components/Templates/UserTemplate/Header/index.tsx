@@ -33,30 +33,36 @@ const Header = () => {
         padding='0 2rem'
         margin='0 auto'
       >
-        <Flex
-          tagName='a'
-          href={pageRoute.HOME}
-          gap='1rem'
-          alignItems='center'
+        <HyperLink
+          external={false}
+          link={{
+            href: pageRoute.HOME,
+          }}
         >
-          <Image
-            src={icons.FAVICON}
-            alt='권용빈 블로그'
-            width='40px'
-            height='40px'
-          />
-
-          <Text
-            tagName='p'
-            fontSize={fontSize.EXTRA_BIG}
-            fontFamily={fontFamily.pretendard.MEDIUM}
-            color={color.main}
-            lineHeight='1.2'
-            margin='-0.2rem 0 0 0'
+          <Flex
+            tagName='div'
+            gap='1rem'
+            alignItems='center'
           >
-            yiyb-blog
-          </Text>
-        </Flex>
+            <Image
+              src={icons.FAVICON}
+              alt='권용빈 블로그'
+              width='40px'
+              height='40px'
+            />
+
+            <Text
+              tagName='h1'
+              fontSize={fontSize.EXTRA_BIG}
+              fontFamily={fontFamily.pretendard.MEDIUM}
+              color={color.main}
+              lineHeight='1.2'
+              margin='-0.2rem 0 0 0'
+            >
+              yiyb-blog
+            </Text>
+          </Flex>
+        </HyperLink>
 
         <ToggleTheme />
       </Flex>
