@@ -1,13 +1,21 @@
 import styled from 'styled-components';
-import { images } from '@/assets/images';
+import { icons } from '@/assets/icons';
+import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import { pageRoute } from '@/libs/models/route';
 import Flex from '@/components/Common/Flex';
 import Section from '@/components/Common/Section';
 import HyperLink from '@/components/Common/HyperLink';
 import Image from '@/components/Common/Image';
+import Text from '@/components/Common/Text';
 import ToggleTheme from './ToggleTheme';
 
 const Header = () => {
+  const {
+    color,
+    fontSize,
+    fontFamily,
+  } = useStyledTheme();
+
   return (
     <HeaderWrapper
       tagName='header'
@@ -25,19 +33,30 @@ const Header = () => {
         padding='0 2rem'
         margin='0 auto'
       >
-        <HyperLink
-          external={false}
-          link={{
-            href: pageRoute.HOME,
-          }}
-          margin='0.5rem 0 0 0'
+        <Flex
+          tagName='a'
+          href={pageRoute.HOME}
+          gap='1rem'
+          alignItems='center'
         >
           <Image
-            src={images.logo.MAIN_TEXT_IMAGE}
+            src={icons.FAVICON}
             alt='권용빈 블로그'
-            width='130px'
+            width='40px'
+            height='40px'
           />
-        </HyperLink>
+
+          <Text
+            tagName='p'
+            fontSize={fontSize.EXTRA_BIG}
+            fontFamily={fontFamily.pretendard.MEDIUM}
+            color={color.main}
+            lineHeight='1.2'
+            margin='-0.2rem 0 0 0'
+          >
+            yiyb-blog
+          </Text>
+        </Flex>
 
         <ToggleTheme />
       </Flex>

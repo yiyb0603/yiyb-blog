@@ -22,18 +22,16 @@ const HomePage: NextPage = () => {
   const currentPage = Number(query?.page || 1);
 
   const {
-    allPosts,
     filterPosts,
     chunkPosts,
+    categories,
   } = usePosts({
     category: category === '전체' ? '' : category,
   });
 
   const postCategories = [
-    ...new Set([
-      '전체',
-      ...allPosts.map(({ category }) => category),
-    ]),
+    '전체',
+    ...categories,
   ];
 
   const handlePageClick = (page: number): void => {
