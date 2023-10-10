@@ -1,35 +1,39 @@
 import { useCallback, useEffect } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
+import dayjs from 'dayjs';
 import { OS_DARK_THEME } from '@/constants/theme';
 import { SystemTheme } from '@/enums/theme';
 import isEmpty from '@/utils/is-packages/isEmpty';
 import { themeAction } from '@/stores/theme';
 import useAppDispatch from '../redux/useAppDispatch';
 import useRootSelector from '../redux/useRootSelector';
-import dayjs from 'dayjs';
 
 const useTheme = () => {
   const dispatch = useAppDispatch();
 
-  const {
-    theme,
-  } = useRootSelector(({ theme }) => theme);
+  const { theme } = useRootSelector(({ theme }) => theme);
 
-  const setThemeWithoutCookie = useCallback((theme: SystemTheme): void => {
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    dispatch(themeAction.changeTheme(theme));
-  }, [dispatch]);
+  const setThemeWithoutCookie = useCallback(
+    (theme: SystemTheme): void => {
+      document.documentElement.setAttribute('data-theme', theme);
 
-  const setTheme = useCallback((theme: SystemTheme): void => {
-    const nonExpireDate = dayjs().add(1000, 'years').toDate();    
+      dispatch(themeAction.changeTheme(theme));
+    },
+    [dispatch]
+  );
 
-    setCookie('theme', theme, {
-      expires: nonExpireDate,
-    });
+  const setTheme = useCallback(
+    (theme: SystemTheme): void => {
+      const nonExpireDate = dayjs().add(1000, 'years').toDate();
 
-    setThemeWithoutCookie(theme);
-  }, [setThemeWithoutCookie]);
+      setCookie('theme', theme, {
+        expires: nonExpireDate,
+      });
+
+      setThemeWithoutCookie(theme);
+    },
+    [setThemeWithoutCookie]
+  );
 
   const toggleTheme = (): void => {
     switch (theme) {
@@ -42,21 +46,24 @@ const useTheme = () => {
       default:
         return;
     }
-  }
+  };
 
-  const systemThemeListener = useCallback((e: MediaQueryListEvent): void => {
-    const cookieTheme = getCookie('theme');
+  const systemThemeListener = useCallback(
+    (e: MediaQueryListEvent): void => {
+      const cookieTheme = getCookie('theme');
 
-    if (!isEmpty(cookieTheme)) {
-      return;
-    }
+      if (!isEmpty(cookieTheme)) {
+        return;
+      }
 
-    if (e.matches) {
-      setThemeWithoutCookie(SystemTheme.DARK);
-    } else {
-      setThemeWithoutCookie(SystemTheme.LIGHT);
-    }
-  }, [setThemeWithoutCookie]);
+      if (e.matches) {
+        setThemeWithoutCookie(SystemTheme.DARK);
+      } else {
+        setThemeWithoutCookie(SystemTheme.LIGHT);
+      }
+    },
+    [setThemeWithoutCookie]
+  );
 
   const initializeTheme = useCallback((): void => {
     const cookieTheme = getCookie('theme');
@@ -70,9 +77,9 @@ const useTheme = () => {
         setThemeWithoutCookie(SystemTheme.LIGHT);
       }
     } else {
-      setTheme(cookieTheme as SystemTheme);
+      setThemeWithoutCookie(cookieTheme as SystemTheme);
     }
-  }, [setTheme, setThemeWithoutCookie]);
+  }, [setThemeWithoutCookie]);
 
   useEffect(() => {
     initializeTheme();
@@ -92,6 +99,6 @@ const useTheme = () => {
     theme,
     toggleTheme,
   };
-}
+};
 
 export default useTheme;
