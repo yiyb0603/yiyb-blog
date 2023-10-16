@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import { Post } from '@/contentlayer/generated/types';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import isEmpty from '@/utils/is-packages/isEmpty';
-import { ellipsisLine } from '@/styles/utils';
 import HyperLink from '@/components/Common/HyperLink';
 import Image from '@/components/Common/Image';
 import Flex from '@/components/Common/Flex';
@@ -13,7 +12,7 @@ import 'dayjs/locale/ko';
 
 type PostRowItemProps = Post & {
   href: string;
-}
+};
 
 const PostRowItem = ({
   title,
@@ -23,11 +22,7 @@ const PostRowItem = ({
   category,
   href,
 }: PostRowItemProps): JSX.Element => {
-  const {
-    color,
-    fontSize,
-    fontFamily,
-  } = useStyledTheme();
+  const { color, fontSize, fontFamily } = useStyledTheme();
 
   return (
     <HyperLink
@@ -45,12 +40,7 @@ const PostRowItem = ({
         gap='2rem'
         justifyContent='space-between'
       >
-        <Flex
-          tagName='div'
-          gap='0.5rem'
-          flexDirection='column'
-          flex='1'
-        >
+        <Flex tagName='div' gap='0.5rem' flexDirection='column' flex='1'>
           <Text
             tagName='time'
             dateTime={createdAt}
@@ -62,13 +52,14 @@ const PostRowItem = ({
             {dayjs(createdAt).locale('ko').format('YYYY년 MM월 DD일 (dddd)')}
           </Text>
 
-          <PostTitle
+          <Text
             tagName='h3'
             fontSize={fontSize.MEDIUM}
             wordBreak='keep-all'
+            maxLine={2}
           >
             {title}
-          </PostTitle>
+          </Text>
 
           <Text
             tagName='p'
@@ -82,8 +73,7 @@ const PostRowItem = ({
           </Text>
         </Flex>
 
-        {
-          !isEmpty(thumbnail) &&
+        {!isEmpty(thumbnail) && (
           <PostThumbnail
             src={thumbnail}
             alt={title}
@@ -92,7 +82,7 @@ const PostRowItem = ({
             height='110px'
             borderRadius='5px'
           />
-        }
+        )}
       </ContentThumbnailWrapper>
 
       <Text
@@ -107,27 +97,19 @@ const PostRowItem = ({
       </Text>
     </HyperLink>
   );
-}
+};
 
 const ContentThumbnailWrapper = styled(Flex<'div'>)`
   ${({ theme }) => theme.device.mediumMobile} {
     flex-direction: column-reverse;
-  };
+  }
 `;
 
 const PostThumbnail = styled(Image)`
   ${({ theme }) => theme.device.mediumMobile} {
     width: 100%;
     height: 100%;
-  };
-`;
-
-const PostTitle = styled(Text<'h3'>)`
-  ${ellipsisLine(1)};  
-
-  ${({ theme }) => theme.device.mediumMobile} {
-    ${ellipsisLine(2)};
-  };
+  }
 `;
 
 export default PostRowItem;
