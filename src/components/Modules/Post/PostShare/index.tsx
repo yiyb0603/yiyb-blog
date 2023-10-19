@@ -12,29 +12,21 @@ import ClipIcon from '@/components/Common/Icon/ClipIcon';
 const PostShare = (): JSX.Element => {
   const { asPath } = useRouter();
 
-  const {
-    color,
-    fontSize,
-  } = useStyledTheme();
+  const { color, fontSize } = useStyledTheme();
 
-  const {
-    showAlert,
-  } = useDialog();
+  const { showAlert } = useDialog();
 
   const handleShare = (): void => {
     copyToClipboard(generateFullURL(asPath));
 
     showAlert({
       title: '게시글 공유',
-      content: '게시글 링크를 클립보드에 복사했습니다.',
+      content: '게시글 링크가 클립보드에 복사되었습니다.',
     });
-  }
+  };
 
   return (
-    <PostShareWrapper
-      tagName='section'
-      margin='2rem 0 0 0'
-    >
+    <PostShareWrapper tagName='section' margin='2rem 0 0 0'>
       <Button
         width='100%'
         height='46px'
@@ -42,22 +34,15 @@ const PostShare = (): JSX.Element => {
         backgroundColor={color.main}
         onClick={handleShare}
       >
-        <ClipIcon
-          color={color.white}
-          fontSize={fontSize.MEDIUM}
-        />
+        <ClipIcon color={color.white} fontSize={fontSize.MEDIUM} />
 
-        <Text
-          tagName='p'
-          fontSize={fontSize.NORMAL}
-          color={color.white}
-        >
+        <Text tagName='p' fontSize={fontSize.NORMAL} color={color.white}>
           게시글 공유하기
         </Text>
       </Button>
     </PostShareWrapper>
   );
-}
+};
 
 const PostShareWrapper = styled(Section<'section'>)`
   position: sticky;

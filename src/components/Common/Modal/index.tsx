@@ -1,8 +1,4 @@
-import {
-  ReactNode,
-  memo,
-  MouseEventHandler,
-} from 'react';
+import { ReactNode, memo, MouseEventHandler } from 'react';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { fonts } from '@/assets/fonts';
@@ -14,14 +10,16 @@ import CloseIcon from '../Icon/CloseIcon';
 import Section from '../Section';
 import Text from '../Text';
 
-const Portal = dynamic(() => import('../Portal'));
+const Portal = dynamic(() => import('../Portal'), {
+  ssr: false,
+});
 
 type ModalStyleProps = {
   width?: string;
   maxWidth?: string;
   height?: string;
   padding?: string;
-}
+};
 
 type ModalProps = ModalStyleProps & {
   className?: string;
@@ -29,7 +27,7 @@ type ModalProps = ModalStyleProps & {
   handleModal: MouseEventHandler;
   title: ReactNode;
   children: ReactNode;
-}
+};
 
 const Modal = ({
   width,
@@ -42,10 +40,7 @@ const Modal = ({
   className,
   children,
 }: ModalProps): JSX.Element => {
-  const {
-    color,
-    fontSize,
-  } = useStyledTheme();
+  const { color, fontSize } = useStyledTheme();
 
   useLockBodyScroll(isModal);
 
@@ -54,13 +49,8 @@ const Modal = ({
   }
 
   return (
-    <Portal
-      portalId='modal-portal'
-    >
-      <ModalBackground
-        tagName='div'
-        onClick={handleModal}
-      ></ModalBackground>
+    <Portal portalId='modal-portal'>
+      <ModalBackground tagName='div' onClick={handleModal}></ModalBackground>
 
       <ModalContent
         tagName='div'
@@ -73,11 +63,7 @@ const Modal = ({
         borderRadius='5px'
         onClick={(e) => e.stopPropagation()}
       >
-        <Flex
-          tagName='div'
-          justifyContent='space-between'
-          padding='0 0 1rem 0'
-        >
+        <Flex tagName='div' justifyContent='space-between' padding='0 0 1rem 0'>
           <Text
             tagName='h2'
             fontSize={fontSize.MEDIUM}

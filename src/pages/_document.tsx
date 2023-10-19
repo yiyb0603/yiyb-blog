@@ -16,7 +16,9 @@ import { fontFamilies } from '@/styles/font';
 import { palette } from '@/styles/palette';
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
+  static async getInitialProps(
+    ctx: DocumentContext
+  ): Promise<DocumentInitialProps> {
     const sheet: ServerStyleSheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
 
@@ -24,13 +26,13 @@ class MyDocument extends Document {
       ctx.renderPage = () => {
         return originalRenderPage({
           enhanceApp: (App) => (props) =>
-            sheet.collectStyles(
-              <App {...props} />
-            ),
+            sheet.collectStyles(<App {...props} />),
         });
       };
 
-      const initialProps: DocumentInitialProps = await Document.getInitialProps(ctx);
+      const initialProps: DocumentInitialProps = await Document.getInitialProps(
+        ctx
+      );
 
       return {
         ...initialProps,
@@ -38,7 +40,7 @@ class MyDocument extends Document {
           <>
             {initialProps.styles}
             {sheet.getStyleElement()}
-          </>
+          </>,
         ],
       };
     } finally {
@@ -48,28 +50,15 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html
-        lang='ko'
-      >
+      <Html lang='ko'>
         <Head>
-          <meta
-            charSet='utf-8'
-          />
+          <meta charSet='utf-8' />
 
-          <meta
-            httpEquiv='Content-Type'
-            content='text/html; charset=utf-8'
-          />
+          <meta httpEquiv='Content-Type' content='text/html; charset=utf-8' />
 
-          <meta
-            httpEquiv='Content-Type'
-            content='text/xml; charset=utf-8'
-          />
+          <meta httpEquiv='Content-Type' content='text/xml; charset=utf-8' />
 
-          <meta
-            httpEquiv='X-UA-Compatible'
-            content='IE=edge'
-          />
+          <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
 
           <meta
             name='google-site-verification'
@@ -86,55 +75,25 @@ class MyDocument extends Document {
             content={dotenv.BING_SITE_VERIFICATION_ID}
           />
 
-          <meta
-            name='referrer'
-            content='no-referrer-when-downgrade'
-          />
+          <meta name='referrer' content='no-referrer-when-downgrade' />
 
-          <meta
-            name='theme-color'
-            content={palette.main}
-          />
+          <meta name='theme-color' content={palette.main} />
 
-          <meta
-            name='msapplication-TileColor'
-            content={palette.main}
-          />
+          <meta name='msapplication-TileColor' content={palette.main} />
 
-          <link
-            rel='shortcut icon'
-            href={icons.FAVICON}
-          />
+          <link rel='shortcut icon' href={icons.FAVICON} />
 
-          <meta
-            property='og:type'
-            content='website'
-          />
+          <meta property='og:type' content='website' />
 
-          <meta
-            property='og:locale'
-            content='ko_KR'
-          />
+          <meta property='og:locale' content='ko_KR' />
 
-          <meta
-            property='og:site_name'
-            content='yiyb-blog'
-          />
+          <meta property='og:site_name' content='yiyb-blog' />
 
-          <meta
-            property='article:media_name'
-            content='yiyb-blog'
-          />
+          <meta property='article:media_name' content='yiyb-blog' />
 
-          <meta
-            name='author'
-            content='yiyb0603'
-          />
+          <meta name='author' content='yiyb0603' />
 
-          <meta
-            name='apple-mobile-web-app-capable'
-            content='yes'
-          />
+          <meta name='apple-mobile-web-app-capable' content='yes' />
 
           <link
             rel='preload'
@@ -214,9 +173,7 @@ class MyDocument extends Document {
         </Head>
 
         <body>
-          <div
-            id='modal-portal'
-          ></div>
+          <div id='modal-portal'></div>
 
           <Main />
           <NextScript />

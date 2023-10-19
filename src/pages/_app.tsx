@@ -18,7 +18,9 @@ import GlobalStyle from '@/styles/GlobalStyle';
 import StyleProvider from '@/components/Providers/StyleProvider';
 import UserTemplate from '@/components/Templates/UserTemplate';
 
-const Dialog = dynamic(() => import('@/components/Common/Dialog'));
+const Dialog = dynamic(() => import('@/components/Common/Dialog'), {
+  ssr: false,
+});
 
 type MyAppProps = AppProps & {};
 
