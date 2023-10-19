@@ -4,21 +4,15 @@ import Section from '../Section';
 
 type CustomTableProps = {
   children: ReactNode;
-}
+};
 
-const CustomTable = ({
-  children,
-}: CustomTableProps) => {
+const CustomTable = ({ children }: CustomTableProps): JSX.Element => {
   return (
-    <Section
-      tagName='div'
-      overflow='auto'
-      margin='1.5rem 0'
-    >
+    <Section tagName='div' overflow='auto' margin='1.5rem 0'>
       <Table>{children}</Table>
     </Section>
   );
-}
+};
 
 const Table = styled.table`
   width: 100%;

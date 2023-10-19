@@ -6,20 +6,23 @@ import generateFullURL from '@/utils/string/generateFullURL';
 
 const SitemapPage: NextPage = () => {
   return null;
-}
+};
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { res } = ctx;
 
   let pagesXMLString = '';
 
-  for (const {
-    _raw,
-    createdAt,
-  } of allPosts) {
+  const descOrderPosts = [...allPosts].sort((prev, next) => {
+    return Date.parse(next.createdAt) - Date.parse(prev.createdAt);
+  });
+
+  for (const { _raw, createdAt } of descOrderPosts) {
     pagesXMLString += `
       <url>
-        <loc>${generateFullURL(`${pageRoute.POSTS}/${encodeURIComponent(_raw.flattenedPath)}`)}</loc>
+        <loc>${generateFullURL(
+          `${pageRoute.POSTS}/${encodeURIComponent(_raw.flattenedPath)}`
+        )}</loc>
         <lastmod>${dayjs(createdAt).format('YYYY-MM-DDTHH:mm:ssZ')}</lastmod>
       </url>
     `;
@@ -39,6 +42,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {},
   };
-}
+};
 
 export default SitemapPage;

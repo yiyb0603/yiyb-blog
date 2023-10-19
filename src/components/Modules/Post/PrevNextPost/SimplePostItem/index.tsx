@@ -1,3 +1,4 @@
+import styled, { css } from 'styled-components';
 import { Post } from '@/contentlayer/generated';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
 import { pageRoute } from '@/libs/models/route';
@@ -6,11 +7,10 @@ import Image from '@/components/Common/Image';
 import Text from '@/components/Common/Text';
 import Flex from '@/components/Common/Flex';
 import Section from '@/components/Common/Section';
-import styled from 'styled-components';
 
 type SimplePostItemProps = Post & {
   itemType: 'PREV' | 'NEXT';
-}
+};
 
 const SimplePostItem = ({
   _raw,
@@ -19,11 +19,7 @@ const SimplePostItem = ({
   thumbnail,
   itemType,
 }: SimplePostItemProps): JSX.Element => {
-  const {
-    color,
-    fontSize,
-    fontFamily,
-  } = useStyledTheme();
+  const { color, fontSize, fontFamily } = useStyledTheme();
 
   return (
     <HyperLink
@@ -36,6 +32,10 @@ const SimplePostItem = ({
       border={{
         all: `1px solid ${color.border2}`,
       }}
+      hover={css`
+        transform: scale(1.02);
+        transition: 0.2s ease-in-out;
+      `}
     >
       <Flex
         tagName='article'
@@ -50,11 +50,7 @@ const SimplePostItem = ({
           loading='lazy'
         />
 
-        <Section
-          tagName='div'
-          flex='1'
-          padding='2rem'
-        >
+        <Section tagName='div' flex='1' padding='2rem'>
           <Text
             tagName='span'
             display='inline-block'
@@ -86,12 +82,12 @@ const SimplePostItem = ({
       </Flex>
     </HyperLink>
   );
-}
+};
 
 const ThumbnailImage = styled(Image)`
   ${({ theme }) => theme.device.smallTablet} {
     display: none;
-  };
+  }
 `;
 
 export default SimplePostItem;

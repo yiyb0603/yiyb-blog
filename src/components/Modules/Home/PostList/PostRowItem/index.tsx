@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import dayjs from 'dayjs';
 import { Post } from '@/contentlayer/generated/types';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
@@ -34,6 +34,10 @@ const PostRowItem = ({
       padding='2rem'
       borderRadius='10px'
       backgroundColor={color.background3}
+      hover={css`
+        transform: scale(1.02);
+        transition: 0.2s ease-in-out;
+      `}
     >
       <ContentThumbnailWrapper
         tagName='div'
