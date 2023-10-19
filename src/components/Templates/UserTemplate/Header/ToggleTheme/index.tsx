@@ -6,15 +6,9 @@ import SunIcon from '@/components/Common/Icon/SunIcon';
 import MoonIcon from '@/components/Common/Icon/MoonIcon';
 
 const ToggleTheme = (): JSX.Element => {
-  const {
-    theme,
-    toggleTheme,
-  } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
-  const {
-    color,
-    fontSize,
-  } = useStyledTheme();
+  const { color, fontSize } = useStyledTheme();
 
   const iconProps: IconBaseProps = {
     fontSize: fontSize.EXTRA_BIG,
@@ -25,22 +19,14 @@ const ToggleTheme = (): JSX.Element => {
 
   switch (theme) {
     case SystemTheme.LIGHT:
-      return (
-        <SunIcon
-          {...iconProps}
-        />
-      );
+      return <SunIcon {...iconProps} />;
 
     case SystemTheme.DARK:
-      return (
-        <MoonIcon
-          {...iconProps}
-        />
-      );
+      return <MoonIcon {...iconProps} />;
 
     default:
       return <></>;
   }
-}
+};
 
 export default ToggleTheme;

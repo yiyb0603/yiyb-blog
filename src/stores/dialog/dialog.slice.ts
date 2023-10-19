@@ -10,14 +10,8 @@ const dialogSlice = createSlice({
     },
 
     setDialogInfo: (state: DialogState, action: PayloadAction<DialogState>) => {
-      const {
-        isDialog,
-        dialogType,
-        title,
-        content,
-        onResolve,
-        onReject,
-      } = action.payload;
+      const { isDialog, dialogType, title, content, onResolve, onReject } =
+        action.payload;
 
       state.isDialog = isDialog;
       state.dialogType = dialogType;
@@ -28,14 +22,8 @@ const dialogSlice = createSlice({
     },
 
     clearDialogInfo: (state: DialogState) => {
-      const {
-        isDialog,
-        dialogType,
-        title,
-        content,
-        onResolve,
-        onReject,
-      } = initialDialogState;
+      const { isDialog, dialogType, title, content, onResolve, onReject } =
+        initialDialogState;
 
       state.isDialog = isDialog;
       state.dialogType = dialogType;
@@ -47,7 +35,4 @@ const dialogSlice = createSlice({
   },
 });
 
-export const {
-  reducer: dialogReducer,
-  actions: dialogAction,
-} = dialogSlice;
+export const { reducer: dialogReducer, actions: dialogAction } = dialogSlice;

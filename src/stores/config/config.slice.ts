@@ -7,6 +7,4 @@ const configSlice = createSlice({
   reducers: {},
 });
 
-export const {
-  reducer: configReducer,
-} = configSlice;
+export const { reducer: configReducer } = configSlice;

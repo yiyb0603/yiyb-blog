@@ -16,7 +16,7 @@ type PaginationProps = {
   totalPages: number;
   hiddenOnSinglePage: boolean;
   onPageClick: (page: number) => void;
-}
+};
 
 const Pagination = ({
   currentPage,
@@ -25,24 +25,22 @@ const Pagination = ({
   hiddenOnSinglePage,
   onPageClick,
 }: PaginationProps): JSX.Element => {
-  const {
-    color,
-    fontSize,
-  } = useStyledTheme();
+  const { color, fontSize } = useStyledTheme();
 
-  const [
-    pagesIndex,
-    setPagesIndex,
-  ] = useState<number>(0);
+  const [pagesIndex, setPagesIndex] = useState<number>(0);
 
   const pages = Array.from({ length: totalPages }).map((_, index) => index + 1);
 
-  const renderPages = useMemo<number[][]>(() => chunkArray({
-    items: pages,
-    perItems: perPage,
-  }), [pages, perPage]);
+  const renderPages = useMemo<number[][]>(
+    () =>
+      chunkArray({
+        items: pages,
+        perItems: perPage,
+      }),
+    [pages, perPage],
+  );
 
-  const isLastPagesIndex = ((pagesIndex + 1) * perPage) >= totalPages;
+  const isLastPagesIndex = (pagesIndex + 1) * perPage >= totalPages;
 
   const arrowStyle: IconBaseProps = {
     fontSize: fontSize.BIG,
@@ -55,11 +53,11 @@ const Pagination = ({
 
   const handlePrevPage = (): void => {
     setPagesIndex((prev) => prev - 1);
-  }
+  };
 
   const handleNextPage = (): void => {
     setPagesIndex((prev) => prev + 1);
-  }
+  };
 
   useEffect(() => {
     const pagesIndex = Math.floor((currentPage - 1) / perPage);
@@ -92,40 +90,38 @@ const Pagination = ({
         tagName='div'
         gap='1rem'
       >
-        {
-          renderPages[pagesIndex]?.map((page) => {
-            const selected = page === currentPage;
+        {renderPages[pagesIndex]?.map((page) => {
+          const selected = page === currentPage;
 
-            return (
-              <Section
-                key={page}
-                tagName='div'
-                padding='1rem 1.5rem'
-                borderRadius='5px'
-                border={{
-                  all: `1px solid ${selected ? color.main : color.border2}`,
-                }}
-                color={selected ? color.white : color.contrast}
-                backgroundColor={selected ? color.main : color.theme}
-                cursor='pointer'
-                onClick={() => onPageClick(page)}
-                hover={css`
-                  transition: all 0.15s ease-in-out;
-                  color: ${color.white};
-                  background-color: ${color.main};
-                `}
+          return (
+            <Section
+              key={page}
+              tagName='div'
+              padding='1rem 1.5rem'
+              borderRadius='5px'
+              border={{
+                all: `1px solid ${selected ? color.main : color.border2}`,
+              }}
+              color={selected ? color.white : color.contrast}
+              backgroundColor={selected ? color.main : color.theme}
+              cursor='pointer'
+              onClick={() => onPageClick(page)}
+              hover={css`
+                transition: all 0.15s ease-in-out;
+                color: ${color.white};
+                background-color: ${color.main};
+              `}
+            >
+              <Text
+                tagName='span'
+                fontSize={fontSize.SMALL}
+                fontFamily={fonts.pretendard.MEDIUM}
               >
-                <Text
-                  tagName='span'
-                  fontSize={fontSize.SMALL}
-                  fontFamily={fonts.pretendard.MEDIUM}
-                >
-                  {page}
-                </Text>
-              </Section>
-            );
-          })
-        }
+                {page}
+              </Text>
+            </Section>
+          );
+        })}
       </Flex>
 
       <RightArrowIcon
@@ -135,6 +131,6 @@ const Pagination = ({
       />
     </Flex>
   );
-}
+};
 
 export default Pagination;

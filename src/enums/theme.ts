@@ -4,4 +4,4 @@ export const SystemTheme = {
   DEFAULT: 'default',
 } as const;
 
-export type SystemTheme = typeof SystemTheme[keyof typeof SystemTheme];
+export type SystemTheme = (typeof SystemTheme)[keyof typeof SystemTheme];

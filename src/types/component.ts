@@ -3,4 +3,4 @@ export type Heading = {
   text: string;
   level: number;
   element: Element;
-}
+};

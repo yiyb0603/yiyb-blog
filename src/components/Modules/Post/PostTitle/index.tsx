@@ -3,14 +3,10 @@ import Text from '@/components/Common/Text';
 
 type PostTitleProps = {
   title: string;
-}
+};
 
-const PostTitle = ({
-  title,
-}: PostTitleProps): JSX.Element => {
-  const {
-    fontSize,
-  } = useStyledTheme();
+const PostTitle = ({ title }: PostTitleProps): JSX.Element => {
+  const { fontSize } = useStyledTheme();
 
   return (
     <Text
@@ -22,6 +18,6 @@ const PostTitle = ({
       {title}
     </Text>
   );
-}
+};
 
 export default PostTitle;

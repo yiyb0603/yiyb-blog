@@ -1,5 +1,6 @@
 const removeHTMLString = (value: string): string => {
-  return value?.replace(/(<([^>]+)>)/gi, '')
+  return value
+    ?.replace(/(<([^>]+)>)/gi, '')
     .replace(/&#40;/gi, '(')
     .replace(/&#41;/gi, ')')
     .replace(/&#59/gi, ';')
@@ -16,6 +17,6 @@ const removeHTMLString = (value: string): string => {
     .replace(/&quot;/gi, '"')
     .replace(/&apos;/gi, "'")
     .replace(/&nbsp;/gi, ' ');
-}
+};
 
 export default removeHTMLString;

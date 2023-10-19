@@ -12,13 +12,21 @@ export const deviceSize = {
 
 type DeviceSizes = keyof typeof deviceSize;
 
-type Device = Record<DeviceSizes, `@media only screen and (max-width: ${typeof deviceSize[DeviceSizes]})`>;
+type Device = Record<
+  DeviceSizes,
+  `@media only screen and (max-width: ${(typeof deviceSize)[DeviceSizes]})`
+>;
 
-export const device: Device = Object.entries(deviceSize).reduce((device, [deviceName, deviceSize]) => {
-  device[deviceName as DeviceSizes] = `@media only screen and (max-width: ${deviceSize})`;
+export const device: Device = Object.entries(deviceSize).reduce(
+  (device, [deviceName, deviceSize]) => {
+    device[
+      deviceName as DeviceSizes
+    ] = `@media only screen and (max-width: ${deviceSize})`;
 
-  return device;
-}, {} as Device);
+    return device;
+  },
+  {} as Device,
+);
 
 export const constantSafeArea = {
   top: 'constant(safe-area-inset-top)',

@@ -7,14 +7,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
   },
   "dependencies": {
     "@mdx-js/loader": "^2.3.0",
     "@next/mdx": "^13.2.1",
     "@reduxjs/toolkit": "^1.6.2",
-    "@types/gtag.js": "^0.0.12",
-    "@types/styled-components": "^5.1.26",
     "contentlayer": "^0.2.5",
     "cookies-next": "^2.1.1",
     "dayjs": "^1.11.7",
@@ -41,9 +40,13 @@
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
+    "@types/gtag.js": "^0.0.12",
     "@types/react": "18.0.28",
+    "@types/react-dom": "^18.2.14",
+    "@types/styled-components": "^5.1.26",
     "eslint": "8.34.0",
     "eslint-config-next": "13.2.1",
+    "prettier": "^3.0.3",
     "typescript": "4.9.5"
   }
 }

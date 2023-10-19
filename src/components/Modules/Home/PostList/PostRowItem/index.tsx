@@ -44,7 +44,12 @@ const PostRowItem = ({
         gap='2rem'
         justifyContent='space-between'
       >
-        <Flex tagName='div' gap='0.5rem' flexDirection='column' flex='1'>
+        <Flex
+          tagName='div'
+          gap='0.5rem'
+          flexDirection='column'
+          flex='1'
+        >
           <Text
             tagName='time'
             dateTime={createdAt}

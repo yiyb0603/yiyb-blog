@@ -9,7 +9,7 @@ export type DialogState = {
   content: ReactNode;
   onResolve: () => void;
   onReject: () => void;
-}
+};
 
 export const initialDialogState: DialogState = {
   isDialog: false,

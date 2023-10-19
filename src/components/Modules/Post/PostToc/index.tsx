@@ -11,67 +11,48 @@ import Section from '@/components/Common/Section';
 type PostTocProps = {
   postId: string;
   postElement: HTMLElement | null;
-}
+};
 
-const PostToc = ({
-  postId,
-  postElement,
-}: PostTocProps): JSX.Element => {
-  const {
-    color,
-    fontFamily,
-    fontSize,
-  } = useStyledTheme();
+const PostToc = ({ postId, postElement }: PostTocProps): JSX.Element => {
+  const { color, fontFamily, fontSize } = useStyledTheme();
 
   const isMediumLaptop = useResponsiveDevice({
     maxWidth: deviceSize.mediumLaptop,
   });
 
-  const {
-    headings,
-    activeId,
-    handleHeadingClick,
-  } = usePostToc({
+  const { headings, activeId, handleHeadingClick } = usePostToc({
     postId,
     postElement,
     disable: isMediumLaptop,
   });
 
   return (
-    <PostTocWrapper
-      tagName='aside'
-    >
+    <PostTocWrapper tagName='aside'>
       <FixedWrapper
         tagName='div'
         gap='1rem'
         flexDirection='column'
       >
-        {
-          headings.map(({
-            id,
-            text,
-            level,
-          }) => (
-            <Text
-              tagName='span'
-              key={id}
-              fontSize={level > 2 ? fontSize.SMALL : fontSize.NORMAL}
-              lineHeight='1.5'
-              wordBreak='keep-all'
-              fontFamily={fontFamily.pretendard.MEDIUM}
-              color={id === activeId ? color.main : color.contrast}
-              cursor='pointer'
-              margin={level > 2 ? `0 0 0 ${level * 10 / 2}px` : '0'}
-              onClick={() => handleHeadingClick(id)}
-            >
-              {text}
-            </Text>
-          ))
-        }
+        {headings.map(({ id, text, level }) => (
+          <Text
+            tagName='span'
+            key={id}
+            fontSize={level > 2 ? fontSize.SMALL : fontSize.NORMAL}
+            lineHeight='1.5'
+            wordBreak='keep-all'
+            fontFamily={fontFamily.pretendard.MEDIUM}
+            color={id === activeId ? color.main : color.contrast}
+            cursor='pointer'
+            margin={level > 2 ? `0 0 0 ${(level * 10) / 2}px` : '0'}
+            onClick={() => handleHeadingClick(id)}
+          >
+            {text}
+          </Text>
+        ))}
       </FixedWrapper>
     </PostTocWrapper>
   );
-}
+};
 
 const PostTocWrapper = styled(Section<'aside'>)`
   position: absolute;
@@ -79,7 +60,7 @@ const PostTocWrapper = styled(Section<'aside'>)`
 
   ${({ theme }) => theme.device.mediumLaptop} {
     display: none;
-  };
+  }
 `;
 
 const FixedWrapper = styled(Flex<'div'>)`

@@ -54,7 +54,7 @@ const useGiscus = <T extends HTMLElement>(giscusRef: RefObject<T>): void => {
           },
         },
       },
-      'https://giscus.app'
+      'https://giscus.app',
     );
   }, [theme]);
 };

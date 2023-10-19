@@ -8,7 +8,7 @@ type SNSInfo = {
   platform: string;
   link: string;
   icon: IconType;
-}
+};
 
 export const snsList: SNSInfo[] = [
   {

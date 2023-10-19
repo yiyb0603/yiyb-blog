@@ -6,7 +6,7 @@ type SpinnerProps = {
   strokeWidth?: number;
   color?: string;
   secondaryColor?: string;
-}
+};
 
 const Spinner = ({
   width,
@@ -24,6 +24,6 @@ const Spinner = ({
       secondaryColor={secondaryColor}
     />
   );
-}
+};
 
 export default Spinner;

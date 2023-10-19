@@ -50,7 +50,10 @@ const Modal = ({
 
   return (
     <Portal portalId='modal-portal'>
-      <ModalBackground tagName='div' onClick={handleModal}></ModalBackground>
+      <ModalBackground
+        tagName='div'
+        onClick={handleModal}
+      ></ModalBackground>
 
       <ModalContent
         tagName='div'
@@ -63,7 +66,11 @@ const Modal = ({
         borderRadius='5px'
         onClick={(e) => e.stopPropagation()}
       >
-        <Flex tagName='div' justifyContent='space-between' padding='0 0 1rem 0'>
+        <Flex
+          tagName='div'
+          justifyContent='space-between'
+          padding='0 0 1rem 0'
+        >
           <Text
             tagName='h2'
             fontSize={fontSize.MEDIUM}

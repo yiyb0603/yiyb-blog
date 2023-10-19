@@ -5,16 +5,12 @@ import { constantSafeArea, envSafeArea } from '@/styles/device';
 
 type ScrollProgressBarProps = {
   className?: string;
-}
+};
 
 const ScrollProgressBar = ({
   className,
 }: ScrollProgressBarProps): JSX.Element => {
-  const {
-    progressRef,
-    progress,
-    handleProgressMove,
-  } = useScrollProgress();
+  const { progressRef, progress, handleProgressMove } = useScrollProgress();
 
   return (
     <ScrollProgressLineWrapper
@@ -22,12 +18,10 @@ const ScrollProgressBar = ({
       ref={progressRef}
       onClick={handleProgressMove}
     >
-      <ScrollProgress
-        progress={progress}
-      ></ScrollProgress>
+      <ScrollProgress progress={progress}></ScrollProgress>
     </ScrollProgressLineWrapper>
   );
-}
+};
 
 const ScrollProgressLineWrapper = styled.div`
   position: fixed;
@@ -40,7 +34,7 @@ const ScrollProgressLineWrapper = styled.div`
   cursor: pointer;
 `;
 
-const ScrollProgress = styled.div<{ progress: number; }>`
+const ScrollProgress = styled.div<{ progress: number }>`
   width: 100%;
   height: 4px;
   transform: scaleX(${({ progress }) => progress});

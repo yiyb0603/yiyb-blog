@@ -15,7 +15,7 @@ type HyperLinkStyleProps = {
   fontFamily?: string;
   display?: Display;
   hover?: FlattenSimpleInterpolation;
-}
+};
 
 type HyperLinkOwnProps = {
   className?: string;
@@ -24,10 +24,9 @@ type HyperLinkOwnProps = {
   link?: LinkProps;
   anchor?: AnchorHTMLAttributes<HTMLAnchorElement>;
   children?: ReactNode;
-}
+};
 
-type HyperLinkProps = HyperLinkOwnProps &
-  HyperLinkStyleProps
+type HyperLinkProps = HyperLinkOwnProps & HyperLinkStyleProps;
 
 const HyperLink = ({
   className,
@@ -67,7 +66,7 @@ const HyperLink = ({
       </CustomHyperLink>
     </Link>
   );
-}
+};
 
 const CustomHyperLink = styled.a<HyperLinkStyleProps>`
   display: ${({ display }) => display};
@@ -89,7 +88,7 @@ const CustomHyperLink = styled.a<HyperLinkStyleProps>`
     &:hover {
       ${({ hover }) => hover};
     }
-  };
+  }
 `;
 
 export default HyperLink;

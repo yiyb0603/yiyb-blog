@@ -10,17 +10,13 @@ import 'dayjs/locale/ko';
 type PostSubInfoProps = {
   createdAt: string;
   category: string;
-}
+};
 
 const PostSubInfo = ({
   createdAt,
   category,
 }: PostSubInfoProps): JSX.Element => {
-  const {
-    color,
-    fontFamily,
-    fontSize,
-  } = useStyledTheme();
+  const { color, fontFamily, fontSize } = useStyledTheme();
 
   return (
     <Flex
@@ -55,6 +51,6 @@ const PostSubInfo = ({
       </Text>
     </Flex>
   );
-}
+};
 
 export default PostSubInfo;

@@ -7,6 +7,6 @@ const generateStaticPath = (path: string): string => {
   }
 
   return `${dotenv.CDN_SERVER}${path}`;
-}
+};
 
 export default generateStaticPath;

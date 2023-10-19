@@ -26,7 +26,10 @@ const PostShare = (): JSX.Element => {
   };
 
   return (
-    <PostShareWrapper tagName='section' margin='2rem 0 0 0'>
+    <PostShareWrapper
+      tagName='section'
+      margin='2rem 0 0 0'
+    >
       <Button
         width='100%'
         height='46px'
@@ -34,9 +37,16 @@ const PostShare = (): JSX.Element => {
         backgroundColor={color.main}
         onClick={handleShare}
       >
-        <ClipIcon color={color.white} fontSize={fontSize.MEDIUM} />
+        <ClipIcon
+          color={color.white}
+          fontSize={fontSize.MEDIUM}
+        />
 
-        <Text tagName='p' fontSize={fontSize.NORMAL} color={color.white}>
+        <Text
+          tagName='p'
+          fontSize={fontSize.NORMAL}
+          color={color.white}
+        >
           게시글 공유하기
         </Text>
       </Button>

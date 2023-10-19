@@ -1,23 +1,13 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "paths": {
-      "@/contentlayer/generated": [
-        "./.contentlayer/generated"
-      ],
+      "@/contentlayer/generated": ["./.contentlayer/generated"],
 
-      "@/contentlayer/generated/*": [
-        "./.contentlayer/generated/*"
-      ],
+      "@/contentlayer/generated/*": ["./.contentlayer/generated/*"],
 
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
     "allowJs": true,
     "baseUrl": ".",
@@ -40,7 +30,5 @@
     "./.contentlayer/generated",
     "src"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

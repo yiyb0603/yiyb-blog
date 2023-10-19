@@ -7,10 +7,7 @@ import Section from '@/components/Common/Section';
 import Text from '@/components/Common/Text';
 
 const Contacts = (): JSX.Element => {
-  const {
-    color,
-    fontSize,
-  } = useStyledTheme();
+  const { color, fontSize } = useStyledTheme();
 
   return (
     <Section
@@ -25,60 +22,50 @@ const Contacts = (): JSX.Element => {
         📩 Contacts
       </Text>
 
-      <Section
-        tagName='div'
-      >
+      <Section tagName='div'>
         <Flex
           tagName='ul'
           gap='1rem'
           flexDirection='column'
         >
-          {
-            snsList.map(({
-              platform,
-              link,
-              icon: Icon,
-            }) => (
-              <HyperLink
-                key={platform}
-                external
-                anchor={{
-                  href: link,
-                  target: '_blank',
-                }}
-                padding='1rem 1.5rem'
-                borderRadius='5px'
-                color={color.contrast}
-                backgroundColor={color.background3}
-                hover={css`
-                  transition: all 0.15s ease-in-out;
-                  color: ${color.white};
-                  background-color: ${color.main};
-                `}
+          {snsList.map(({ platform, link, icon: Icon }) => (
+            <HyperLink
+              key={platform}
+              external
+              anchor={{
+                href: link,
+                target: '_blank',
+              }}
+              padding='1rem 1.5rem'
+              borderRadius='5px'
+              color={color.contrast}
+              backgroundColor={color.background3}
+              hover={css`
+                transition: all 0.15s ease-in-out;
+                color: ${color.white};
+                background-color: ${color.main};
+              `}
+            >
+              <Flex
+                tagName='div'
+                gap='0.75rem'
+                alignItems='flex-end'
               >
-                <Flex
-                  tagName='div'
-                  gap='0.75rem'
-                  alignItems='flex-end'
-                >
-                  <Icon
-                    fontSize={fontSize.EXTRA_BIG}
-                  />
+                <Icon fontSize={fontSize.EXTRA_BIG} />
 
-                  <Text
-                    tagName='span'
-                    fontSize={fontSize.NORMAL}
-                  >
-                    {platform}
-                  </Text>
-                </Flex>
-              </HyperLink>
-            ))
-          }
+                <Text
+                  tagName='span'
+                  fontSize={fontSize.NORMAL}
+                >
+                  {platform}
+                </Text>
+              </Flex>
+            </HyperLink>
+          ))}
         </Flex>
       </Section>
     </Section>
   );
-}
+};
 
 export default Contacts;

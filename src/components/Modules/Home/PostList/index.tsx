@@ -12,21 +12,13 @@ type PostListProps = {
   category: string;
   posts: Post[];
   postsCount: number;
-}
+};
 
-const PostList = ({
-  category,
-  posts,
-  postsCount,
-}: PostListProps) => {
-  const {
-    fontSize,
-  } = useStyledTheme();
+const PostList = ({ category, posts, postsCount }: PostListProps) => {
+  const { fontSize } = useStyledTheme();
 
   return (
-    <Section
-      tagName='div'
-    >
+    <Section tagName='div'>
       <Text
         tagName='h2'
         fontSize={fontSize.BIG}
@@ -35,28 +27,25 @@ const PostList = ({
         📝 {category} ({postsCount.toLocaleString()})
       </Text>
 
-      {
-        isEmpty(posts) ?
+      {isEmpty(posts) ? (
         <NoPosts />
-        :
+      ) : (
         <Flex
           tagName='div'
           gap='2rem'
           flexDirection='column'
         >
-          {
-            posts.map((post) => (
-              <PostRowItem
-                key={post._id}
-                {...post}
-                href={`${pageRoute.POSTS}/${post._raw.flattenedPath}`}
-              />
-            ))
-          }
+          {posts.map((post) => (
+            <PostRowItem
+              key={post._id}
+              {...post}
+              href={`${pageRoute.POSTS}/${post._raw.flattenedPath}`}
+            />
+          ))}
         </Flex>
-      }
+      )}
     </Section>
   );
-}
+};
 
 export default PostList;

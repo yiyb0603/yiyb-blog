@@ -13,38 +13,32 @@ import Section from '../Common/Section';
 import Pagination from '../Common/Pagination';
 
 const HomePage: NextPage = () => {
-  const {
-    query,
-    push,
-  } = useRouter();
+  const { query, push } = useRouter();
 
   const category = (query?.category || '전체') as string;
   const currentPage = Number(query?.page || 1);
 
-  const {
-    filterPosts,
-    chunkPosts,
-    categories,
-  } = usePosts({
+  const { filterPosts, chunkPosts, categories } = usePosts({
     category: category === '전체' ? '' : category,
   });
 
-  const postCategories = [
-    '전체',
-    ...categories,
-  ];
+  const postCategories = ['전체', ...categories];
 
   const handlePageClick = (page: number): void => {
-    push({
-      query: {
-        ...query,
-        page,
+    push(
+      {
+        query: {
+          ...query,
+          page,
+        },
       },
-    }, undefined, {
-      scroll: true,
-      shallow: true,
-    });
-  }
+      undefined,
+      {
+        scroll: true,
+        shallow: true,
+      },
+    );
+  };
 
   return (
     <>
@@ -107,6 +101,6 @@ const HomePage: NextPage = () => {
       <Helmet />
     </>
   );
-}
+};
 
 export default HomePage;

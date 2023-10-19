@@ -4,20 +4,13 @@ import useRootSelector from '../redux/useRootSelector';
 
 type Props = {
   maxWidth: string;
-}
+};
 
-const useResponsiveDevice = ({
-  maxWidth,
-}: Props): boolean => {
-  const {
-    userAgent,
-  } = useRootSelector(({ user }) => user);
+const useResponsiveDevice = ({ maxWidth }: Props): boolean => {
+  const { userAgent } = useRootSelector(({ user }) => user);
 
-  const [
-    isFitDevice,
-    setIsFitDevice,
-  ] = useState<boolean>(
-    userAgent?.toLowerCase().includes('mobi') || false
+  const [isFitDevice, setIsFitDevice] = useState<boolean>(
+    userAgent?.toLowerCase().includes('mobi') || false,
   );
 
   const mediaQuery = useMediaQuery({
@@ -29,6 +22,6 @@ const useResponsiveDevice = ({
   }, [mediaQuery]);
 
   return isFitDevice;
-}
+};
 
 export default useResponsiveDevice;

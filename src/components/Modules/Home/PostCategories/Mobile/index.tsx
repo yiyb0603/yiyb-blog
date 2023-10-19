@@ -3,16 +3,14 @@ import Section from '@/components/Common/Section';
 import { CategoriesProps } from '../common';
 import PostCategories from '..';
 
-type MobilePostCategoriesProps = CategoriesProps & {}
+type MobilePostCategoriesProps = CategoriesProps & {};
 
 const MobilePostCategories = ({
   selectCategory,
   categories,
 }: MobilePostCategoriesProps): JSX.Element => {
   return (
-    <CategoriesWrapper
-      tagName='section'
-    >
+    <CategoriesWrapper tagName='section'>
       <PostCategories
         flexDirection='row'
         whiteSpace='pre'
@@ -21,14 +19,14 @@ const MobilePostCategories = ({
       />
     </CategoriesWrapper>
   );
-}
+};
 
 const CategoriesWrapper = styled(Section<'section'>)`
   display: none;
 
   ${({ theme }) => theme.device.smallLaptop} {
     display: flex;
-  };
+  }
 `;
 
 export default MobilePostCategories;

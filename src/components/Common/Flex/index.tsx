@@ -1,7 +1,4 @@
-import {
-  ComponentPropsWithRef,
-  ComponentPropsWithoutRef,
-} from 'react';
+import { ComponentPropsWithRef, ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
 import {
   AlignItems,
@@ -32,17 +29,28 @@ type FlexStyleProps = {
   borderRadius?: string;
   backgroundColor?: string;
   cursor?: Cursor;
-}
+};
 
-type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside' | 'header' | 'a' | 'footer' | 'ul';
+type AbleElementType =
+  | 'div'
+  | 'section'
+  | 'main'
+  | 'article'
+  | 'aside'
+  | 'header'
+  | 'a'
+  | 'footer'
+  | 'ul';
 
 type FlexOwnProps<T extends AbleElementType> = {
   tagName: T | undefined;
   className?: string;
   flexRef?: ComponentPropsWithRef<T>['ref'];
-}
+};
 
-type FlexProps<T extends AbleElementType> = FlexStyleProps & FlexOwnProps<T> & ComponentPropsWithoutRef<T>
+type FlexProps<T extends AbleElementType> = FlexStyleProps &
+  FlexOwnProps<T> &
+  ComponentPropsWithoutRef<T>;
 
 const Flex = <T extends AbleElementType>({
   className,
@@ -54,7 +62,7 @@ const Flex = <T extends AbleElementType>({
 }: FlexProps<T>): JSX.Element => {
   return (
     <FlexContainer
-      as={tagName || 'div' as AbleElementType}
+      as={tagName || ('div' as AbleElementType)}
       ref={flexRef}
       className={className}
       alignItems={alignItems}
@@ -63,7 +71,7 @@ const Flex = <T extends AbleElementType>({
       {children}
     </FlexContainer>
   );
-}
+};
 
 const FlexContainer = styled.div<FlexStyleProps>`
   width: ${({ width }) => width};

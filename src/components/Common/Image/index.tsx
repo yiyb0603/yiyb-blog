@@ -10,19 +10,15 @@ type ImageStyleProps = {
   maxHeight?: string;
   borderRadius?: string;
   margin?: string;
-}
+};
 
-type ImageOwnProps = ImgHTMLAttributes<HTMLImageElement> & {}
+type ImageOwnProps = ImgHTMLAttributes<HTMLImageElement> & {};
 
-type ImageProps = ImageStyleProps & ImageOwnProps
+type ImageProps = ImageStyleProps & ImageOwnProps;
 
 const Image = (props: ImageProps): JSX.Element => {
-  return (
-    <CustomImage
-      {...props}
-    />
-  );
-}
+  return <CustomImage {...props} />;
+};
 
 const CustomImage = styled.img<ImageStyleProps>`
   width: ${({ width }) => width};

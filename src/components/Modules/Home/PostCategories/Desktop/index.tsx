@@ -5,20 +5,16 @@ import Text from '@/components/Common/Text';
 import { CategoriesProps } from '../common';
 import PostCategories from '..';
 
-type DesktopPostCategoriesProps = CategoriesProps & {}
+type DesktopPostCategoriesProps = CategoriesProps & {};
 
 const DesktopPostCategories = ({
   selectCategory,
   categories,
 }: DesktopPostCategoriesProps): JSX.Element => {
-  const {
-    fontSize,
-  } = useStyledTheme();
+  const { fontSize } = useStyledTheme();
 
   return (
-    <CategoriesWrapper
-      tagName='aside'
-    >
+    <CategoriesWrapper tagName='aside'>
       <Text
         tagName='h2'
         fontSize={fontSize.MEDIUM}
@@ -35,7 +31,7 @@ const DesktopPostCategories = ({
       />
     </CategoriesWrapper>
   );
-}
+};
 
 const CategoriesWrapper = styled(Section<'aside'>)`
   position: sticky;
@@ -46,7 +42,7 @@ const CategoriesWrapper = styled(Section<'aside'>)`
 
   ${({ theme }) => theme.device.smallLaptop} {
     display: none;
-  };
+  }
 `;
 
 export default DesktopPostCategories;

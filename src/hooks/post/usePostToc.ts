@@ -7,22 +7,12 @@ type Props = {
   postId: string;
   postElement: HTMLElement | null;
   disable: boolean;
-}
+};
 
-const usePostToc = ({
-  postId,
-  postElement,
-  disable,
-}: Props) => {
-  const [
-    activeId,
-    setActiveId,
-  ] = useState<string>('');
+const usePostToc = ({ postId, postElement, disable }: Props) => {
+  const [activeId, setActiveId] = useState<string>('');
 
-  const [
-    headings,
-    setHeadings,
-  ] = useState<Heading[]>([]);
+  const [headings, setHeadings] = useState<Heading[]>([]);
 
   const handleHeadingClick = (id: string): void => {
     const element = document.getElementById(id);
@@ -35,23 +25,28 @@ const usePostToc = ({
       top: element.offsetTop - 20,
       behavior: 'smooth',
     });
-  }
+  };
 
   useEffect(() => {
     if (!postElement || disable || isEmpty(postId)) {
       return;
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      const intersectEntries = entries.filter(({ isIntersecting }) => isIntersecting);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersectEntries = entries.filter(
+          ({ isIntersecting }) => isIntersecting,
+        );
 
-      if (!isEmpty(intersectEntries)) {
-        setActiveId(intersectEntries[0].target.id);
-      }
-    }, {
-      threshold: 0.95,
-      rootMargin: '-70px 0px -70% 0px',
-    });
+        if (!isEmpty(intersectEntries)) {
+          setActiveId(intersectEntries[0].target.id);
+        }
+      },
+      {
+        threshold: 0.95,
+        rootMargin: '-70px 0px -70% 0px',
+      },
+    );
 
     const headingElements = Array.from(postElement.querySelectorAll('h2, h3'));
 
@@ -62,7 +57,7 @@ const usePostToc = ({
         ...headings,
         {
           id: headingElement.id,
-          level: +(headingElement.tagName.toLowerCase().replace('h', '')),
+          level: +headingElement.tagName.toLowerCase().replace('h', ''),
           text: removeHTMLString(headingElement.innerHTML),
           element: headingElement,
         },
@@ -83,6 +78,6 @@ const usePostToc = ({
     activeId,
     handleHeadingClick,
   };
-}
+};
 
 export default usePostToc;

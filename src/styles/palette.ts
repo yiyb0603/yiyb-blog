@@ -3,20 +3,26 @@ import camelToKebab from '@/utils/string/camelToKebab';
 export const generateCSSVariablePalette = <T extends Record<string, string>>(
   themePalette: T,
 ): Record<string, string> => {
-  return Object.entries(themePalette).reduce((prev, [key, value]) => {
-    prev[`--${camelToKebab(key)}`] = value;
-    return prev;
-  }, {} as Record<string, string>);
-}
+  return Object.entries(themePalette).reduce(
+    (prev, [key, value]) => {
+      prev[`--${camelToKebab(key)}`] = value;
+      return prev;
+    },
+    {} as Record<string, string>,
+  );
+};
 
 export const generateVariablePalette = <T extends Record<string, string>>(
   themePalette: T,
 ): Record<keyof T, string> => {
-  return Object.keys(themePalette).reduce((prev, key) => {
-    prev[key as keyof T] = `var(--${camelToKebab(key)})`;
-    return prev;
-  }, {} as Record<keyof T, string>);
-}
+  return Object.keys(themePalette).reduce(
+    (prev, key) => {
+      prev[key as keyof T] = `var(--${camelToKebab(key)})`;
+      return prev;
+    },
+    {} as Record<keyof T, string>,
+  );
+};
 
 export const palette = {
   red50: '#ffebee',

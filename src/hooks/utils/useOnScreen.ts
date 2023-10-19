@@ -6,7 +6,7 @@ type Props<T extends HTMLElement> = {
   rootMargin: string;
   threshold: number;
   disable: boolean;
-}
+};
 
 const useOnScreen = <T extends HTMLElement>({
   ref,
@@ -15,16 +15,14 @@ const useOnScreen = <T extends HTMLElement>({
   threshold,
   disable,
 }: Props<T>) => {
-  const [
-    isIntersecting,
-    setIntersecting,
-  ] = useState<boolean>(defaultValue);
+  const [isIntersecting, setIntersecting] = useState<boolean>(defaultValue);
 
-  const intersectingCallback = useCallback((
-    [entry]: IntersectionObserverEntry[],
-  ) => {
-    setIntersecting(entry.isIntersecting);
-  }, []);
+  const intersectingCallback = useCallback(
+    ([entry]: IntersectionObserverEntry[]) => {
+      setIntersecting(entry.isIntersecting);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (ref.current === null || disable) {
@@ -44,6 +42,6 @@ const useOnScreen = <T extends HTMLElement>({
   }, [disable, intersectingCallback, ref, rootMargin, threshold]);
 
   return isIntersecting;
-}
+};
 
 export default useOnScreen;

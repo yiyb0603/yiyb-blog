@@ -4,13 +4,11 @@ import Contacts from './Contacts';
 
 const StickyContents = (): JSX.Element => {
   return (
-    <StickyContentsWrapper
-      tagName='aside'
-    >
+    <StickyContentsWrapper tagName='aside'>
       <Contacts />
     </StickyContentsWrapper>
   );
-}
+};
 
 const StickyContentsWrapper = styled(Section<'aside'>)`
   min-width: 210px;
