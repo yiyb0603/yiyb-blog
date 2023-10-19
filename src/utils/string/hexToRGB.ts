@@ -10,6 +10,6 @@ const hexToRGB = (hexColor: string) => {
     green: parseInt(result[2], 16),
     blue: parseInt(result[3], 16),
   };
-}
+};
 
 export default hexToRGB;

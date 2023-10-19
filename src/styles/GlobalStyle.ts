@@ -1,4 +1,4 @@
-import { createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { disableDrag } from '@/styles/utils';
 import reset from './reset';
 import {

@@ -5,12 +5,9 @@ import SimplePostItem from './SimplePostItem';
 type PrevNextPostProps = {
   prev: Post | undefined;
   next: Post | undefined;
-}
+};
 
-const PrevNextPost = ({
-  prev,
-  next,
-}: PrevNextPostProps): JSX.Element => {
+const PrevNextPost = ({ prev, next }: PrevNextPostProps): JSX.Element => {
   return (
     <Flex
       tagName='section'
@@ -18,23 +15,21 @@ const PrevNextPost = ({
       flexDirection='column'
       margin='2rem 0 0 0'
     >
-      {
-        prev !== undefined &&
+      {prev !== undefined && (
         <SimplePostItem
           {...prev}
           itemType='PREV'
         />
-      }
+      )}
 
-      {
-        next !== undefined &&
+      {next !== undefined && (
         <SimplePostItem
           {...next}
           itemType='NEXT'
         />
-      }
+      )}
     </Flex>
   );
-}
+};
 
 export default PrevNextPost;

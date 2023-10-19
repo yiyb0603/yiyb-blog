@@ -9,18 +9,10 @@ import Modal from '../Modal';
 import Section from '../Section';
 
 const Dialog = (): JSX.Element => {
-  const {
-    color,
-  } = useStyledTheme();
+  const { color } = useStyledTheme();
 
-  const {
-    isDialog,
-    dialogType,
-    title,
-    content,
-    onResolve,
-    onReject,
-  } = useDialog();
+  const { isDialog, dialogType, title, content, onResolve, onReject } =
+    useDialog();
 
   return (
     <Modal
@@ -54,8 +46,7 @@ const Dialog = (): JSX.Element => {
           확인
         </Button>
 
-        {
-          dialogType === 'confirm' &&
+        {dialogType === 'confirm' && (
           <Button
             width='70px'
             height='38px'
@@ -68,11 +59,11 @@ const Dialog = (): JSX.Element => {
           >
             취소
           </Button>
-        }
+        )}
       </Flex>
     </Modal>
   );
-}
+};
 
 const DialogContentWrapper = styled(Section<'div'>)`
   min-height: 46px;

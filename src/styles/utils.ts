@@ -5,7 +5,10 @@ export const disableDrag = css`
   -webkit-user-drag: none;
 `;
 
-export const ellipsisLine = (line: number, maxWidth?: string): FlattenSimpleInterpolation => css`
+export const ellipsisLine = (
+  line: number,
+  maxWidth?: string,
+): FlattenSimpleInterpolation => css`
   max-width: ${maxWidth};
   display: -webkit-box;
   -webkit-line-clamp: ${line};

@@ -3,12 +3,9 @@ import isEmpty from '../is-packages/isEmpty';
 type Props<T> = {
   items: T[];
   perItems: number;
-}
+};
 
-const chunkArray = <T>({
-  items,
-  perItems,
-}: Props<T>): T[][] => {
+const chunkArray = <T>({ items, perItems }: Props<T>): T[][] => {
   let results: T[][] = [];
   let temps: T[] = [];
 
@@ -27,6 +24,6 @@ const chunkArray = <T>({
   }
 
   return results;
-}
+};
 
 export default chunkArray;

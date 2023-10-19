@@ -15,12 +15,12 @@ const copyToClipboard = (text: string): void => {
     textarea.focus();
     textarea.select();
 
-    document.execCommand('copy'); 
+    document.execCommand('copy');
 
     document.removeChild(textarea);
   } else {
     navigator.clipboard.writeText(text);
   }
-}
+};
 
 export default copyToClipboard;

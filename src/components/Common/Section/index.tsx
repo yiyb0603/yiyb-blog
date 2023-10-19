@@ -1,14 +1,6 @@
-import {
-  ComponentPropsWithoutRef,
-  ComponentPropsWithRef,
-} from 'react';
+import { ComponentPropsWithoutRef, ComponentPropsWithRef } from 'react';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
-import {
-  Cursor,
-  CustomBorder,
-  Overflow,
-  Position,
-} from '@/types/style';
+import { Cursor, CustomBorder, Overflow, Position } from '@/types/style';
 
 type SectionStyleProps = {
   width?: string;
@@ -26,15 +18,22 @@ type SectionStyleProps = {
   cursor?: Cursor;
   flex?: string;
   hover?: FlattenSimpleInterpolation;
-}
+};
 
-type AbleElementType = 'div' | 'section' | 'main' | 'article' | 'aside' | 'footer' | 'header';
+type AbleElementType =
+  | 'div'
+  | 'section'
+  | 'main'
+  | 'article'
+  | 'aside'
+  | 'footer'
+  | 'header';
 
 type SectionOwnProps<T extends AbleElementType> = {
   tagName: T | undefined;
   className?: string;
-  sectionRef?: ComponentPropsWithRef<T>['ref'],
-}
+  sectionRef?: ComponentPropsWithRef<T>['ref'];
+};
 
 type SectionProps<T extends AbleElementType> = SectionStyleProps &
   SectionOwnProps<T> &
@@ -49,7 +48,7 @@ const Section = <T extends AbleElementType>({
 }: SectionProps<T>): JSX.Element => {
   return (
     <CustomSection
-      as={tagName || 'div' as AbleElementType}
+      as={tagName || ('div' as AbleElementType)}
       className={className}
       ref={sectionRef}
       {...props}
@@ -57,7 +56,7 @@ const Section = <T extends AbleElementType>({
       {children}
     </CustomSection>
   );
-}
+};
 
 const CustomSection = styled.div<SectionStyleProps>`
   width: ${({ width }) => width};
@@ -84,7 +83,7 @@ const CustomSection = styled.div<SectionStyleProps>`
     &:hover {
       ${({ hover }) => hover};
     }
-  };
+  }
 `;
 
 export default Section;

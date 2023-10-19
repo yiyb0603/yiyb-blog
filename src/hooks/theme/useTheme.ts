@@ -19,7 +19,7 @@ const useTheme = () => {
 
       dispatch(themeAction.changeTheme(theme));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const setTheme = useCallback(
@@ -32,7 +32,7 @@ const useTheme = () => {
 
       setThemeWithoutCookie(theme);
     },
-    [setThemeWithoutCookie]
+    [setThemeWithoutCookie],
   );
 
   const toggleTheme = (): void => {
@@ -62,7 +62,7 @@ const useTheme = () => {
         setThemeWithoutCookie(SystemTheme.LIGHT);
       }
     },
-    [setThemeWithoutCookie]
+    [setThemeWithoutCookie],
   );
 
   const initializeTheme = useCallback((): void => {

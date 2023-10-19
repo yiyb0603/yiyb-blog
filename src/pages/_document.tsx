@@ -16,7 +16,9 @@ import { fontFamilies } from '@/styles/font';
 import { palette } from '@/styles/palette';
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
+  static async getInitialProps(
+    ctx: DocumentContext,
+  ): Promise<DocumentInitialProps> {
     const sheet: ServerStyleSheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
 
@@ -24,13 +26,12 @@ class MyDocument extends Document {
       ctx.renderPage = () => {
         return originalRenderPage({
           enhanceApp: (App) => (props) =>
-            sheet.collectStyles(
-              <App {...props} />
-            ),
+            sheet.collectStyles(<App {...props} />),
         });
       };
 
-      const initialProps: DocumentInitialProps = await Document.getInitialProps(ctx);
+      const initialProps: DocumentInitialProps =
+        await Document.getInitialProps(ctx);
 
       return {
         ...initialProps,
@@ -38,7 +39,7 @@ class MyDocument extends Document {
           <>
             {initialProps.styles}
             {sheet.getStyleElement()}
-          </>
+          </>,
         ],
       };
     } finally {
@@ -48,13 +49,9 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html
-        lang='ko'
-      >
+      <Html lang='ko'>
         <Head>
-          <meta
-            charSet='utf-8'
-          />
+          <meta charSet='utf-8' />
 
           <meta
             httpEquiv='Content-Type'
@@ -214,9 +211,7 @@ class MyDocument extends Document {
         </Head>
 
         <body>
-          <div
-            id='modal-portal'
-          ></div>
+          <div id='modal-portal'></div>
 
           <Main />
           <NextScript />

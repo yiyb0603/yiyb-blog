@@ -5,24 +5,18 @@ import Footer from './Footer';
 
 type UserTemplateProps = {
   children: ReactNode;
-}
+};
 
-const UserTemplate = ({
-  children,
-}: UserTemplateProps): JSX.Element => {
+const UserTemplate = ({ children }: UserTemplateProps): JSX.Element => {
   return (
     <>
       <Header />
 
-      <Section
-        tagName='main'
-      >
-        {children}
-      </Section>
+      <Section tagName='main'>{children}</Section>
 
       <Footer />
     </>
   );
-}
+};
 
 export default UserTemplate;

@@ -14,7 +14,7 @@ type HelmetProps = {
   createdAt?: string | null;
   noIndex?: boolean;
   children?: ReactNode;
-}
+};
 
 const Helmet = ({
   title = 'yiyb-blog',
@@ -53,7 +53,7 @@ const Helmet = ({
         content={description}
       />
 
-			<meta
+      <meta
         property='og:image'
         content={thumbnail}
       />
@@ -63,7 +63,7 @@ const Helmet = ({
         content={generateFullURL(asPath)}
       />
 
-			<meta
+      <meta
         name='twitter:title'
         content={title}
       />
@@ -78,7 +78,7 @@ const Helmet = ({
         content={generateFullURL(asPath)}
       />
 
-			<meta
+      <meta
         name='twitter:image'
         content={thumbnail}
       />
@@ -88,8 +88,7 @@ const Helmet = ({
         content='summary_large_image'
       />
 
-      {
-        !isEmpty(createdAt) &&
+      {!isEmpty(createdAt) && (
         <>
           <meta
             property='article:published_time'
@@ -101,7 +100,7 @@ const Helmet = ({
             content={dayjs(createdAt).format('YYYYMMDDHHmmss')}
           />
         </>
-      }
+      )}
 
       <meta
         property='article:pc_url'
@@ -133,19 +132,18 @@ const Helmet = ({
         content={dotenv.APP_URL}
       />
 
-      {
-        noIndex &&
+      {noIndex && (
         <meta
           property='robots'
           content='noindex'
         />
-      }
+      )}
 
       {children}
 
       <title>{title}</title>
     </Head>
   );
-}
+};
 
 export default Helmet;

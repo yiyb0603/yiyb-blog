@@ -10,11 +10,7 @@ import Text from '@/components/Common/Text';
 import ToggleTheme from './ToggleTheme';
 
 const Header = () => {
-  const {
-    color,
-    fontSize,
-    fontFamily,
-  } = useStyledTheme();
+  const { color, fontSize, fontFamily } = useStyledTheme();
 
   return (
     <HeaderWrapper
@@ -68,7 +64,7 @@ const Header = () => {
       </Flex>
     </HeaderWrapper>
   );
-}
+};
 
 const HeaderWrapper = styled(Section<'header'>)`
   position: sticky;

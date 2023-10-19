@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     pagesXMLString += `
       <url>
         <loc>${generateFullURL(
-          `${pageRoute.POSTS}/${encodeURIComponent(_raw.flattenedPath)}`
+          `${pageRoute.POSTS}/${encodeURIComponent(_raw.flattenedPath)}`,
         )}</loc>
         <lastmod>${dayjs(createdAt).format('YYYY-MM-DDTHH:mm:ssZ')}</lastmod>
       </url>

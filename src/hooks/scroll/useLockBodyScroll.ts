@@ -10,8 +10,8 @@ const useLockBodyScroll = (condition: boolean): void => {
 
     return () => {
       document.body.style.overflow = 'visible';
-    }
+    };
   }, [condition]);
-}
+};
 
 export default useLockBodyScroll;

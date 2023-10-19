@@ -50,7 +50,11 @@ const SimplePostItem = ({
           loading='lazy'
         />
 
-        <Section tagName='div' flex='1' padding='2rem'>
+        <Section
+          tagName='div'
+          flex='1'
+          padding='2rem'
+        >
           <Text
             tagName='span'
             display='inline-block'

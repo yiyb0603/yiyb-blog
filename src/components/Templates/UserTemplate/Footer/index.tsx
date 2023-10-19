@@ -6,11 +6,7 @@ import HyperLink from '@/components/Common/HyperLink';
 import Section from '@/components/Common/Section';
 
 const Footer = (): JSX.Element => {
-  const {
-    color,
-    fontSize,
-    fontFamily,
-  } = useStyledTheme();
+  const { color, fontSize, fontFamily } = useStyledTheme();
 
   return (
     <Section
@@ -32,26 +28,21 @@ const Footer = (): JSX.Element => {
           justifyContent='center'
           margin='0 0 1.25rem 0'
         >
-          {
-            snsList.map(({
-              platform,
-              link,
-            }) => (
-              <HyperLink
-                key={platform}
-                external
-                anchor={{
-                  href: link,
-                  target: '_blank',
-                  rel: 'noopener noreferrer'
-                }}
-                fontSize={fontSize.NORMAL}
-                color={color.main}
-              >
-                {platform}
-              </HyperLink>
-            ))
-          }
+          {snsList.map(({ platform, link }) => (
+            <HyperLink
+              key={platform}
+              external
+              anchor={{
+                href: link,
+                target: '_blank',
+                rel: 'noopener noreferrer',
+              }}
+              fontSize={fontSize.NORMAL}
+              color={color.main}
+            >
+              {platform}
+            </HyperLink>
+          ))}
         </Flex>
 
         <Text
@@ -65,6 +56,6 @@ const Footer = (): JSX.Element => {
       </Section>
     </Section>
   );
-}
+};
 
 export default Footer;

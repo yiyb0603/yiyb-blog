@@ -26,15 +26,25 @@ type TextStyleProps = {
   cursor?: Cursor;
   maxLine?: number;
   hover?: FlattenSimpleInterpolation;
-}
+};
 
-type AbleElementType = 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'a' | 'time';
+type AbleElementType =
+  | 'p'
+  | 'span'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'a'
+  | 'time';
 
 type TextOwnProps<T extends AbleElementType> = {
   tagName: T | undefined;
   className?: string;
   textRef?: ComponentPropsWithRef<T>['ref'];
-}
+};
 
 type TextProps<T extends AbleElementType> = TextStyleProps &
   TextOwnProps<T> &
@@ -49,7 +59,7 @@ const Text = <T extends AbleElementType>({
 }: TextProps<T>): JSX.Element => {
   return (
     <CustomText
-      as={tagName || 'p' as AbleElementType}
+      as={tagName || ('p' as AbleElementType)}
       className={className}
       ref={textRef}
       {...props}
@@ -57,7 +67,7 @@ const Text = <T extends AbleElementType>({
       {children}
     </CustomText>
   );
-}
+};
 
 const CustomText = styled.div<TextStyleProps>`
   display: ${({ display }) => display};
@@ -81,7 +91,7 @@ const CustomText = styled.div<TextStyleProps>`
     &:hover {
       ${({ hover }) => hover};
     }
-  };
+  }
 `;
 
 export default Text;

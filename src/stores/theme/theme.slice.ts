@@ -12,7 +12,4 @@ const themeSlice = createSlice({
   },
 });
 
-export const {
-  reducer: themeReducer,
-  actions: themeAction,
-} = themeSlice;
+export const { reducer: themeReducer, actions: themeAction } = themeSlice;

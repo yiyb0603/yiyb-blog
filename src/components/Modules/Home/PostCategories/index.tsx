@@ -10,7 +10,7 @@ type PostCategoriesProps = {
   whiteSpace: WhiteSpace;
   selectCategory: string;
   categories: string[];
-}
+};
 
 const PostCategories = ({
   flexDirection,
@@ -18,11 +18,7 @@ const PostCategories = ({
   selectCategory,
   categories,
 }: PostCategoriesProps) => {
-  const {
-    color,
-    fontSize,
-    fontFamily,
-  } = useStyledTheme();
+  const { color, fontSize, fontFamily } = useStyledTheme();
 
   return (
     <CategoriesWrapper
@@ -33,46 +29,47 @@ const PostCategories = ({
       maxHeight='365px'
       overflow='auto'
     >
-      {
-        categories.map((category) => (
-          <CategoryItemWrapper
-            key={category}
+      {categories.map((category) => (
+        <CategoryItemWrapper key={category}>
+          <HyperLink
+            external={false}
+            link={{
+              href: {
+                query:
+                  category === '전체'
+                    ? {}
+                    : {
+                        category,
+                      },
+              },
+            }}
+            display='block'
+            padding='1rem 1.75rem'
+            borderRadius='5px'
+            whiteSpace={whiteSpace}
+            color={category === selectCategory ? color.white : color.contrast}
+            backgroundColor={
+              category === selectCategory ? color.main : color.background3
+            }
+            hover={css`
+              transition: all 0.15s ease-in-out;
+              color: ${color.white};
+              background-color: ${color.main};
+            `}
           >
-            <HyperLink
-              external={false}
-              link={{
-                href: {
-                  query: category === '전체' ? {} : {
-                    category,
-                  },
-                },
-              }}
-              display='block'
-              padding='1rem 1.75rem'
-              borderRadius='5px'
-              whiteSpace={whiteSpace}
-              color={category === selectCategory ? color.white : color.contrast}
-              backgroundColor={category === selectCategory ? color.main : color.background3}
-              hover={css`
-                transition: all 0.15s ease-in-out;
-                color: ${color.white};
-                background-color: ${color.main};
-              `}
+            <Text
+              tagName='span'
+              fontSize={fontSize.NORMAL}
+              fontFamily={fontFamily.pretendard.MEDIUM}
             >
-              <Text
-                tagName='span'
-                fontSize={fontSize.NORMAL}
-                fontFamily={fontFamily.pretendard.MEDIUM}
-              >
-                {category}
-              </Text>
-            </HyperLink>
-          </CategoryItemWrapper>
-        ))
-      }
+              {category}
+            </Text>
+          </HyperLink>
+        </CategoryItemWrapper>
+      ))}
     </CategoriesWrapper>
-  )
-}
+  );
+};
 
 const CategoriesWrapper = styled(Flex<'ul'>)`
   &::-webkit-scrollbar {

@@ -11,7 +11,7 @@ export type StoreState = {
   config: ConfigState;
   dialog: DialogState;
   user: UserState;
-}
+};
 
 type RootReducer = Reducer<StoreState, AnyAction>;
 
@@ -38,7 +38,7 @@ export const rootReducer: RootReducer = (state, action) => {
         user: userReducer,
       })(state, action);
   }
-}
+};
 
 export type RootState = ReturnType<typeof rootReducer>;
 

@@ -1,15 +1,6 @@
-import {
-  MouseEvent,
-  RefObject,
-  ButtonHTMLAttributes,
-} from 'react';
+import { MouseEvent, RefObject, ButtonHTMLAttributes } from 'react';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
-import {
-  Cursor,
-  JustifyContent,
-  Position,
-  Visibility,
-} from '@/types/style';
+import { Cursor, JustifyContent, Position, Visibility } from '@/types/style';
 import { fontSize as fontSizeStyle } from '@/styles/font';
 import { cssPalette } from '@/styles/palette';
 import { disableDrag } from '@/styles/utils';
@@ -37,17 +28,17 @@ type ButtonStyleProps = {
   boxShadow?: string;
   cursor?: Cursor;
   hover?: FlattenSimpleInterpolation;
-}
+};
 
 type ButtonOwnProps = {
   className?: string;
   isLoading?: boolean;
   buttonRef?: RefObject<HTMLButtonElement>;
-}
+};
 
 type ButtonProps = ButtonStyleProps &
   ButtonOwnProps &
-  ButtonHTMLAttributes<HTMLButtonElement>
+  ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({
   spinnerColor = cssPalette.white,
@@ -68,7 +59,7 @@ const Button = ({
     }
 
     onClick(e);
-  }
+  };
 
   return (
     <ButtonWrapper
@@ -81,8 +72,7 @@ const Button = ({
       cursor={cursor}
       {...props}
     >
-      {
-        isLoading ?
+      {isLoading ? (
         <Spinner
           width={22}
           height={22}
@@ -90,9 +80,9 @@ const Button = ({
           color={spinnerColor}
           secondaryColor={spinnerColor}
         />
-        :
+      ) : (
         children
-      }
+      )}
     </ButtonWrapper>
   );
 };
@@ -127,7 +117,7 @@ const ButtonWrapper = styled.button<ButtonStyleProps>`
     &:hover {
       ${({ hover }) => hover};
     }
-  };
+  }
 `;
 
 export default Button;

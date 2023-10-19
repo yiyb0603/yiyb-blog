@@ -1,18 +1,49 @@
 type Global = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset';
 
-export type Position = Global | 'static' | 'absolute' | 'relative' | 'fixed' | 'sticky';
+export type Position =
+  | Global
+  | 'static'
+  | 'absolute'
+  | 'relative'
+  | 'fixed'
+  | 'sticky';
 
 export type FlexWrap = Global | 'nowrap' | 'wrap' | 'wrap-reverse';
 
-export type FlexDirection = Global | 'row' | 'column' | 'row-reverse' | 'column-reverse';
+export type FlexDirection =
+  | Global
+  | 'row'
+  | 'column'
+  | 'row-reverse'
+  | 'column-reverse';
 
-export type JustifyContent = Global | 'flex-start' | 'center' | 'flex-end' | 'space-around' | 'space-between';
+export type JustifyContent =
+  | Global
+  | 'flex-start'
+  | 'center'
+  | 'flex-end'
+  | 'space-around'
+  | 'space-between';
 
-export type AlignItems = Global | 'flex-start' | 'center' | 'flex-end' | 'baseline' | 'stretch';
+export type AlignItems =
+  | Global
+  | 'flex-start'
+  | 'center'
+  | 'flex-end'
+  | 'baseline'
+  | 'stretch';
 
 export type Cursor = Global | 'default' | 'pointer';
 
-export type Display = Global | 'none' | 'hidden' | 'block' | 'inline' | 'inline-block' | 'flex' | 'grid';
+export type Display =
+  | Global
+  | 'none'
+  | 'hidden'
+  | 'block'
+  | 'inline'
+  | 'inline-block'
+  | 'flex'
+  | 'grid';
 
 export type TextAlign = Global | 'start' | 'center' | 'end' | 'left' | 'right';
 
@@ -32,4 +63,4 @@ export type CustomBorder = {
   left?: BorderValue;
   right?: BorderValue;
   bottom?: BorderValue;
-}
+};

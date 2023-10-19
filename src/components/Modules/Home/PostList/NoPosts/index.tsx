@@ -5,15 +5,10 @@ import Text from '@/components/Common/Text';
 import Image from '@/components/Common/Image';
 
 const NoPosts = (): JSX.Element => {
-  const {
-    fontSize,
-    fontFamily,
-  } = useStyledTheme();
+  const { fontSize, fontFamily } = useStyledTheme();
 
   return (
-    <Section
-      tagName='div'
-    >
+    <Section tagName='div'>
       <Image
         src={images.EMPTY_BOARD}
         alt='글이 존재하지 않습니다.'
@@ -32,6 +27,6 @@ const NoPosts = (): JSX.Element => {
       </Text>
     </Section>
   );
-}
+};
 
 export default NoPosts;

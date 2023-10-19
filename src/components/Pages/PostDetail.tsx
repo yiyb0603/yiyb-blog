@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import {
-  GetStaticPaths,
-  InferGetStaticPropsType,
-  GetStaticProps,
-} from 'next';
+import { GetStaticPaths, InferGetStaticPropsType, GetStaticProps } from 'next';
 import { allPosts, Post } from '@/contentlayer/generated';
 import usePosts from '@/hooks/post/usePosts';
 import Flex from '@/components/Common/Flex';
@@ -22,16 +18,13 @@ import Section from '../Common/Section';
 const PostDetailPage = ({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [
-    postElement,
-    setPostElement,
-  ] = useState<HTMLElement | null>(null);
+  const [postElement, setPostElement] = useState<HTMLElement | null>(null);
 
-  const {
-    allPosts,
-  } = usePosts();
+  const { allPosts } = usePosts();
 
-  const currentPostIndex = allPosts.findIndex((allPost) => allPost._id === post?._id);
+  const currentPostIndex = allPosts.findIndex(
+    (allPost) => allPost._id === post?._id,
+  );
 
   // 최신순으로 정렬되므로 prevPost는 인덱스 + 1
   const prevPost = allPosts[currentPostIndex + 1];
@@ -53,9 +46,7 @@ const PostDetailPage = ({
         gap='1.5rem'
         margin='0 0 1.5rem 0'
       >
-        <PostTitle
-          title={post?.title || ''}
-        />
+        <PostTitle title={post?.title || ''} />
 
         <PostSubInfo
           category={post?.category || ''}
@@ -90,12 +81,12 @@ const PostDetailPage = ({
       <Helmet
         title={post?.title || ''}
         description={post?.description || ''}
-        createdAt={post?.createdAt || ''} 
+        createdAt={post?.createdAt || ''}
         thumbnail={post?.thumbnail || ''}
       />
     </Section>
   );
-}
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
@@ -109,7 +100,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<{ post: Post | undefined; }> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<{
+  post: Post | undefined;
+}> = async ({ params }) => {
   const postId = String(params?.slug || '');
 
   const post = allPosts.find(({ _raw }) => {
@@ -121,6 +114,6 @@ export const getStaticProps: GetStaticProps<{ post: Post | undefined; }> = async
       post,
     },
   };
-}
+};
 
 export default PostDetailPage;
