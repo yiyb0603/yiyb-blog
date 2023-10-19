@@ -6,18 +6,13 @@ import CustomTable from '@/components/Common/Table';
 type PostContentProps = {
   postContentRef: Ref<HTMLDivElement>;
   code: string;
-}
+};
 
-const PostContent = ({
-  postContentRef,
-  code,
-}: PostContentProps) => {
+const PostContent = ({ postContentRef, code }: PostContentProps) => {
   const MDXComponent = useMDXComponent(code);
 
   return (
-    <PostContentContainer
-      ref={postContentRef}
-    >
+    <PostContentContainer ref={postContentRef}>
       <MDXComponent
         components={{
           table: ({ children }) => <CustomTable>{children}</CustomTable>,
@@ -25,7 +20,7 @@ const PostContent = ({
       />
     </PostContentContainer>
   );
-}
+};
 
 const PostContentContainer = styled.section`
   h1 {
@@ -61,7 +56,8 @@ const PostContentContainer = styled.section`
     font-size: ${({ theme }) => theme.fontSize.MEDIUM};
   }
 
-  ol, ul {
+  ol,
+  ul {
     margin: 1rem 0;
     padding: 2rem;
     border-radius: 5px;
@@ -79,7 +75,7 @@ const PostContentContainer = styled.section`
     margin-right: 0.25rem;
     border-radius: 5px;
     font-size: ${({ theme }) => theme.fontSize.NORMAL};
-    color: ${({ theme }) => theme.color.main};
+    color: ${({ theme }) => theme.color.main800};
     background-color: ${({ theme }) => theme.color.main50};
   }
 

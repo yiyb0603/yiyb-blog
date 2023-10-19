@@ -3,6 +3,7 @@ import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 import rehypeHighlight from 'rehype-highlight';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
+import rehypeExternalLinks from 'rehype-external-links';
 import remarkGfm from 'remark-gfm';
 
 export const Post = defineDocumentType(() => ({
@@ -39,19 +40,22 @@ export const Post = defineDocumentType(() => ({
 
 const contentSource = makeSource({
   contentDirPath: 'posts',
-  documentTypes: [
-    Post,
-  ],
+  documentTypes: [Post],
   mdx: {
-    remarkPlugins: [
-      remarkGfm,
-    ],
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,
       [
         rehypePrettyCode,
         {
           theme: 'github-dark',
+        },
+      ],
+      [
+        rehypeExternalLinks,
+        {
+          target: ['_blank'],
+          rel: ['noreferrer noopener'],
         },
       ],
       rehypeHighlight,
