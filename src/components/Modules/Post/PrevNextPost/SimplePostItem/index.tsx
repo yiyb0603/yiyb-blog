@@ -89,7 +89,7 @@ const SimplePostItem = ({
 };
 
 const ThumbnailImage = styled(Image)`
-  ${({ theme }) => theme.device.smallTablet} {
+  ${({ theme }) => theme.device.tablet} {
     display: none;
   }
 `;
