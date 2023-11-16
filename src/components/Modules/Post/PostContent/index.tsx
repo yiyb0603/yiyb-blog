@@ -39,7 +39,7 @@ const PostContentContainer = styled.section`
     font-size: ${({ theme }) => theme.fontSize.MEDIUM};
     font-family: ${({ theme }) => theme.fontFamily.pretendard.BOLD};
     color: ${({ theme }) => theme.color.main};
-    line-height: 1.6;
+    line-height: 1.7;
     word-break: break-all;
   }
 
@@ -52,7 +52,7 @@ const PostContentContainer = styled.section`
   span,
   code {
     word-break: keep-all;
-    line-height: 1.7;
+    line-height: 1.8;
     font-size: ${({ theme }) => theme.fontSize.MEDIUM};
   }
 
