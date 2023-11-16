@@ -1,0 +1,295 @@
+---
+title: 타입스크립트 맵드 타입(Mapped Type) 알아보기
+description: 타입스크립트의 타입 시스템 문법, 맵드 타입에 대해서 알아보겠습니다.
+category: TypeScript
+createdAt: 2023-11-16
+thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/e8fb5884-f1a6-4d58-b73c-df9238327ea1
+---
+
+안녕하세요. 오늘은 타입스크립트의 타입 시스템 문법중 하나인 `Mapped Type(맵드 타입)`에 대해서 알아보겠습니다.
+
+## 1. 맵드 타입이란? 🔍
+
+`맵드 타입`이란 간단하게 말하자면 기존에 존재하는 타입을 `순회`하여 새로운 타입을 쉽게 만들어 낼 수 있는 의미를 뜻하는데요. 마치 자바스크립트의 `map, foreach` 메소드를 사용하듯이 짧은 문법으로 타입 표현이 가능합니다.
+
+```typescript
+type User = {
+  id: string;
+  name: string;
+  age: number;
+};
+
+type SimpleUserType = {
+  [K in keyof User]: User[K];
+};
+
+/*
+  {
+    id: string;
+    name: string;
+    age: number;
+  }
+*/
+```
+
+먼저 맛보기로 위의 코드를 보시면 `User` 라는 타입이 있는데요. 이를 `SimpleUserType`에서 맵드 타입을 활용하여 User 타입과 동일한 타입을 갖도록 작성을 해보았습니다.
+
+실행 과정은 아래와 같습니다.
+
+1. `[K in keyof User]` 코드는 `User` 타입의 Key를 K 라는 이름으로 순회를 하게됩니다. (필드명은 K, id -> name -> age 순으로 순회)
+2. 순회할때마다 K에 들어간 이름으로 `User`타입의 K 필드의 타입을 값 타입으로 지정합니다.
+3. K가 name이면 string, age이면 number가 지정
+
+```typescript
+// 모든 객체 필드 값을 string로 지정하는 타입
+type StringValueObject<T> = {
+  [K in keyof T]: string;
+};
+
+// 모든 객체 필드 값을 number로 지정하는 타입
+type NumberValueObject<T> = {
+  [K in keyof T]: number;
+};
+```
+
+> keyof 연산자란?
+> 참고링크: https://www.typescriptlang.org/docs/handbook/2/keyof-types.html
+
+만약 위의 순회 문법이 이해가 안되신다면, 아래처럼 자바스크립트의 `in` 연산자 순회 코드를 생각하시면 쉽습니다. 😀
+
+```javascript
+const student = {
+  age: 10,
+  grade: 3,
+  score: 90,
+};
+
+const changeStudentValues = (T) => {
+  for (let K in T) {
+    T[K] = 20;
+  }
+};
+
+changeStudentValues(student);
+
+console.log(student);
+
+/*
+{
+  age: 20,
+  grade: 20,
+  score: 20,
+}
+*/
+```
+
+이처럼 맵드 타입이란 무엇이며, 기초적인 사용법을 알아보았는데요. 이제 이를 다양한 예제를 통해서 활용해보도록 하겠습니다.
+
+## 2. 맵드타입 활용 🍳
+
+### 2-1. Pick
+
+타입스크립트의 `유틸리티 타입` 중 하나인 `Pick`은 객체 타입에서 원하는 필드를 뽑아서 가져올 수 있는 유틸리티 타입입니다.
+
+```typescript
+type User = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type Animal = Pick<User, 'id' | 'name'>;
+
+/*
+{
+  id: number;
+  name: string;
+}
+*/
+```
+
+이 `Pick` 타입을 맵드 타입으로 구현을 할 수 있는데요. 유니온 형태의 Key들을 순회하면서 해당 Key의 타입을 가져오는 로직을 생각하면 아래처럼 코드를 작성해줄 수 있습니다.
+
+```typescript
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+
+type PickUser = Pick<User, 'name'>;
+
+/*
+{
+  name: string;
+}
+*/
+```
+
+### 2-2. Partial
+
+타입스크립트의 `유틸리티 타입` 중 하나인 `Partial`은 객체 타입에서 모든 필드를 Optional로 만들어주는 유틸리티 타입입니다.
+
+```typescript
+type User = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type PartialUser = Partial<User>;
+
+/*
+{
+  id?: number | undefined;
+  name?: string | undefined;
+  age?: number | undefined;
+}
+*/
+```
+
+이 `Partial` 타입도 맵드 타입으로 구현을 할 수 있는데요. 넘겨받은 타입을 모두 순회하면서 각 Key에 대해 Optional을 지정해주어야 하는데요. 아래처럼 코드를 작성해줄 수 있습니다.
+
+```typescript
+type Partial<T> = {
+  [K in keyof T]?: T[K];
+};
+
+type PartialUser = Partial<User>;
+
+/*
+{
+  id?: number | undefined;
+  name?: string | undefined;
+  age?: number | undefined;
+}
+*/
+```
+
+`[K in keyof T]`문 앞에 `?`가 붙어있는게 보이시나요? 이것에 대해 어렵게 생각 안하셔도 됩니다. 기존처럼 `[K in keyof T]`문에는 순회한 Key가 들어가고, 그 앞에 Optional Type을 의미하는 `?`를 붙이는 코드입니다.
+
+위처럼 `맵드 타입`을 사용할 때 Optional을 지정해야 할 때도 어렵지 않게 해줄 수 있습니다.
+
+### 2-3. Required
+
+타입스크립트의 `유틸리티 타입` 중 하나인 `Required`는 객체 타입의 모든 필드들을 필수 필드로 만들어주는 유틸리티 타입입니다. 즉 Optional 필드들도 모두 필수로 지정할 수 있죠.
+
+```typescript
+type User = {
+  id?: number;
+  name?: string;
+  age?: number;
+};
+
+type RequiredUser = Required<User>;
+
+/*
+{
+  id: number;
+  name: string;
+  age: number;
+}
+*/
+```
+
+이 `Required` 타입또한 맵드 타입으로 구현을 할 수 있는데요. 유니온 형태의 Key들을 순회하면서 해당 Key의 Optional을 제거하는 아래처럼 작성해줄 수 있습니다.
+
+```typescript
+type Required<T> = {
+  // ?를 제거
+  [K in keyof T]-?: T[K];
+};
+
+type RequiredUser = Required<User>;
+
+/*
+{
+  id: number;
+  name: string;
+  age: number;
+}
+*/
+```
+
+여기서 `[K in keyof T]`에 붙은 `-?` 문법이 나오는데요, 이 `-` 문법은 Optional을 의미하는 `?`를 제거하라! 라는 의미를 가집니다.
+
+<br />
+
+반대로 `?`를 붙이고 싶은 경우에는 `+?`로 적을 수 있는데요. 앞서 `Partial` 타입을 구현했을때는 `+`를 붙이지 않았는데요. 이는 일반적으로 프로그래밍에서 정수를 표현할때 1, 2로 표현하는 대신 +1, +2 처럼 표현하는것과 동일하므로 `+`는 대부분 생략을 합니다.
+
+### 2-4. Readonly
+
+타입스크립트의 `유틸리티 타입` 중 하나인 `Readonly`는 객체 타입의 모든 필드들을 읽기 전용 필드로 만들어주는 유틸리티 타입입니다. 즉 객체의 필드 값을 수정하지 못한다는 의미입니다.
+
+```typescript
+type User = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type ReadonlyUser = Readonly<User>;
+
+/*
+{
+  readonly id: number;
+  readonly name: string;
+  readonly age: number;
+}
+*/
+```
+
+이 `Readonly` 타입또한 맵드 타입으로 구현을 할 수 있습니다. 유니온 형태의 Key들을 순회하면서 해당 Key의 앞에 `readonly`를 추가하는 코드를 아래처럼 작성해줄 수 있습니다.
+
+```typescript
+type Readonly<T> = {
+  readonly [K in keyof T]: T[K];
+};
+
+type ReadonlyUser = Required<User>;
+
+/*
+{
+  readonly id: number;
+  readonly name: string;
+  readonly age: number;
+}
+*/
+```
+
+만약 객체의 필드에 붙은 `readonly`를 모두 떼버리는 유틸리티 타입을 작성하고 싶다면 어떻게 할 수 있을까요? 위에서 `Required` 타입을 구현할때 배운 `-` 문법을 사용하여 아래처럼 작성해줄 수 있습니다.
+
+```typescript
+type User = {
+  readonly id: number;
+  readonly name: string;
+  readonly age: number;
+};
+
+type NoReadonly<T> = {
+  // readonly를 제거
+  -readonly [K in keyof T]: T[K];
+};
+
+type RequiredUser = Required<User>;
+
+/*
+{
+  id: number;
+  name: string;
+  age: number;
+}
+*/
+```
+
+이처럼 `맵드 타입`을 이용하면 현재 제공되는 타입스크립트의 유틸리티 타입을 직접 구현해볼 수 있고, 다른 상황에서도 맵드 타입을 적절히 활용하면 간단하게 타입을 정의할 수 있습니다.
+
+## 3. 마치며 📌
+
+오늘은 타입스크립트의 `맵드 타입`에 대해서 알아보았는데요. 맵드 타입을 활용해보며 유틸리티 타입의 동작 원리에 대해서 파헤쳐보기도 해서 유익한 시간이였던것 같습니다.
+
+<br />
+
+타입스크립트의 타입 시스템을 활용하여 각종 문제를 해결하는 [type-challenges](https://github.com/type-challenges/type-challenges)를 할때 오늘 알아본 맵드 타입을 잘 알고있다면 `easy` 일부 문제는 식은 죽 먹듯이 풀 수 있습니다. 😀
+
+<br />
+
+이상으로 글을 마치겠습니다. 읽어주셔서 감사합니다!
