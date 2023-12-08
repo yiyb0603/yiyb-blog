@@ -86,7 +86,6 @@ const PostRowItem = ({
           <PostThumbnail
             src={thumbnail}
             alt={title}
-            loading='lazy'
             width='200px'
             height='110px'
             borderRadius='5px'
