@@ -6,7 +6,7 @@
     "tsc": "tsc",
     "dev": "next dev -p 3900",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3900",
     "lint": "next lint",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
   },

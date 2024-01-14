@@ -15,6 +15,15 @@ const PostContent = ({ postContentRef, code }: PostContentProps) => {
     <PostContentContainer ref={postContentRef}>
       <MDXComponent
         components={{
+          img: ({ src, alt, width, height }) => (
+            <PostImage
+              src={src}
+              alt={alt}
+              width={width}
+              height={height}
+              loading='lazy'
+            />
+          ),
           table: ({ children }) => <CustomTable>{children}</CustomTable>,
         }}
       />
@@ -79,12 +88,6 @@ const PostContentContainer = styled.section`
     background-color: ${({ theme }) => theme.color.main50};
   }
 
-  img {
-    display: block;
-    max-width: 100%;
-    margin: 1.5rem auto;
-  }
-
   th {
     text-align: start;
     padding: 1.25rem 1.75rem;
@@ -129,6 +132,12 @@ const PostContentContainer = styled.section`
     border-radius: 5px;
     background-color: ${({ theme }) => theme.color.background3};
   }
+`;
+
+const PostImage = styled.img`
+  display: block;
+  max-width: 100%;
+  margin: 1.5rem auto;
 `;
 
 export default PostContent;
