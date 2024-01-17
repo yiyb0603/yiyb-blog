@@ -1,0 +1,302 @@
+---
+title: MSW를 사용하여 API Mocking 하기
+description: 프론트엔드 측에서 백엔드 API를 Mocking하여 더 효율적으로 개발을 해봅시다.
+createdAt: 2023-12-04
+thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/d2d7eeae-401c-4219-8fd2-85c5883312d3
+---
+
+안녕하세요! 오늘은 백엔드 API를 Mocking 해주는 라이브러리인 `MSW`란 무엇이며, 사용방법에 대해서 알아보도록 하겠습니다.
+
+## 1. 기존 문제점 🤔
+
+여러분이 만약 웹 프론트엔드 혹은 안드로이드 개발자와 같은 클라이언트 플랫폼을 개발하는분은 한번쯤은 경험해보셨을 문제입니다. 바로 백엔드와의 **개발 진행도 차이**로 인해서 개발이 멈춰버리는 문제인데요.
+
+만약 클라이언트단에서 할 수 있는 작업`(UI 개발, 기타 자동화)`을 모두 해두었다면, 백엔드의 API가 개발 완성될때까지 손가락만 뜯고있어야하는 공백의 시간이 생기게 됩니다. 🥲
+
+<br />
+
+하지만 이를 보완하기 위해서 서버의 API가 개발 완료될때까지 클라이언트단에서 **모의로 동작**할 수 있게끔 설정을 해두면 어떨까요? 마치 실제 API와 통신이 이루어지는것처럼 코드를 작성할 수 있고, 추후에는 코드를 최소한으로 건드리며 실제 API로 바꿔칠 수 있다면 프론트엔드 개발자들은 시간을 더 효율적으로 사용할 수 있습니다.
+
+![Mocking Service Worker](https://repository-images.githubusercontent.com/157397583/df5e7b5a-3bf9-4521-8f57-4d8ca4e3a3fe)
+
+> 공식문서 바로가기: https://mswjs.io
+
+이를 구현 가능하도록 해주는 대표적인 라이브러리가 바로 `MSW (Mocking Service Worker)`라는 라이브러리 입니다. 이름에서 알 수 있듯이 [서비스 워커](https://developer.mozilla.org/ko/docs/Web/API/Service_Worker_API)를 사용하고 있으며, 특정한 네트워크 요청에 대해 가로채어 응답을 반환해줍니다. API 통신을 테스트하는 테스트 코드를 작성할때도 Mocking 역할을 담당합니다.
+
+<br />
+
+이제 `MSW`를 어떻게 사용할 수 있는지 예제를 통해서 살펴보겠습니다.
+
+## 2. 리액트에서 사용해보기 🧪
+
+저희는 `TypeScript + React.js` 환경에서 `MSW` 라이브러리를 사용해보도록 하겠습니다. 먼저 프로젝트를 생성해주세요.
+
+> npx create-react-app msw-tester --template=typescript
+
+이후 프로젝트 생성이 완료되었다면, 추가적으로 필요한 패키지들을 설치해줍시다.
+
+> npm install msw --save-dev
+
+`msw` 패키지가 설치되었다면, `npx` 명령어를 사용하여 `서비스 워커`가 저장될 위치를 지정해줘야 합니다. 저는 `public` 폴더로 지정을 해주었으며, 아래의 명령어를 입력해주세요.
+
+> npx msw init public --save
+
+그러면 `public` 폴더안에 `mockServiceWorker.js` 파일이 생긴 것을 보실 수 있습니다. 해당 파일은 서비스 워커의 기본 설정 및 `MSW`의 동작 방식으로 구현되도록 설정해놓은 파일인 것 같네요.
+
+서비스 워커를 사용하여 API Mocking을 구현하는 `msw`를 사용할때 필수적으로 있어야하는 파일입니다.
+
+```javascript
+/* eslint-disable */
+/* tslint:disable */
+
+/**
+ * Mock Service Worker (2.0.10).
+ * @see https://github.com/mswjs/msw
+ * - Please do NOT modify this file.
+ * - Please do NOT serve this file on production.
+ */
+
+const INTEGRITY_CHECKSUM = 'c5f7f8e188b673ea4e677df7ea3c5a39';
+const IS_MOCKED_RESPONSE = Symbol('isMockedResponse');
+const activeClientIds = new Set();
+
+self.addEventListener('install', function () {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', function (event) {
+  event.waitUntil(self.clients.claim());
+});
+
+// ... 중략
+```
+
+### 2-1. MSW Mocking 설정
+
+이제 `MSW` 라이브러리를 사용하여 API를 Mocking 하는 방법에 대해서 본격적으로 알아보겠습니다.
+
+`src/mocks` 경로에 `handlers.ts` 파일을 만들어주세요. 이 파일에서는 MSW 패키지에서 `import` 할 수 있는 `http` 객체를 사용하여 Mocking 정보를 담고 있는 배열을 `export` 할 것입니다.
+
+<br />
+
+그렇다면 `http` 객체를 사용하여 어떻게 코드를 작성할 수 있을까요? 바로 [공식문서](https://github.com/mswjs/msw#usage-example)의 코드를 참고하면 손쉽게 작성하실 수 있습니다.
+
+저희는 온라인 API인 [JSONPlaceholder](https://jsonplaceholder.typicode.com/guide) 서버와 통신을 할때, 이 서버로 향하는 요청을 Mocking 하는 예제를 작성해보겠습니다.
+
+<br />
+
+위에서 알려드린 공식문서를 토대로 `http` 객체를 활용하여 코드를 아래처럼 작성할 수 있습니다.
+
+```typescript
+import { http, HttpResponse } from 'msw';
+
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
+
+export const handlers = [
+  http.get(`${BASE_URL}/users`, ({ cookies, request, params }) => {
+    // Body, Query, Path Parameter를 사용하는 모의 서버를 구축하려면 콜백 함수의 매개변수를 사용하시면 됩니다.
+
+    return HttpResponse.json(
+      [
+        {
+          id: 1,
+          name: '권용빈',
+          age: 21,
+        },
+        {
+          id: 2,
+          name: '유재석',
+          age: 40,
+        },
+      ],
+      {
+        status: 200,
+      },
+    );
+  }),
+];
+```
+
+`/users` 경로의 GET 메소드 API를 요청했을때 JSONPlaceholder에서 반환하는것이 아닌 제가 임의로 반환한 데이터로 응답하도록 설정해주었습니다. 만약 Mocking 하려는 API가 Post 방식이면 `http.post`, PUT과 DELETE 등에 대해서는 `http.put`, `http.delete` 메소드를 사용하여 Mocking 할 수 있습니다.
+
+<br />
+
+이후 `src/mocks/browser.ts` 파일을 생성하여 아래의 코드를 입력해주세요.
+
+```typescript
+import { setupWorker } from 'msw/browser';
+import { handlers } from './handlers';
+
+export const browserWorker = setupWorker(...handlers);
+```
+
+`setupWorker` 함수를 사용하여 Mocking 하려고 하는 핸들러들을 설정하여 Worker를 만들 수 있습니다. 이제 해당 Worker를 `src/index.tsx`에서 사용 등록을 해주면 됩니다.
+
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { browserWorker } from './mocks/browser';
+
+// 환경변수 등을 통하여 API Mocking 활성화 여부를 관리하는것이 좋습니다.
+browserWorker.start();
+// 웹 구동시 Worker 시작
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement,
+);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
+
+reportWebVitals();
+```
+
+### 2-2. Mocking 테스트
+
+아까 저희는 JSONPlaceholder의 특정 경로로 들어온 경우, Mocking을 하도록 지정했습니다. 그렇다면 Mocking의 대상이 되는 API를 컴포넌트에서 호출하면 어떻게 될까요?
+
+<br />
+
+`App.tsx` 파일에 아래처럼 코드를 작성해주었습니다.
+
+```tsx
+import { useEffect } from 'react';
+
+function App() {
+  useEffect(() => {
+    const fetcher = async () => {
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/users',
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+    };
+
+    fetcher();
+  }, []);
+
+  return <div>Hello!</div>;
+}
+
+export default App;
+```
+
+과연 API의 응답값이 저희가 임의로 반환한 값으로 응답이 올까요?
+
+![MSW Mocking 실행 결과](https://github.com/yiyb0603/yiyb-blog/assets/50941453/68352bf6-978b-4d91-be14-8fe09e9269b1)
+
+원래 JSONPlaceholder API를 호출했을때 임의의 100개 데이터를 전달해주는 반면, API Mocking을 설정해두니 저희가 임의로 반환한 데이터가 올바르게 응답되었네요! 동시에 네트워크 탭을 보시면 `200 OK`가 뜨면서 서비스 워커에서 반환되었음을 알 수 있습니다.
+
+![서비스 워커 반환](https://github.com/yiyb0603/yiyb-blog/assets/50941453/3282b193-b381-4b6e-89e6-9cdbe4df7039)
+
+### 2-3. POST Mocking
+
+지금까지 GET 요청에 대한 API Mocking을 간단하게 알아보았고, POST 요청에 대해서도 Mocking 해보겠습니다. 다른 HTTP 메소드 혹은 다른 URL을 추가적으로 Mocking 하려면 `handlers.ts`에 추가적으로 작성해주시면 됩니다.
+
+<br />
+
+POST 요청이기 때문에 **Body Parameter** 형식으로 사용자 목록을 추가하는 요청을 보내어 정상적으로 추가가 되었는지를 작성해보겠습니다. `http.post`를 사용하여 저는 아래처럼 코드를 작성해보았습니다.
+
+```typescript
+// src/mocks/handlers.ts
+import { http, HttpResponse } from 'msw';
+
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
+
+const users = [
+  {
+    id: 1,
+    name: '권용빈',
+    age: 21,
+  },
+  {
+    id: 2,
+    name: '유재석',
+    age: 40,
+  },
+];
+
+export const handlers = [
+  http.get(`${BASE_URL}/users`, ({ cookies, request, params }) => {
+    return HttpResponse.json(users, {
+      status: 200,
+    });
+  }),
+
+  http.post(`${BASE_URL}/users`, async ({ request }) => {
+    const body = await request.json();
+    // Body Parameter 가져오기
+
+    // Body Parameter로 받은 값을 그대로 응답해준다.
+    return HttpResponse.json([...users, body], {
+      status: 200,
+    });
+  }),
+];
+```
+
+그리고 해당 API를 호출하는 컴포넌트쪽 코드도 추가해줍니다.
+
+```tsx
+import { useEffect } from 'react';
+
+function App() {
+  useEffect(() => {
+    const fetcher = async () => {
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/users',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            id: 3,
+            name: '박명수',
+            age: 45,
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+    };
+
+    fetcher();
+  }, []);
+
+  return <div>Hello!</div>;
+}
+
+export default App;
+```
+
+POST 요청에 대해서도 API Mocking이 성공했을까요?
+
+네! JSONPlaceholder API로 요청하는 데이터를 Mocking 서버에서 가로챈 후, 응답을 성공적으로 받을 수 있었습니다.
+
+![POST API Mocking](https://github.com/yiyb0603/yiyb-blog/assets/50941453/f632d59d-7d0e-4ad3-af50-df4c83542ded)
+
+API Mocking이 적용되는 과정을 아래처럼 요약할 수 있습니다.
+
+1. 백엔드 API의 문서는 나왔으나, 내부 개발이 완료되지 않음
+2. API 문서(URL, 파라미터 정보)를 바탕으로 제작한 Mocking API를 컴포넌트 기능으로 연결
+3. 백엔드 API 개발 완료
+4. MSW 실행 비활성화 (Mocking 서버가 아닌 실제 API 주소로 그대로 요청되도록)
+5. Mocking 서버와 차이가 생기는 부분 수정
+
+## 3. 마치며 📌
+
+오늘은 `msw`를 활용한 API Mocking을 알아보았습니다. `msw`를 정말 잘 활용하면 실제 서버와 연결했을때 차이가 생기는 부분이 거의 제로에 가까울만큼, 추가적인 수정사항도 줄이고 기능을 훨씬 더 빠르게 만들 수 있다고 생각합니다.
+
+<br />
+
+다만 API 문서를 토대로 대부분 만들어야하기 때문에 불완전한 API 정보를 바탕으로 Mocking 서버를 만드는 경우, 실제 서버와 연결했을때 수정해야 하는 경우가 불필요하게 많이 소요될 수 있으므로 신중한 설계가 필요합니다. 😀
+
+<br />
+
+이상으로 글을 마치도록 하겠습니다. 글 읽어주셔서 감사합니다!

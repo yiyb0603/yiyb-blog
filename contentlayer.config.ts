@@ -19,10 +19,6 @@ export const Post = defineDocumentType(() => ({
       type: 'string',
       required: true,
     },
-    category: {
-      type: 'string',
-      required: true,
-    },
     thumbnail: {
       type: 'string',
       required: true,
@@ -34,6 +30,25 @@ export const Post = defineDocumentType(() => ({
     updatedAt: {
       type: 'date',
       required: false,
+    },
+  },
+  computedFields: {
+    url: {
+      type: 'string',
+      resolve: (post) => {
+        const [_, path] = post._raw.flattenedPath.split('/');
+
+        return `/posts/${path}`;
+      },
+    },
+
+    category: {
+      type: 'string',
+      resolve: (post) => {
+        const [category] = post._raw.flattenedPath.split('/');
+
+        return category;
+      },
     },
   },
 }));

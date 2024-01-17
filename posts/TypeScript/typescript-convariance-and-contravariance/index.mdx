@@ -1,0 +1,110 @@
+---
+title: 타입스크립트의 공변성과 반공변성
+description: 타입스크립트의 타입 할당관계 규칙인 공변성과 반공변성에 대해서 알아봅시다.
+createdAt: 2023-09-07
+thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/04a253ab-fd5e-4d7e-b9e0-7672e20b3be2
+---
+
+안녕하세요! 오늘은 타입스크립트의 타입 할당관계 규칙인 `공변성`과 `반공변성`에 대해서 무엇인지 알아보겠습니다.<br />
+
+처음엔 두 단어를 듣고 생소한 개념인줄 알았는데, 타입스크립트를 사용할때 간간히 마주칠 수 있는 상황이더라고요. 그래서 두 개념에 대해서 적어보려고 합니다!
+
+## 1. 공변성 📕
+
+`공변성`은 **A라는 타입이 B 타입의 서브타입이면, A는 B 타입의 서브타입이다**는 개념입니다. 공변성 규칙은 **함수의 매개변수**로 전달되는 경우를 제외한 모든 할당규칙에 적용됩니다.
+
+정말 쉬운 예제로 알아볼까요?
+
+```typescript
+let myArray: string[] = [];
+let yourArray: (string | number)[] = [];
+
+myArray = yourArray; // 에러
+yourArray = myArray; // 성공
+```
+
+**myArray** 배열의 타입은 `string`만을 허용하고, **yourArray** 배열의 타입은 `string`과 `number`를 허용하는데요, 이때 `string[]` 타입은 `(string | number)[]` 타입의 서브 타입으로 정의할 수 있습니다.<br />
+위에서 보여드린 예제는 **함수 매개변수**로 전달되지 않았기때문에 일반적인 `공변성` 규칙을 따르게되고, 위에서 말씀드린 **A가 B타입의 서브 타입이면, A는 B 타입의 서브타입이다** 개념이 성립됩니다.
+
+따라서 **yourArray** 배열의 타입이 **myArray** 배열의 상위 타입이므로 할당 과정에서 오류가 발생하지 않게됩니다. 반대로 서브타입의 배열이 상위 타입의 배열을 할당하려고 하면 오류가 발생하죠.
+
+## 2. 반공변성 📘
+
+`반공변성`은 **A라는 타입이 B 타입의 서브타입이면, B는 A타입의 서브타입이다**는 개념입니다. 처음들었을때는 이게 뭔 소리인가 싶었습니다. 말장난 하는 것 처럼요. 😟<br />
+`반공변성`은 **함수의 매개변수**로 전달되는 경우에만 적용되는 규칙입니다. 앞서 설명드렸던 `공변성`과는 완전 반대의 특징이죠?
+
+간단한 예제 코드를 통해서 알아보겠습니다.
+
+```typescript
+type BaseFunction<T> = (params: T) => void;
+
+let myFunction: BaseFunction<number> = (param) => {
+  // do something
+};
+
+let yourFunction: BaseFunction<string | number> = (param) => {
+  // do something
+};
+
+myFunction = yourFunction; // 성공
+yourFunction = myFunction; // 에러
+```
+
+일반적으로 타입만 놓고봤을때 `number` 타입은 `string | number` 타입의 서브타입 입니다.
+
+앞서 `공변성` 파트의 예제에서는 상위 타입이 서브 타입을 할당했을때 오류가 발생하지 않았는데, 왜 이번에는 오류가 발생하는걸까요? 🤔 바로 **함수의 매개변수**로 전달되었기 때문입니다.
+함수의 매개변수로 타입규칙이 전달되었을때는 `공변성`의 동작이 반대로되어, **서브 타입**이 상위 타입을 할당할때만 오류가 발생하지 않게됩니다.
+
+## 3. 이변성 📒
+
+`이변성`은 **함수의 매개변수를 다루는 과정**에서 `공변성`과 `반공변성`을 모두가지는 특성이며, 상위 타입과 서브 타입간의 타입규칙이 이루어지지 않고 오류도 발생하지 않는 특징입니다.
+
+```typescript
+type BaseFunction<T> = (params: T) => void;
+
+let myFunction: BaseFunction<number> = (param) => {
+  // do something
+};
+
+let yourFunction: BaseFunction<string | number> = (param) => {
+  // do something
+};
+
+myFunction = yourFunction; // 성공
+yourFunction = myFunction; // 성공
+```
+
+`이변성`의 특징을 갖게된다면 앞서 보여드린 `반공변성` 예제 및 `공변성` 예제 모두 오류가 발생하지 않습니다.<br />
+그런데 별도의 설정을 건드리지 않으면 `공변성`과 `반공변성` 규칙이 여전히 존재하고, `이변성`은 이루어지지 않는데요. 이를 어떻게 설정하면 `이변성`의 특징을 사용할 수 있을까요?
+
+### 3-1. strictFunctionType 🖥️
+
+정답은 바로! `tsconfig.json` 파일에 작성된 `strictFunctionType` 설정을 건드리면 됩니다.
+`strictFunctionType` 속성은 기본적으로 `true`로 지정되는데, 이는 **함수의 매개변수가 `반공변적`으로 동작**한다는 의미입니다. 그러나 `false`로 지정하게 되면, **함수의 매개변수는 앞서 말씀드린 특징인 `이변적`으로 동작**하게 됩니다.
+
+```json
+{
+  // ... 생략
+  "strictFunctionType": false // 이변성 적용
+}
+```
+
+```typescript
+type BaseFunction<T> = (params: T) => void;
+
+let myFunction: BaseFunction<number> = (param) => {
+  // do something
+};
+
+let yourFunction: BaseFunction<string | number> = (param) => {
+  // do something
+};
+
+myFunction = yourFunction; // 성공
+yourFunction = myFunction; // 성공
+```
+
+## 4. 마치며 📌
+
+오늘은 타입스크립트의 타입 할당관계 규칙인 `공변성`, `반공변성` 그리고 추가적으로 `이변성`에 대해서 알아보았는데요, 이름은 굉장히 생소하게 다가왔던 이 규칙들에 대해서 많은분들이 알게되는데 도움이 되었으면 좋겠습니다. 😃<br />
+이상으로 글을 마치도록 하겠습니다. 읽어주셔서 감사합니다!
