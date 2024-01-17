@@ -38,7 +38,7 @@ export const Post = defineDocumentType(() => ({
       resolve: (post) => {
         const [_, id] = post._raw.flattenedPath.split('/');
 
-        return id;
+        return id || post._raw.flattenedPath;
       },
     },
 
@@ -47,16 +47,16 @@ export const Post = defineDocumentType(() => ({
       resolve: (post) => {
         const [_, path] = post._raw.flattenedPath.split('/');
 
-        return `/posts/${path}`;
+        return `/posts/${path || post._raw.flattenedPath}`;
       },
     },
 
     category: {
       type: 'string',
       resolve: (post) => {
-        const [category] = post._raw.flattenedPath.split('/');
+        const [category, path] = post._raw.flattenedPath.split('/');
 
-        return category;
+        return path === undefined ? '기타' : category;
       },
     },
   },
