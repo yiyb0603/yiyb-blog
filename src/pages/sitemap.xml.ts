@@ -1,7 +1,6 @@
 import { NextPage, GetServerSideProps } from 'next';
 import dayjs from 'dayjs';
 import { allPosts } from '@/contentlayer/generated';
-import { pageRoute } from '@/libs/models/route';
 import generateFullURL from '@/utils/string/generateFullURL';
 
 const SitemapPage: NextPage = () => {
@@ -17,12 +16,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return Date.parse(next.createdAt) - Date.parse(prev.createdAt);
   });
 
-  for (const { _raw, createdAt } of descOrderPosts) {
+  for (const { url, createdAt } of descOrderPosts) {
     pagesXMLString += `
       <url>
-        <loc>${generateFullURL(
-          `${pageRoute.POSTS}/${encodeURIComponent(_raw.flattenedPath)}`,
-        )}</loc>
+        <loc>${generateFullURL(url)}</loc>
         <lastmod>${dayjs(createdAt).format('YYYY-MM-DDTHH:mm:ssZ')}</lastmod>
       </url>
     `;

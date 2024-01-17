@@ -33,6 +33,15 @@ export const Post = defineDocumentType(() => ({
     },
   },
   computedFields: {
+    id: {
+      type: 'string',
+      resolve: (post) => {
+        const [_, id] = post._raw.flattenedPath.split('/');
+
+        return id;
+      },
+    },
+
     url: {
       type: 'string',
       resolve: (post) => {

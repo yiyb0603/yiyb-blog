@@ -1,6 +1,5 @@
 import { Post } from '@/contentlayer/generated';
 import useStyledTheme from '@/hooks/theme/useStyledTheme';
-import { pageRoute } from '@/libs/models/route';
 import isEmpty from '@/utils/is-packages/isEmpty';
 import Flex from '@/components/Common/Flex';
 import Section from '@/components/Common/Section';
@@ -39,7 +38,7 @@ const PostList = ({ category, posts, postsCount }: PostListProps) => {
             <PostRowItem
               key={post._id}
               {...post}
-              href={`${pageRoute.POSTS}/${post._raw.flattenedPath}`}
+              href={post.url}
             />
           ))}
         </Flex>
