@@ -1,0 +1,376 @@
+---
+title: Next.js에서 contentlayer 사용하여 손쉽게 정적블로그 만들기
+description: contentlayer 라이브러리를 사용하여 손쉽게 정적블로그를 만드는 과정을 공유합니다.
+createdAt: 2023-02-26
+thumbnail: /images/posts/next.js/nextjs-contentlayer-blog/thumbnail.png
+---
+
+안녕하세요! 정적 블로그를 만들고나서, 처음으로 글을 작성해보네요.
+
+첫번재 블로그 글의 주제로 저의 정적블로그를 만들었던 과정을 글로 담아보려고 해요.
+
+## 1. 왜 만들게되었는가? 🤔
+
+저는 기존에 [Velog](https://velog.io/@yiyb0603) 플랫폼을 이용해서 개발에 관한 글들을 적어오곤 했는데요, 벨로그도 저한테는 굉장히 좋은 개발자 블로그 서비스였으나, 최근들어서 **나만의 Playground**를 목적으로 간단하게 정적블로그를 만들어보고 싶다. 라는 생각이 자주 들었습니다.
+
+<br />
+
+그러다가 이틀전인 금요일, 회사에서 [Vercel Templates](https://vercel.com/templates) 페이지를 둘러보다가 `혹시 정적 블로그를 만들기 쉬운 템플릿 or 라이브러리가 있지 않을까?` 하는 생각에 이것저것 찾아보게 되었습니다.
+
+<br />
+
+그리고 [contentlayer](https://www.contentlayer.dev/) 라는 Next.js에서 정적블로그를 손쉽게 제작할 수 있도록 도와주는 아주 Awesome한 라이브러리를 찾게되어, 당일에 퇴근하고나서부터 주말까지 쭉 개발만하게 되었네요.
+
+<br />
+
+단순 개발 블로그가 아닌 **일상, 잡담, 취미** 등의 글들도 저 마음대로 작성할수 있게끔 하고 싶었습니다.
+
+> 아니 님아 그러면 그냥 네이버 블로그에다가 글 작성하면 되는거 아님??
+
+그렇지만 제가 직접 만들었을때 가장 큰 장점은 저 마음대로 디자인이 가능하다는 점이었습니다. 제가 원하는 모습으로 만들수 있다라는 장점이 저는 정말 크게 느껴졌네요.
+
+일반적인 네이버, 티스토리 블로그 플랫폼의 가장 큰 단점은 커스텀 부분에서 한계가 있다라고 생각했기때문에 직접 만들어보고 싶었습니다.
+
+<br />
+
+추가적으로 나중에는 포트폴리오 페이지를 블로그에 추가시켜서 저를 더 표현하는 웹사이트를 만들계획입니다.
+
+<br />
+
+예전에 [Gatsby.js](https://www.gatsbyjs.com/)도 눈여겨보았으나, Next.js를 사용하고싶다라는 마음이 컸기에 패스했습니다.
+
+만약 React.js만으로 블로그를 제작하시려는 분들에게는 아주 좋은 도구에요.
+
+<br />
+
+(contentlayer에 대해서는 밑 섹션에 추가로 적어두었습니다.)
+
+<br />
+
+댓글 기능의 경우에는 [GitHub Utterances](https://utteranc.es/)가 정말 좋다고 생각되어 추가하였습니다.
+
+웹 배포는 회사에서 사용하면서 정말 간편하다고 생각되는 [Vercel](https://vercel.com) 플랫폼을 사용하여 배포하였습니다.
+
+<br />
+
+라이트모드 / 다크모드 테마 설정의 경우에는 기본적으로 시스템 테마를 따르며, 이후에는 사용자가 선택한 테마로 지정되도록 구현했습니다.
+
+> [프로젝트 코드 보러가기 (GitHub Repository)](https://github.com/yiyb0603/yiyb-blog)
+
+## 2. contentlayer를 사용한 정적 블로그 제작 👩‍🌾
+
+contentlayer를 사용하기 위해서 먼저 Next.js 프로젝트를 생성해줍니다.
+
+> npx create-next-app 프로젝트이름 --typescript (타입스크립트 사용시)
+
+Next.js 프로젝트를 생성이 완료되고나서 contentlayer를 사용하기위해 필요한 npm 라이브러리들을 설치해줍시다.
+
+> npm install contentlayer next-contentlayer rehype-highlight rehype-pretty-code shiki
+
+`rehype-highlight`, `rehype-pretty-code`, `shiki`는 마크다운으로 작성된 코드글을
+예쁘게 꾸며주는 라이브러리입니다.
+
+이제 각각 `next.config.js`와 `tsconfig.json` 파일을 조금씩 수정해주어야 합니다.
+
+`next.config.js`에서는 Next.js용 contentlayer 플러그인을 등록해줍니다.
+
+```typescript
+// next.config.js
+const { withContentlayer } = require('next-contentlayer');
+
+/** @type {import('next').NextConfig} */
+const options = {
+  reactStrictMode: true,
+  swcMinify: false,
+  // 옵션은 자유롭게 넣어주세요.
+};
+
+module.exports = withContentlayer(options);
+```
+
+tsconfig.json에서는 import 경로의 alias를 설정해줍니다.
+
+> .contentlayer의 폴더는 개발서버 실행 혹은 재실행 할경우 폴더가 생성됩니다.
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    // ...
+    "paths": {
+      "@/contentlayer/generated": ["./.contentlayer/generated"],
+
+      "@/contentlayer/generated/*": ["./.contentlayer/generated/*"]
+    }
+    // ...
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "./.contentlayer/generated"
+  ]
+  // ...
+}
+```
+
+이후에 프로젝트 Root 경로에 `contentlayer.config.ts` 파일을 만들고, 아래와 같이 작성해주세요.
+
+```typescript
+// contentlayer.config.ts
+import { defineDocumentType, makeSource } from 'contentlayer/source-files';
+import highlight from 'rehype-highlight';
+import rehypePrettyCode from 'rehype-pretty-code';
+
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  contentType: 'mdx',
+  filePathPattern: `**/*.mdx`, // mdx 파일경로 패턴
+
+  // mdx로 작성한 글 정보에 대해 입력해야하는 필드 정의
+  /*
+    [필드명]: {
+      type: '자료형',
+      required: '필수여부',
+    }
+  */
+  fields: {
+    title: {
+      type: 'string',
+      required: true,
+    },
+    description: {
+      type: 'string',
+      required: true,
+    },
+    category: {
+      type: 'string',
+      required: true,
+    },
+    thumbnail: {
+      type: 'string',
+      required: false,
+    },
+    createdAt: {
+      type: 'date',
+      required: true,
+    },
+  },
+}));
+
+const contentSource = makeSource({
+  // 마크다운 파일이 저장되어 있는 루트 폴더
+  contentDirPath: 'posts',
+  documentTypes: [Post],
+  mdx: {
+    remarkPlugins: [],
+    rehypePlugins: [
+      [
+        rehypePrettyCode,
+        {
+          theme: 'github-dark', // 코드작성시 적용할 테마
+        },
+      ],
+      highlight,
+    ],
+  },
+});
+
+export default contentSource;
+```
+
+`contentlayer.config.ts`에서 작성한 내용중에서 **fields** 객체에 작성된 데이터 필드가 핵심인데요,
+
+항상 마크다운 글 최상단에 글에는 글에 대한 정보를 `---` 블록을 통해서 필드로 적어주어야 합니다.
+
+이제 프로젝트 Root 경로에 `posts` 폴더를 만든다음, **hello.mdx** 파일을 하나 만들어보겠습니다.
+
+```markdown
+---
+title: 안녕하세요. 제목이에요.
+description: 안녕하세요. 미리보기 내용입니다.
+category: 카테고리1
+createdAt: 2022-03-21
+---
+
+안녕하세요. 오늘은 React.js 프로젝트를 만들어볼게요.
+```
+
+글 파일까지 만드는 과정을 잘 따라오셨다면, 이제 아래의 궁금증을 가지실겁니다.
+
+> 그래서 이 글을 웹페이지에 어떻게 띄우는거죠? 🤔
+
+그 과정을 이제 설명드리려고 합니다.
+
+### 2-1. 작성한 마크다운을 웹페이지에 렌더링하기
+
+Next.js는 파일기반 라우팅을 지원한다는 사실을 모두 알고계실겁니다.
+그러므로 마크다운을 렌더링할 페이지를 자신이 원하는 네이밍으로 맞게 설계해줍시다.
+
+저는 `/posts/${아이디}` 형식으로 페이지를 구성하고싶기에, `pages/posts/[id].tsx` 파일을 만들어주었습니다.
+
+```typescript
+const PostDetailPage = () => {
+  return <div></div>;
+};
+
+export default PostDetailPage;
+```
+
+일단 여기까지만 하고나서, `npm run dev` 명령어를 입력해서 잠깐 개발서버를 실행하면 어떤일이 일어나는지 지켜봅시다.
+
+![contentlayer](/images/posts/next.js/nextjs-contentlayer-blog/contentlayer-generated.png)
+
+프로젝트 Root 경로에 `.contentlayer` 명의 폴더가 생기고, 하위 폴더와 파일들이 생겨난것을 볼 수 있습니다!
+
+여기서 `generated` 폴더의 `index.d.ts` 파일을 열어보면 아래와같이 작성되어있습니다.
+
+```typescript
+import { Post, DocumentTypes } from './types';
+
+export * from './types';
+
+export declare const allPosts: Post[];
+
+export declare const allDocuments: DocumentTypes[];
+```
+
+이 파일에서 핵심적으로 볼 수 있는 부분은 `allPosts` 배열과 `Post` 타입을 내보내는 코드입니다.
+
+> allPosts: **posts** 디렉토리내에 등록된 mdx 파일들을 가져오는 배열
+
+> Post: **contentlayer.config.ts**에서 등록한 필드들을 타입스크립트의 타입으로 쓸수 있는 타입입니다.
+
+즉, 마크다운 글 데이터에 접근하려면 Post[] 타입을 띄고있는 allPosts 배열에 접근하면 손쉽게 글 데이터를 얻어올수 있다는 뜻입니다. 너무쉽죠?
+
+<br />
+
+이점을 바탕으로 `pages/posts/[id].tsx` 파일을 마저 작성해보겠습니다.
+
+<br />
+
+아, 그리고 정적블로그의 특성상 Next.js의 SSG(Static Site Generation) 렌더링 방식에 최적화 되어있기에, `getStaticProps`와 `getStaticPaths` 함수를 사용하여 SSG 렌더링도 같이 구현해봅시다.
+
+> Next.js의 SSG 렌더링: **빌드 타임**에 getStaticPaths로 지정된 경로들의 html 파일을 생성하는 방식, 미리 생성된 html 파일을 다운로드하는 방식이기에 속도가 매우 빨라진다.
+
+```typescript
+import {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next';
+import { useMDXComponent } from 'next-contentlayer/hooks';
+import { allPosts } from '@contentlayer/generated';
+
+const PostDetailPage = ({
+  post,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const MDXComponent = useMDXComponent(post?.body.code || '');
+
+  return (
+    <div>
+      <h1>{post?.title}</h1> // 안녕하세요. 제목이에요.
+      <span>{post?.category}</span> // 카테고리1
+
+      /*
+        마크다운으로 작성된 콘텐츠 렌더링
+        (안녕하세요. 오늘은 React.js 프로젝트를 만들어볼게요.)
+      */
+      <MDXComponent />
+    </div>
+  );
+};
+
+export default PostDetailPage;
+
+// SSG 렌더링을 사용하기 위한 getStaticPaths 함수 사용
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: allPosts.map(({ _raw }) => ({
+      params: {
+        // 마크다운 파일의 파일명을 기반으로 id를 지정합니다.
+        id: _raw.flattenedPath,
+      },
+    })),
+
+    // 현재 등록된 글 이외의 제목이 전달될경우 404 처리
+    fallback: false,
+  };
+};
+
+// SSG 렌더링을 사용하기 위한 getStaticProps 함수 사용
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const postId = String(params?.id || '');
+
+  // 동적 id 파라미터를 통해서 파일명과 동일한 글을 찾아서 리턴합니다.
+  const post = allPosts.find(({ url }) => {
+    return _raw.flattenedPath === postId;
+  });
+
+  return {
+    props: {
+      post,
+    },
+  };
+};
+```
+
+`allPosts` 배열을 불러온다음, 동적으로 받는 id 파라미터를 통해서 렌더링할 마크다운 파일을 찾는 로직을 위와같이 구현할 수 있습니다. 그런 다음 `useMDXComponent` hooks를 통해서 손쉽게 마크다운 코드를 html 형식으로 렌더링을 할 수 있습니다.
+
+![구현 성공](/images/posts/next.js/nextjs-contentlayer-blog/thumb.png)
+
+지금까지 **글 상세 페이지** 구현을 예제로 코드를 작성해봤는데, 만약 글 목록 페이지를 구현해도 정말 손쉽게 할 수 있겠죠? 😀
+그래서 이 과정은 이글에서 생략하겠습니다! (참고링크에서 도움이 됩니다.)
+
+### 2-2. 참고링크 🙇‍♂️
+
+[https://miryang.dev/blog/build-blog-with-nextjs](https://miryang.dev/blog/build-blog-with-nextjs)
+[https://maintainhoon.vercel.app/blog/post/blog_development_period](https://maintainhoon.vercel.app/blog/post/blog_development_period)
+
+## 3. 개발중에 발생한 SWC Issue 😥
+
+이번 블로그 개발중에 상당히 골치아픈 버그를 하나 만났었는데요,
+개발중간에 production 모드로 실행을 해보았는데, **client side exception**이 발생하면서 아래의 오류가 출력되었습니다.
+
+![한글 유니코드 오류](/images/posts/next.js/nextjs-contentlayer-blog/unicode-error.png)
+
+해당 오류는 **마크다운 내용에 한글이 들어간 경우**에만 발생했고, 한글 유니코드 관련된 오류로 보였습니다. 저는 한글이 없으면 생존이 불가능한 사람이기에 무조건 오류를 해결해야 했습니다.
+
+![절망의 오류](/images/posts/next.js/nextjs-contentlayer-blog/despair.png)
+
+하지만 위에 제가 첨부한 **참고링크** 블로그 글, 공식문서, 다른분들이 작성한 contentlayer 프로젝트 코드 등등 닥치는데로 찾아봤지만 이 오류를 해결하는 방법을 전혀 찾을 수 없었습니다. 😥😥
+
+<br />
+
+결국 그렇게 잠이들었고.. 다음날 기상한 저는 **혹시나하고** `next.config.js`의 `swcMinify` 속성을 **false**로 변경하고, production으로 실행해보니 이게 왠일!! **오류가 더이상 나타나지 않았습니다.**
+
+![너무 많은 오류들](/images/posts/next.js/nextjs-contentlayer-blog/so-many-errors.png)
+
+<br />
+
+제가 인터넷에서 찾은 예제들에서 이 오류가 나타나지 않았던 것은, 많은분들이 Next 12 버전으로 작성하셨는데 swcMinify 속성은 Next 13부터 기본값이 true로 변경되었습니다.
+
+저는 Next.js 13을 사용하고있었기 때문에 기본적으로 swcMinify가 활성화 되어있던 것이죠.
+
+<br />
+
+즉, 대부분이 swcMinify를 활성화하지 않은상태로 개발하셨기 때문에 이 오류에 대해서 잘 나오지 않았던 것이었습니다.
+
+## 4. 앞으로의 계획
+
+![넌 계획이 다 있구나](/images/posts/next.js/nextjs-contentlayer-blog/you-have-a-plan.png)
+
+자주는 아니지만 간간히 블로그 글을 작성하면서 블로그에 새로운 기능이나 `third-party`를 하나씩 추가해나가려고 합니다.
+
+1. Google Analytics, Google Search Console 연동
+2. 헤딩 태그에 대한 TOC(Table Of Contents) 기능 추가
+3. 글 목록 정렬 기능
+4. 이전 / 다음 글 조회
+5. 글 공유하기 기능
+6. 테마 컬러 팔레트 조금 수정
+7. 나만의 노래 플레이리스트
+
+<br />
+이정도까지만 현재 계획중인데, 나중에 더 생길수도 있을듯 합니다. 😶
+
+이만 저는 물러가보도록 하겠습니다! 글 읽어주셔서 감사드리며, 다음에도 많이 찾아와주세요! 😀

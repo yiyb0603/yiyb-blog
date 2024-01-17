@@ -19,10 +19,6 @@ export const Post = defineDocumentType(() => ({
       type: 'string',
       required: true,
     },
-    category: {
-      type: 'string',
-      required: true,
-    },
     thumbnail: {
       type: 'string',
       required: true,
@@ -34,6 +30,34 @@ export const Post = defineDocumentType(() => ({
     updatedAt: {
       type: 'date',
       required: false,
+    },
+  },
+  computedFields: {
+    id: {
+      type: 'string',
+      resolve: (post) => {
+        const [_, id] = post._raw.flattenedPath.split('/');
+
+        return id || post._raw.flattenedPath;
+      },
+    },
+
+    url: {
+      type: 'string',
+      resolve: (post) => {
+        const [_, path] = post._raw.flattenedPath.split('/');
+
+        return `/posts/${path || post._raw.flattenedPath}`;
+      },
+    },
+
+    category: {
+      type: 'string',
+      resolve: (post) => {
+        const [category, path] = post._raw.flattenedPath.split('/');
+
+        return path === undefined ? '기타' : category;
+      },
     },
   },
 }));

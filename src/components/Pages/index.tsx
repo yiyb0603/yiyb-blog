@@ -1,7 +1,9 @@
+import { useMemo } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { PER_PAGE_COUNT } from '@/constants/post';
-import usePosts from '@/hooks/post/usePosts';
+import chunkArray from '@/utils/array/chunkArray';
+import { categories, getPostsByCategory } from '@/utils/contentlayer';
 import WelcomeBlog from '@/components/Modules/Home/WelcomeBlog';
 import PostList from '@/components/Modules/Home/PostList';
 import Flex from '@/components/Common/Flex';
@@ -18,11 +20,20 @@ const HomePage: NextPage = () => {
   const category = (query?.category || '전체') as string;
   const currentPage = Number(query?.page || 1);
 
-  const { filterPosts, chunkPosts, categories } = usePosts({
-    category: category === '전체' ? '' : category,
-  });
-
   const postCategories = ['전체', ...categories];
+
+  const posts = getPostsByCategory(category === '전체' ? '' : category);
+
+  const totalPages = Math.ceil(posts.length / PER_PAGE_COUNT);
+
+  const chunkPosts = useMemo(
+    () =>
+      chunkArray({
+        items: posts,
+        perItems: PER_PAGE_COUNT,
+      }),
+    [posts],
+  );
 
   const handlePageClick = (page: number): void => {
     push(
@@ -82,13 +93,13 @@ const HomePage: NextPage = () => {
             <PostList
               category={category === '전체' ? 'All Posts' : category}
               posts={chunkPosts[currentPage - 1] || []}
-              postsCount={filterPosts.length}
+              postsCount={posts.length}
             />
 
             <Pagination
               currentPage={currentPage}
               perPage={PER_PAGE_COUNT}
-              totalPages={Math.ceil(filterPosts.length / PER_PAGE_COUNT)}
+              totalPages={totalPages}
               hiddenOnSinglePage
               onPageClick={handlePageClick}
             />

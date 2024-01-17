@@ -13,9 +13,9 @@ type SimplePostItemProps = Post & {
 };
 
 const SimplePostItem = ({
-  _raw,
   title,
   description,
+  url,
   thumbnail,
   itemType,
 }: SimplePostItemProps): JSX.Element => {
@@ -25,7 +25,7 @@ const SimplePostItem = ({
     <HyperLink
       external={false}
       link={{
-        href: `${pageRoute.POSTS}/${_raw.flattenedPath}`,
+        href: url,
         passHref: true,
       }}
       borderRadius='5px'

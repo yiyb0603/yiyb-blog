@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { GetStaticPaths, InferGetStaticPropsType, GetStaticProps } from 'next';
-import { allPosts, Post } from '@/contentlayer/generated';
-import usePosts from '@/hooks/post/usePosts';
+import { Post } from '@/contentlayer/generated';
+import { allPosts } from '@/utils/contentlayer';
 import Flex from '@/components/Common/Flex';
 import PostTitle from '@/components/Modules/Post/PostTitle';
 import PostContent from '@/components/Modules/Post/PostContent';
@@ -20,11 +20,7 @@ const PostDetailPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [postElement, setPostElement] = useState<HTMLElement | null>(null);
 
-  const { allPosts } = usePosts();
-
-  const currentPostIndex = allPosts.findIndex(
-    (allPost) => allPost._id === post?._id,
-  );
+  const currentPostIndex = allPosts.findIndex(({ id }) => id === post?.id);
 
   // 최신순으로 정렬되므로 prevPost는 인덱스 + 1
   const prevPost = allPosts[currentPostIndex + 1];
@@ -90,9 +86,9 @@ const PostDetailPage = ({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: allPosts.map(({ _raw }) => ({
+    paths: allPosts.map(({ id }) => ({
       params: {
-        slug: _raw.flattenedPath,
+        slug: id,
       },
     })),
 
@@ -105,8 +101,8 @@ export const getStaticProps: GetStaticProps<{
 }> = async ({ params }) => {
   const postId = String(params?.slug || '');
 
-  const post = allPosts.find(({ _raw }) => {
-    return _raw.flattenedPath === postId;
+  const post = allPosts.find(({ id }) => {
+    return id === postId;
   });
 
   return {

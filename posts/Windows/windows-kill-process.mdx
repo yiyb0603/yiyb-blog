@@ -1,0 +1,43 @@
+---
+title: Windows 프로세스 죽이기
+createdAt: 2023-02-27
+description: 안녕하세요! 오늘은 간단하게 윈도우에서 실행중인 프로세스를 찾아서 포트 죽이기를 주제로 글을 작성해보도록 하겠습니다.
+thumbnail: /images/posts/windows/windows-kill-process/thumbnail.jpg
+---
+
+안녕하세요! 오늘은 간단하게 **윈도우에서 실행중인 프로세스를 찾아서 포트 죽이기**를 주제로 글을 작성해보도록 하겠습니다. 제가 자주 해결하는 방법이기도 해서 메모겸으로 글을 작성해보려고 합니다 😁
+
+## 1. 문제 상황 🤨
+
+**보통 백엔드를 하시는분들 이라면 아래와 같은 포트 오류를 한번쯤 경험 해보셨을 것입니다.**
+
+![이미 사용중인 서버 포트](/images/posts/windows/windows-kill-process/already-use-port.png)
+
+서버를 **8080 포트 번호**로 실행을 했을때, 이미 8080 포트에서 돌아가고 있는 프로세스가 존재하고 있기 때문이죠. **이때 해결방법은 총 두가지가 있습니다.**
+
+첫번째는 **컴퓨터를 재부팅 하여 모든 실행중인 프로세스**를 끝내는 방법입니다. 근데 이 방법은 기다리는 사람 입장에선 엄청 긴 세월인것 같아요. 😂
+
+두번째 방법은 이번 글에서 설명할 실행중인 프로세스를 찾아서 죽이는 방법입니다. 🎃🎃 이 방법은 아래의 섹션에서 작성해보도록 하겠습니다.
+
+## 2. 해결법 🎃
+
+![cmd 열기](/images/posts/windows/windows-kill-process/open-terminal.png)
+
+화면에서 **Windows + R**키를 누른다음 **cmd**를 입력하여 콘솔창을 열도록 합니다.
+그 다음으로 **netstat -a -o**라는 문장을 **cmd**에 입력합니다.
+
+![실행중인 프로세스 목록](/images/posts/windows/windows-kill-process/process-list.png)
+
+위와 같이 현재 실행중인 프로세스 목록들이 쭉 뜨게됩니다. 그중에서 **Local Address**의 주소중에서 포트가 **8080**으로 실행중인 프로세스의 **PID**를 찾습니다. 저의 PID는 14236입니다.
+
+PID를 찾은 다음, 아래의 문장을 입력합니다.
+
+```cmd
+taskkill /f /pid 14236
+```
+
+![프로세스 죽이기 성공](/images/posts/windows/windows-kill-process/kill-success.png)
+
+Success가 출력되면서 성공적으로 해당 PID의 프로세스가 죽었음을 알 수 있습니다. 이러고나서 서버를 다시 실행하면 성공적으로 실행이 됩니다. 😁😁
+
+이상으로 글을 마치도록 하겠습니다! 글 읽어주셔서 감사합니다.

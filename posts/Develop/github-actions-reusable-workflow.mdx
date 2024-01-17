@@ -1,0 +1,359 @@
+---
+title: Reusable Workflow로 GitHub Actions 워크플로우 재사용하기
+description: GitHub Actions의 재사용 가능한 워크플로우를 사용하여 로직을 재사용 해보겠습니다.
+createdAt: 2023-10-19
+thumbnail: /images/posts/develop/github-actions-reusable-workflow/thumbnail.png
+---
+
+안녕하세요! 오늘은 GitHub Actions의 `Reusable Workflow`를 사용하여 워크플로우 로직을 재사용하는 방법을 알아보겠습니다.
+
+## 1. 기존 문제점 🤔
+
+저는 회사에서 프로젝트들의 코드를 자주 유지보수 하거나 새로운 프로젝트의 개발을 맡아서 개발하기도 하는데요. 다양한 프로젝트를 하면서 거의 변하지 않는 파일이 있었는데, 그것은 바로 `GitHub Actions` **워크플로우 스크립트**였습니다.
+
+현재 대부분의 프로젝트에서 사용하고 있는 `workflow`는 아래와 같습니다.
+
+> actions 환경 세팅 -> 의존성 설치 -> 프로젝트 빌드 -> S3 정적 자원 업로드 -> Vercel 배포
+
+회사 프로젝트는 거의 다 `Vercel`을 사용하여 배포, `S3`를 Storage로 사용하고 있기 때문에 프로젝트끼리 `workflow` 코드가 거의 같습니다. 그렇기 때문에 기존 `workflow`에 문제가 발생했을때는 다른 프로젝트들의 `workflow`를 모두 수정해야하는 귀찮은일이 생기죠. 🥲
+
+<br />
+
+그래서 저는 워크플로우를 재사용할 수 있는 방법에 대해서 고민하다가, 최근에 **GitHub Actions**에서 제공하는 `Reusable Workflow (재사용 가능한 워크플로우)`를 알게되어서 공통으로 관리할 수 있었던 경험을 적어보겠습니다.
+
+## 2. 어떤 특징이 있는가? 📒
+
+`Reusable Workflow`의 가장 큰 특징은 마치 워크플로우 코드를 함수 모듈처럼 사용할 수 있습니다. 흔히 함수 모듈이라고 한다면 원하는 인자를 넘겨서 그에맞는 결과를 실행하는 것이죠?
+
+`Reusable Workflow`도 똑같습니다! 자신을 사용하는 사용처에서 어떠한 값을 넘겨줘야 하는지를 정의해줄 수 있죠. 아래의 간단한 예제를 보겠습니다.
+
+```yaml
+name: Resuable Workflow Example
+
+on:
+  workflow_call: # 워크플로우가 호출될때
+    inputs: # 사용처로부터 입력받을 인자
+      value: # 인자 이름
+        required: true # 필수 여부
+        type: string # 인자 타입
+      print_value:
+        required: false
+        type: boolean
+        default: true # 인자 기본값 (optional)
+
+jobs:
+  reusable-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.0
+
+      - name: What is passed value?
+        if: ${{ inputs.print_value == true }} # inputs 필드를 통해서 접근 가능
+        run: echo ${{ inputs.value }} # inputs 필드를 통해서 접근 가능
+
+      - name: What is Secret value?
+        run: echo ${{ secrets.SECRET_KEY }}
+```
+
+워크플로우가 호출될때(on workflow_call) 전달받을 인자들을 정의한 후, 밑에 있는 steps에서 `inputs` 필드로 인자를 사용할 수 있습니다. 정말 함수처럼 사용가능하죠?
+
+<br />
+
+밑 섹션부터는 `Reusable Workflow`의 설정 및 사용방법을 설명드리겠습니다.
+
+## 3. 공통 모듈 레포지토리 생성 🔨
+
+먼저 `Reusable Workflow`는 다양한 방법으로 선언하여 사용할 수 있는데요. 제가 이번글에서 설명드릴 방법은 하나의 Repository에서 공통으로 사용할 `Reusable Workflow`를 만들고, 이를 사용하려는 다른 Repository에서 사용하는 방법으로 설명드리겠습니다.
+
+<br />
+
+원래는 Organization 내에서 private으로 선언된 공통 Repository에 대해서 `Reusable Workflow`가 사용 불가능했었는데, **2022년 12월부터 사용가능**하도록 업데이트 되었네요.
+
+> 관련 업데이트 글 ⬇️
+> https://github.blog/changelog/2022-12-14-github-actions-sharing-actions-and-reusable-workflows-from-private-repositories-is-now-ga
+
+먼저 `Reusable Workflow`를 저장해둘 Repository를 하나 만들어줍시다. 저는 **reusable-workflows**라는 이름으로 만들었어요.
+
+![Repository 생성](/images/posts/develop/github-actions-reusable-workflow/create-repository.png)
+
+그러고나서 `.github/workflows/reusable-workflow.yaml` 경로에 파일을 만들고, 두번째 섹션에서 제가 작성한 코드를 붙여넣어주세요.
+
+![Workflow 파일 추가](/images/posts/develop/github-actions-reusable-workflow/create-workflow-file.png)
+
+### 3-1. 액세스 허용하기 ✅
+
+위 과정을 통해서 `Reusable Workflow` 작성은 간단하게 끝났습니다. 이제 워크플로우를 다른 Repository에서 사용해보기 전에 필수로 설정해야하는 항목이 있는데요, 바로 **GitHub Actions**의 `액세스`를 허용해야 합니다.
+
+액세스를 허용하는 방법은 정말 간단합니다. `Repository 설정 -> Actions -> General` 설정 페이지로 이동한다음, 맨 밑으로 스크롤 하시면 아래의 설정란이 있습니다.
+
+![GitHub Actions 액세스 허용](/images/posts/develop/github-actions-reusable-workflow/workflow-access.png)
+
+이 설정란이 무엇이냐면 다른 Repository의 워크플로우에서 해당 Repository의 `Reusable Workflow`에 접근가능 여부를 설정하는데요. 저희의 목적은 재사용이므로 기본적으로 선택된 **Not accessible**을 선택 해제하고, **Accessible from repositories owned by the user**를 선택한다음 `Save 버튼`을 눌러줍니다.
+
+### 3-2. 재사용 워크플로우 사용 ♻️
+
+이제 새로운 Repository를 만들어서 워크플로우를 재사용해보도록 하겠습니다. 저는 **actions-project**라는 이름의 Repository를 만들었습니다.
+
+<br />
+
+그리고 해당 Repository에서 `.github/workflows/actions.yaml` 경로에 워크플로우 스크립트를 아래와 같이 작성해주었습니다.
+
+```yaml
+name: Actions Script
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  use-reusable-workflow:
+    uses: yiyb0603/reusable-workflows/.github/workflows/reusable-workflow.yaml@main # reusable workflow 위치
+    with: # reusable workflow에 전달할 인자
+      value: 나는 Actions Project 레포
+```
+
+위의 코드에서 `uses` 필드에 워크플로우 주소를 적어주었는데요. 주소 형식은 다음과 같습니다.
+
+> (사용자 이름)/(Repository 이름)/(워크플로우 파일 경로)@(ref)
+
+위 형식을 맞추기 위해서 저는 아래처럼 값을 구성하였습니다.
+
+| 필드                 | 값                                       |
+| -------------------- | ---------------------------------------- |
+| 사용자 이름          | yiyb0603                                 |
+| Repository 이름      | reusable-workflow                        |
+| 워크플로우 파일 경로 | .github/workflows/reusable-workflow.yaml |
+| ref                  | main                                     |
+
+마지막으로 붙는 ref 값은 **브랜치 이름, 릴리즈 태그 이름, 커밋 SHA**중 아무 값으로 들어갈 수 있는데요. 저는 브랜치 이름을 선택했기 때문에 **main**이라고 적어주었습니다.
+
+<br />
+
+`with` 필드에는 `Reusable Workflow`에서 정의한 인자를 넘길 수 있습니다. 만약 VSCode를 사용하실때 [GitHub Actions Extensions](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-github-actions)를 설치하시면, `required` 인자에 대해서 오류를 캐치할 수 있으므로 정말 유용합니다. 강력 추천드려요 👍
+
+![GitHub Actions Extensions](/images/posts/develop/github-actions-reusable-workflow/vscode-extensions.png)
+
+<br />
+
+저는 `main` 브랜치에서 `push` 이벤트가 일어났을때 Actions를 실행하기로 정의해놨습니다. 커밋 후 워크플로우의 결과를 봅시다.
+
+![워크플로우 실행 결과](/images/posts/develop/github-actions-reusable-workflow/workflow-result.png)
+
+`with` 필드에 넘겨준 **나는 Actions Project 레포**라는 값이 잘 담겨서 나옵니다. 이런식으로 워크플로우에 인자를 넘겨서 활용할 수 있어요.
+
+### 3-3. Secrets 값 사용하기 🔒
+
+`Reusable Workflow`에서 `secrets` 값을 참조하려면 어떻게 할까요? 대표적인 두가지 방법이 있습니다.
+
+<br />
+
+**첫번째**는 그냥 단순하게 `inputs` 필드에서 받을 값을 정의하고, `with` 필드에서 인자를 넘길때 시크릿값으로 넘겨서 하는 방법입니다.
+
+```yaml
+name: Resuable Workflow Example
+
+on:
+  workflow_call:
+    inputs:
+      value:
+        required: true
+        type: string
+
+jobs:
+  reusable-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.0
+
+      - name: What is passed value?
+        run: echo ${{ inputs.value }}
+```
+
+```yaml
+name: Actions Script
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  use-reusable-workflow:
+    uses: yiyb0603/reusable-workflows/.github/workflows/reusable-workflow.yaml@main # reusable workflow 위치
+    with: # reusable workflow에 전달할 인자
+      value: ${{ secrets.SECRET_VALUE }}
+```
+
+<br />
+
+**두번째**는 시크릿 값을 통째로 넘겨서 `Reusable Workflow`에서 `secrets`에 접근할 때 자신이 호출된 Repository의 시크릿 값을 참조하도록 적용할 수 있습니다.
+
+제가 생각했을때 이 방법을 쓰는 경우는 `Organization Secrets`를 사용하지 못하는 환경이고, Repository마다 시크릿 값이 차이가 없는 경우에 사용할 수 있을것 같네요.
+
+```yaml
+name: Resuable Workflow Example
+
+on:
+  workflow_call:
+
+jobs:
+  reusable-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: What is passed value?
+        run: echo ${{ inputs.value }}
+```
+
+```yaml
+name: Actions Script
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  use-reusable-workflow:
+    uses: yiyb0603/reusable-workflows/.github/workflows/reusable-workflow.yaml@main
+    secrets: inherit # 중요!
+```
+
+Reusable Workflow를 사용하는 사용처에서 `secrets: inherit` 옵션을 넣어주면 사용처 Repository의 시크릿 값을 재사용 워크플로우 측에서 참조합니다.
+
+> 아쉽게도 Reusable Workflow가 저장된 Repository의 시크릿 값은 사용처에서 실행시 참조할 수 없습니다. 🥲
+
+## 4. 실무에서 사용 🧪
+
+제가 첫번째 섹션에서 설명드렸던 현재 회사 프로젝트에서 사용하는 워크플로우를 기억하고 계신가요? `Vercel`을 사용한 저희 회사의 프론트엔드 배포 워크플로우를 일부 보여드리겠습니다.
+
+<br />
+
+**자세한 설명은 코드 내에 주석으로 적어두었습니다.**
+
+```yaml
+name: Resuable Vercel Deploy Workflow
+
+on:
+  workflow_call:
+    inputs:
+      environment: # 실행 환경 (production or preview)
+        required: true
+        type: string
+      vercel_scope: # Vercel 계정 스코프
+        required: true
+        type: string
+      aws_end_point_url:
+        default: https://s3.ap-northeast-2.amazonaws.com
+        required: false
+        type: string
+      s3_bucket_path: # S3 업로드 저장 경로
+        required: false
+        type: string
+
+jobs:
+  reusable-vercel-workflow:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ap-northeast-2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.18.0'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+        # production, preview 환경마다 환경변수를 가져오는 스크립트가 조금씩 다름
+      - name: Update Vercel Environment Variables
+        run: |
+          if [ '${{ inputs.environment }}' == 'production' ]; then
+            vercel pull --yes --environment=production --scope=${{ inputs.vercel_scope }} --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel pull --yes --environment=preview --git-branch="${{ github.ref_name }}" --scope=${{ inputs.vercel_scope }} --token=${{ secrets.VERCEL_TOKEN }}
+          fi
+
+      - name: Caching Yarn Dependencies
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+        # production, preview 환경마다 빌드 스크립트가 조금씩 다름
+      - name: Vercel Build
+        run: |
+          if [ '${{ inputs.environment }}' == 'production' ]; then
+            vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          fi
+
+      # 프로젝트마다 다른 S3 저장소 위치를 inputs 필드로 넣어줄 수 있도록
+      - name: Upload Static Files to S3
+        if: inputs.s3_bucket_path != ''
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+          aws --endpoint-url=${{ inputs.aws_end_point_url }} s3 cp .vercel/output/static/ s3://${{ inputs.s3_bucket_path }}/public/ --exclude '_next/*' --recursive
+          aws --endpoint-url=${{ inputs.aws_end_point_url }} s3 cp .vercel/output/static/_next/static/ s3://${{ inputs.s3_bucket_path }}/_next/static/ --recursive
+
+        # production, preview 환경마다 빌드 스크립트가 조금씩 다름
+      - name: Vercel Deploy
+        run: |
+          if [ '${{ inputs.environment }}' == 'production' ]; then
+            vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          fi
+```
+
+다른 프로젝트에서 해당 `Reusable Workflow`를 사용할때는 아래처럼 작성해주었습니다.
+
+```yaml
+name: Vercel Production Deploy
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  production-deploy:
+    uses: Organization/github-action-modules/.github/workflows/vercel-deploy.yaml@main
+    with:
+      environment: production
+      vercel_scope: scope
+      s3_bucket_path: public-cdn/project1
+    secrets: inherit
+```
+
+저희 프로젝트들에서는 Repository 시크릿 값들이 거의 대부분 유사하므로 `secrets: inherit`을 통해 시크릿 값을 참조하도록 설정했습니다.
+
+<br />
+
+기존에 `Reusable Workflow`를 사용하지 않았을때는 저렇게 긴 워크플로우를 매번 복붙했었는데.. `Reusable Workflow`를 사용하고나서는 복붙하는 일도 없고, 코드도 정말 짧아졌네요. 😃
+
+## 5. 마치며 📌
+
+오늘은 `Reusable Workflow`를 사용하는 방법과 제가 실무에서 경험한 이야기를 알려드린 시간이 되었네요. 개발자로서 중복되는 부분을 해결하고나면 기분이 정말 좋네요. 😃
+
+<br />
+
+제가 알려드린 정보가 많은분들에게 도움이 되었으면 좋겠습니다. 이상으로 글을 마치겠습니다. 긴 글 읽어주셔서 감사합니다! 😃
