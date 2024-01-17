@@ -300,7 +300,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postId = String(params?.id || '');
 
   // 동적 id 파라미터를 통해서 파일명과 동일한 글을 찾아서 리턴합니다.
-  const post = allPosts.find(({ _raw }) => {
+  const post = allPosts.find(({ url }) => {
     return _raw.flattenedPath === postId;
   });
 
