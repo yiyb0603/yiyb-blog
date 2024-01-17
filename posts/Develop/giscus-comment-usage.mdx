@@ -2,7 +2,7 @@
 title: Giscus로 블로그 댓글 시스템 설정 및 Utterances 마이그레이션 하기
 description: 간편하고 무료로 사용가능한 Giscus로 댓글 시스템을 설정해보도록 하겠습니다.
 createdAt: 2023-10-16
-thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/b75b7a16-769e-4e49-ae5b-6ceddb679666
+thumbnail: /images/posts/develop/giscus-comment-usage/thumbnail.png
 ---
 
 안녕하세요! 오늘은 `Giscus`를 사용하여 블로그 댓글 시스템을 제공하는 방법에 대해서 알아보겠습니다.
@@ -47,7 +47,7 @@ thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/b75b7a16-769e-4
 
 <br />
 
-![Discussion 활성화](https://github.com/yiyb0603/yiyb-blog/assets/50941453/4272e555-b00d-45a3-ad61-24eb64a9d565)
+![Discussion 활성화](/images/posts/develop/giscus-comment-usage/check-discussions.png)
 
 가장 먼저 Giscus를 등록할 Repository의 `Discussions`를 활성화 해주어야 합니다. 기본적으로 체크가 해제된 상태일텐데요, 이를 체크해주도록 합니다.
 
@@ -55,11 +55,11 @@ thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/b75b7a16-769e-4
 
 그리고 새로고침을 하고나면, Repository 탭에 `Discussions` 라는 탭이 새로 생긴걸 보실 수 있습니다. `Discussions` 탭을 누르고, 카테고리 메뉴로 들어갑니다.
 
-![Discussions 카테고리 메뉴](https://github.com/yiyb0603/yiyb-blog/assets/50941453/92a273ce-2c4d-46a3-8d7f-ea33567b8d97)
+![Discussions 카테고리 메뉴](/images/posts/develop/giscus-comment-usage/create-new-category.png)
 
 `Discussions`의 카테고리 메뉴로 들어오시면 기본적으로 생성된 카테고리들이 쭉 보이는데요, 새로운 카테고리를 생성하기 위해 New Category 버튼을 눌러줍니다.
 
-![Discussions 카테고리 설정](https://github.com/yiyb0603/yiyb-blog/assets/50941453/71096e3d-2cd2-4738-aef6-7f4b07da8888)
+![Discussions 카테고리 설정](/images/posts/develop/giscus-comment-usage/discussion-category.png)
 
 위 사진처럼 카테고리를 생성하는 페이지가 나오는데요. 카테고리 이름과 설명은 자유롭게 하되, `Discussion Format`은 **Announcement**로 설정하는것을 추천드립니다.
 Announcement는 누구나 토론에 대해 댓글을 작성할 수 있지만, 토론을 생성하는것은 오직 `Repository Owner`만 가능한 권한 시스템입니다.
@@ -74,11 +74,11 @@ Announcement는 누구나 토론에 대해 댓글을 작성할 수 있지만, �
 
 맨 처음에는 소개글과 작동원리 등이 적혀져있는데요, 스크롤을 조금 내리면 `저장소` 설정란이 보입니다.
 
-![Giscus 저장소 설정](https://github.com/yiyb0603/yiyb-blog/assets/50941453/51e0f7fd-113a-4098-a9ea-751a9cfd0f44)
+![Giscus 저장소 설정](/images/posts/develop/giscus-comment-usage/giscus-repository.png)
 
 저장소 입력 형식은 `사용자 이름/레포지토리 이름`으로 작성해주시면 됩니다. 저의 경우엔 `yiyb0603/yiyb-blog`로 작성을 해주었습니다.
 
-![Discussions 설정](https://github.com/yiyb0603/yiyb-blog/assets/50941453/ee15b666-57e0-4b2d-90fe-559ea83e9be8)
+![Discussions 설정](/images/posts/develop/giscus-comment-usage/discussion-connect.png)
 
 다시 아래로 스크롤을 내리면 `페이지 - Discussions 연결` 설정이 있는데요. 이 설정은 **어떤 값으로 Discussions 토론을 생성할것인지**를 고르는 설정입니다.
 
@@ -89,14 +89,14 @@ Announcement는 누구나 토론에 대해 댓글을 작성할 수 있지만, �
 
 Discussions 연결 설정을 끝내고나면 `Discussion 카테고리` 선택 박스가 있는데요. 이는 아까 만들었던 카테고리를 선택하시면 됩니다.
 
-![Giscus 기능, 테마 설정](https://github.com/yiyb0603/yiyb-blog/assets/50941453/ea3d5380-96b4-460a-98cd-d9294bc4e9ba)
+![Giscus 기능, 테마 설정](/images/posts/develop/giscus-comment-usage/giscus-settings.png)
 
 마지막으로 편의 기능 및 테마를 설정하는란이 나오는데요. 이부분은 취향껏 선택하시면 됩니다.
 저는 기본 기능을 사용하였고, 테마는 라이트 모드일때는 `GitHub Light`, 다크모드일때는 `RStudio Cobalt` 테마를 사용했습니다.
 
 ### 2-3. Next.js 코드 연동 📜
 
-![Giscus 설치 스크립트](https://github.com/yiyb0603/yiyb-blog/assets/50941453/d244b7b8-1be7-4594-819b-1413b3d57f31)
+![Giscus 설치 스크립트](/images/posts/develop/giscus-comment-usage/giscus-script.png)
 
 모든 과정을 끝내고 밑으로 스크롤 하시면 위처럼 `script` 코드가 자동으로 생성 되었는데요. 이 코드를 웹 페이지에 등록하면 Giscus 설치는 끝이 납니다.
 저는 Next.js에서 연동했기 때문에, Next.js 코드를 작성해보겠습니다. (React.js에서도 거의 동일합니다.)
@@ -279,7 +279,7 @@ export default useGiscus;
 
 이번 섹션은 기존에 Utterances를 사용하다가 Giscus로 마이그레이션 하는분들을 위한 섹션인데요. `Issues`에 등록되어 있는 댓글을 `Discussions`로 옮기는 방법에 대해서 알려드리겠습니다.
 
-![Issues -> Discussions 옮기기](https://github.com/yiyb0603/yiyb-blog/assets/50941453/8d50f33b-cdfb-47c4-8d44-cb4cb91e1f37)
+![Issues -> Discussions 옮기기](/images/posts/develop/giscus-comment-usage/issue-to-discussion.png)
 
 먼저 옮기고자 하는 Issue로 들어간다음 오른쪽 하단의 `Convert to discussion`을 누르고, 처음에 생성한 Discussions 카테고리를 선택하면 끝입니다.
 

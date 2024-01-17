@@ -2,7 +2,7 @@
 title: Next.js의 standalone 빌드 알아보기
 description: 독립적으로 실행 가능하고, 빌드 용량을 최적화 해주는 standalone 빌드를 알아봅시다.
 createdAt: 2023-12-08
-thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/f94d1be6-d69e-42f6-b3a8-e1d2678121eb
+thumbnail: /images/posts/next.js/nextjs-standalone/thumbnail.png
 ---
 
 안녕하세요! 오늘은 Next.js의 빌드 결과물을 표현하는 방식 중 하나인 `standalone` 옵션에 대해서 알아보겠습니다. `standalone` 옵션은 자체구축 혹은 도커 환경에서 더욱 빛을 발휘하는데요. 어떤 특징이 있는지 알아보겠습니다.
@@ -40,7 +40,7 @@ const options = {
 
 `standalone`을 사용한 빌드 결과물은 어떻게 나올까요? `next build`를 사용하여 빌드한 결과, `.next/standalone` 폴더에 결과물이 빌드되었습니다. 기존 빌드 결과물과 비교했을때 `node_modules` 파일이 정말 많이 줄었고, `.next/standalone` 폴더안에 있는 내용물만 서버로 가져가면 되기 때문에 코드 파일 수도 많이 줄었네요.
 
-![standalone 빌드 결과물](https://github.com/yiyb0603/yiyb-blog/assets/50941453/60ba4d7d-d85d-495e-8f14-ad807697541b)
+![standalone 빌드 결과물](/images/posts/next.js/nextjs-standalone/standalone-build-result.png)
 
 이중에서 `.next/standalone/server.js` 파일이 있는데요. 이 파일은 서버의 포트번호 등을 설정하여 실행 가능하도록 지정하는 파일입니다. `node` 명령어를 사용하여 실행시키면 Next.js 프로젝트가 Production 모드로 실행됩니다.
 
@@ -62,7 +62,7 @@ node .next/standalone/server.js
 
 맨 처음에 `server.js`를 실행하여 프로젝트를 구동했을때 여러분이 생각한 모습과는 다르게 웹이 비정상적으로 동작하는데요. 네트워크 탭을 열어보시면 대부분의 **Chunk 파일**, **public 경로에 저장한 이미지, 폰트 파일** 등이 존재하지 않아서 오류가 발생함을 알 수 있습니다.
 
-![public, chunk 찾을 수 없음](https://github.com/yiyb0603/yiyb-blog/assets/50941453/bb1ac7ba-4a59-45b6-a522-1ebac3e0f440)
+![public, chunk 찾을 수 없음](/images/posts/next.js/nextjs-standalone/static-resource-failed.png)
 
 <br />
 
@@ -79,7 +79,7 @@ cp -r .next/static .next/standalone/.next
 
 이후 재실행하면 파일들을 성공적으로 불러왔음을 알 수 있습니다.
 
-![public, static 불러오기 성공](https://github.com/yiyb0603/yiyb-blog/assets/50941453/6780a981-f6cb-40a7-ae5b-9f43428846c0)
+![public, static 불러오기 성공](/images/posts/next.js/nextjs-standalone/static-resource-success.png)
 
 ## 3. 마치며 📌
 

@@ -2,7 +2,7 @@
 title: Reusable Workflow로 GitHub Actions 워크플로우 재사용하기
 description: GitHub Actions의 재사용 가능한 워크플로우를 사용하여 로직을 재사용 해보겠습니다.
 createdAt: 2023-10-19
-thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/d9dca16f-3950-422f-a050-e9ed65105d17
+thumbnail: /images/posts/develop/github-actions-reusable-workflow/thumbnail.png
 ---
 
 안녕하세요! 오늘은 GitHub Actions의 `Reusable Workflow`를 사용하여 워크플로우 로직을 재사용하는 방법을 알아보겠습니다.
@@ -76,11 +76,11 @@ jobs:
 
 먼저 `Reusable Workflow`를 저장해둘 Repository를 하나 만들어줍시다. 저는 **reusable-workflows**라는 이름으로 만들었어요.
 
-![Repository 생성](https://github.com/yiyb0603/yiyb-blog/assets/50941453/ccb8e492-e4eb-4beb-8634-3dc8792c0fc1)
+![Repository 생성](/images/posts/develop/github-actions-reusable-workflow/create-repository.png)
 
 그러고나서 `.github/workflows/reusable-workflow.yaml` 경로에 파일을 만들고, 두번째 섹션에서 제가 작성한 코드를 붙여넣어주세요.
 
-![Workflow 파일 추가](https://github.com/yiyb0603/yiyb-blog/assets/50941453/05c86e63-1b4e-4291-8ad6-99d3c3eb4da8)
+![Workflow 파일 추가](/images/posts/develop/github-actions-reusable-workflow/create-workflow-file.png)
 
 ### 3-1. 액세스 허용하기 ✅
 
@@ -88,7 +88,7 @@ jobs:
 
 액세스를 허용하는 방법은 정말 간단합니다. `Repository 설정 -> Actions -> General` 설정 페이지로 이동한다음, 맨 밑으로 스크롤 하시면 아래의 설정란이 있습니다.
 
-![GitHub Actions 액세스 허용](https://github.com/yiyb0603/yiyb-blog/assets/50941453/6d97d4e9-d500-42a8-b696-293838365af3)
+![GitHub Actions 액세스 허용](/images/posts/develop/github-actions-reusable-workflow/workflow-access.png)
 
 이 설정란이 무엇이냐면 다른 Repository의 워크플로우에서 해당 Repository의 `Reusable Workflow`에 접근가능 여부를 설정하는데요. 저희의 목적은 재사용이므로 기본적으로 선택된 **Not accessible**을 선택 해제하고, **Accessible from repositories owned by the user**를 선택한다음 `Save 버튼`을 눌러줍니다.
 
@@ -134,13 +134,13 @@ jobs:
 
 `with` 필드에는 `Reusable Workflow`에서 정의한 인자를 넘길 수 있습니다. 만약 VSCode를 사용하실때 [GitHub Actions Extensions](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-github-actions)를 설치하시면, `required` 인자에 대해서 오류를 캐치할 수 있으므로 정말 유용합니다. 강력 추천드려요 👍
 
-![GitHub Actions Extensions](https://github.com/yiyb0603/yiyb-blog/assets/50941453/dba853ca-53c5-4d46-b497-22c7043db42b)
+![GitHub Actions Extensions](/images/posts/develop/github-actions-reusable-workflow/vscode-extensions.png)
 
 <br />
 
 저는 `main` 브랜치에서 `push` 이벤트가 일어났을때 Actions를 실행하기로 정의해놨습니다. 커밋 후 워크플로우의 결과를 봅시다.
 
-![워크플로우 실행 결과](https://github.com/yiyb0603/yiyb-blog/assets/50941453/5dfdc6a8-c409-4717-b2e0-c35411559e50)
+![워크플로우 실행 결과](/images/posts/develop/github-actions-reusable-workflow/workflow-result.png)
 
 `with` 필드에 넘겨준 **나는 Actions Project 레포**라는 값이 잘 담겨서 나옵니다. 이런식으로 워크플로우에 인자를 넘겨서 활용할 수 있어요.
 
@@ -192,6 +192,7 @@ jobs:
 <br />
 
 **두번째**는 시크릿 값을 통째로 넘겨서 `Reusable Workflow`에서 `secrets`에 접근할 때 자신이 호출된 Repository의 시크릿 값을 참조하도록 적용할 수 있습니다.
+
 제가 생각했을때 이 방법을 쓰는 경우는 `Organization Secrets`를 사용하지 못하는 환경이고, Repository마다 시크릿 값이 차이가 없는 경우에 사용할 수 있을것 같네요.
 
 ```yaml

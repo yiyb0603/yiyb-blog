@@ -2,7 +2,7 @@
 title: React-Query의 isLoading, isFetching 그리고 isInitialLoading
 description: 안녕하세요! 오늘은 React-Query의 상태를 표현하는 isLoading, isFetching 그리고 isInitialLoading에 대해서 알아보겠습니다.
 createdAt: 2023-03-30
-thumbnail: https://user-images.githubusercontent.com/50941453/228815735-4dd016c3-eab4-4fc9-ab90-38b2ade05dcc.png
+thumbnail: /images/posts/react-query/react-query-loading-state/thumbnail.png
 ---
 
 안녕하세요! 오늘은 React-Query의 상태를 표현하는 isLoading, isFetching 그리고 isInitialLoading에 대해서 알아보겠습니다. 😃 세개의 속성모두 React-Query에서 API 호출을 했을때 상태가 변경된다는 공통점이 있는데요, 하지만 특정 상황에 따라서 세개의 속성은 각기 다르게 동작합니다. 그 이유를 함께 알아봅시다.
@@ -47,7 +47,7 @@ cacheTime의 경우에는 `Infinity`로 지정했는데요, 이는 영구적으�
 
 ### 2-1. isFetching
 
-isFetching 속성이 true가 되는 조건은 다음과 같습니다.
+`isFetching` 속성이 true가 되는 조건은 다음과 같습니다.
 
 - 캐시에 저장된 데이터가 없거나, cacheTime을 지정한 시간이 지나고나서 재요청이 일어날때
 - staleTime을 지정한 시간이 지나서 재요청이 일어날때
@@ -56,7 +56,7 @@ isFetching 속성이 true가 되는 조건은 다음과 같습니다.
 
 ### 2-2. isLoading
 
-isLoading 속성이 true가 되는 조건은 다음과 같습니다.
+`isLoading` 속성이 true가 되는 조건은 다음과 같습니다.
 
 - 캐시에 저장된 데이터가 없거나, cacheTime을 지정한 시간이 지나고나서 재요청이 일어날때
 
@@ -134,7 +134,7 @@ _그래서!_ 이를 해결할 수 있는 또다른 상태 속성이 있는데요
 
 ### 2-3. isInitialLoading
 
-isInitialLoading 속성이 true가 되는 조건은 다음과 같습니다.
+`isInitialLoading` 속성이 true가 되는 조건은 다음과 같습니다.
 
 - 캐시에 저장된 데이터가 없거나, cacheTime을 지정한 시간이 지나고나서 재요청이 일어날때
 

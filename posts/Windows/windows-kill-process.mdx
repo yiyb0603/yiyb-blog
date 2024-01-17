@@ -2,7 +2,7 @@
 title: Windows 프로세스 죽이기
 createdAt: 2023-02-27
 description: 안녕하세요! 오늘은 간단하게 윈도우에서 실행중인 프로세스를 찾아서 포트 죽이기를 주제로 글을 작성해보도록 하겠습니다.
-thumbnail: https://velog.velcdn.com/images/yiyb0603/post/075df0ff-7a7a-4cec-81b4-dba61f6ddd4c/1_1.jpg
+thumbnail: /images/posts/windows/windows-kill-process/thumbnail.jpg
 ---
 
 안녕하세요! 오늘은 간단하게 **윈도우에서 실행중인 프로세스를 찾아서 포트 죽이기**를 주제로 글을 작성해보도록 하겠습니다. 제가 자주 해결하는 방법이기도 해서 메모겸으로 글을 작성해보려고 합니다 😁
@@ -11,7 +11,7 @@ thumbnail: https://velog.velcdn.com/images/yiyb0603/post/075df0ff-7a7a-4cec-81b4
 
 **보통 백엔드를 하시는분들 이라면 아래와 같은 포트 오류를 한번쯤 경험 해보셨을 것입니다.**
 
-![](https://images.velog.io/images/yiyb0603/post/68317760-b0ea-40fa-b313-b1b1f590e1cf/image.png)
+![이미 사용중인 서버 포트](/images/posts/windows/windows-kill-process/already-use-port.png)
 
 서버를 **8080 포트 번호**로 실행을 했을때, 이미 8080 포트에서 돌아가고 있는 프로세스가 존재하고 있기 때문이죠. **이때 해결방법은 총 두가지가 있습니다.**
 
@@ -21,23 +21,23 @@ thumbnail: https://velog.velcdn.com/images/yiyb0603/post/075df0ff-7a7a-4cec-81b4
 
 ## 2. 해결법 🎃
 
-![](https://images.velog.io/images/yiyb0603/post/1df14e57-9173-412b-af74-6ffce7c4a6e2/image.png)
+![cmd 열기](/images/posts/windows/windows-kill-process/open-terminal.png)
 
 화면에서 **Windows + R**키를 누른다음 **cmd**를 입력하여 콘솔창을 열도록 합니다.
 그 다음으로 **netstat -a -o**라는 문장을 **cmd**에 입력합니다.
 
-![](https://images.velog.io/images/yiyb0603/post/854449e3-0f22-4396-b193-ed423fda0362/image.png)
+![실행중인 프로세스 목록](/images/posts/windows/windows-kill-process/process-list.png)
 
 위와 같이 현재 실행중인 프로세스 목록들이 쭉 뜨게됩니다. 그중에서 **Local Address**의 주소중에서 포트가 **8080**으로 실행중인 프로세스의 **PID**를 찾습니다. 저의 PID는 14236입니다.
 
 PID를 찾은 다음, 아래의 문장을 입력합니다.
 
-```
+```cmd
 taskkill /f /pid 14236
 ```
 
-![](https://images.velog.io/images/yiyb0603/post/6aa9be60-2d1e-437d-b1ff-54cc841611ff/image.png)
+![프로세스 죽이기 성공](/images/posts/windows/windows-kill-process/kill-success.png)
 
 Success가 출력되면서 성공적으로 해당 PID의 프로세스가 죽었음을 알 수 있습니다. 이러고나서 서버를 다시 실행하면 성공적으로 실행이 됩니다. 😁😁
 
-이상으로 글을 마치도록 하겠습니다!
+이상으로 글을 마치도록 하겠습니다! 글 읽어주셔서 감사합니다.

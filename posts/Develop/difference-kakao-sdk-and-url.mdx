@@ -2,7 +2,7 @@
 title: 카카오 로그인의 SDK와 Rest API 방식의 차이점
 description: 카카오 로그인 문서를 읽으면서 알게된 카카오 SDK와 Rest API 방식의 차이점을 공유합니다.
 createdAt: 2023-03-06
-thumbnail: https://user-images.githubusercontent.com/50941453/223130721-65425c5e-d6c3-4b2c-bc59-ac17c24172dc.png
+thumbnail: /images/posts/develop/difference-kakao-sdk-and-url/thumbnail.png
 ---
 
 안녕하세요! 오늘은 카카오 로그인 문서를 읽다가 알게된 **카카오 SDK와 Rest API 방식의 차이점**에 대해서 글을 작성해봅니다. 😀
@@ -11,7 +11,8 @@ thumbnail: https://user-images.githubusercontent.com/50941453/223130721-65425c5e
 
 오늘 오후에 친구랑 같이하는 프로젝트에 관해서 **카카오 로그인 설정** 관련 이야기가 톡방에서 나왔었다. 그리고 어쩌다가 나는 카카오 로그인 공식 개발문서를 보게 되었는데, 공식 개발문서를 보는건 되게 오랜만이었다.
 
-![카카오 로그인 JavaScript 구현 방법](https://user-images.githubusercontent.com/50941453/223125803-7e5b986a-40d8-440f-8f61-7dd50499f694.png)
+![카카오 로그인 JavaScript 구현 방법](/images/posts/develop/difference-kakao-sdk-and-url/kakao-login-guide-document.png)
+
 그러다가 JavaScript를 사용한 구현 방법 문서를 보게되었는데, 평소에 회사에서도 그렇고 **REST API** 방식만을 사용한 나는 거의 처음보는 문서였다. 왜냐하면 REST API 방식으로 사용하면서 단 한번도 문제가 없었기 때문이었다.
 
 ### 1-1. REST API 방식이란? 📌
@@ -44,9 +45,9 @@ const KakaoLoginButton = (): JSX.Element => {
 export default KakaoLoginButton;
 ```
 
-<br />
-아래는 요청 주소의 형식이다. > https://kauth.kakao.com/oauth/authorize?client_id=(클라이언트
-ID)&redirect_uri=(리다이렉트 URI)&response_type=code
+아래는 요청 주소의 형식이다.
+
+> https://kauth.kakao.com/oauth/authorize?client_id=(클라이언트 ID)&redirect_uri=(리다이렉트 URI)&response_type=code
 
 ### 1-2. 카카오 SDK 방식이란? 📌
 
@@ -89,10 +90,10 @@ SDK를 활용한 로그인 방식도, REST API와 똑같이 리다이렉트된 �
 참고로 PC에서 각 방법들을 실행할때는 아무런 차이가 없이 동일하게 동작한다. 하지만 모바일에서 실행해보면 어떨까?
 
 먼저, **Rest API** 방식의 로그인 실행 화면이다.
-![카카오 로그인 Rest API 실행 화면](https://user-images.githubusercontent.com/50941453/223123510-78886990-bee8-4e4e-8209-73c7dbab238b.png)
+![카카오 로그인 Rest API 실행 화면](/images/posts/develop/difference-kakao-sdk-and-url/rest-api-execute-login.png)
 
 그 다음은 **Kakao SDK** 방식의 로그인 실행화면이다.
-![카카오 로그인 Kakao SDK 실행 화면](https://user-images.githubusercontent.com/50941453/223123681-fb6a8184-5c94-46af-b9c1-f20ea2316d8b.png)
+![카카오 로그인 Kakao SDK 실행 화면](/images/posts/develop/difference-kakao-sdk-and-url/kakao-sdk-execute-login.png)
 
 사진으로 눈치를 챘을수도 있지만, 정리하면 아래와 같다.
 
@@ -109,8 +110,9 @@ SDK를 활용한 로그인 방식도, REST API와 똑같이 리다이렉트된 �
 현재 회사 프로젝트의 카카오 로그인 코드는 **Rest API** 방식으로 구현이 되어있는데, 이를 Kakao SDK를 사용하는 방식으로 교체할지 고민해봐야겠다.
 
 <br />
-타입스크립트를 사용하는 나에게는 Kakao SDK 방식이 조금 불편하긴 하다만, 모듈화를
-잘해놓으면 큰 문제는 없다고 본다.
+
+타입스크립트를 사용하는 나에게는 Kakao SDK 방식이 조금 불편하긴 하다만, 모듈화를 잘해놓으면 큰 문제는 없다고 본다.
+
 <br />
-혹시나 글에서 잘못된 부분이 있다면, 피드백 주시면 감사드리겠습니다! 😀 이상으로 글을
-마치도록 하겠습니다. 감사합니다.
+
+혹시나 글에서 잘못된 부분이 있다면, 피드백 주시면 감사드리겠습니다! 😀 이상으로 글을 마치도록 하겠습니다. 감사합니다.

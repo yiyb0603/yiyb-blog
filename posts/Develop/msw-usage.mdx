@@ -2,7 +2,7 @@
 title: MSW를 사용하여 API Mocking 하기
 description: 프론트엔드 측에서 백엔드 API를 Mocking하여 더 효율적으로 개발을 해봅시다.
 createdAt: 2023-12-04
-thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/d2d7eeae-401c-4219-8fd2-85c5883312d3
+thumbnail: /images/posts/develop/msw-usage/thumbnail.png
 ---
 
 안녕하세요! 오늘은 백엔드 API를 Mocking 해주는 라이브러리인 `MSW`란 무엇이며, 사용방법에 대해서 알아보도록 하겠습니다.
@@ -17,7 +17,7 @@ thumbnail: https://github.com/yiyb0603/yiyb-blog/assets/50941453/d2d7eeae-401c-4
 
 하지만 이를 보완하기 위해서 서버의 API가 개발 완료될때까지 클라이언트단에서 **모의로 동작**할 수 있게끔 설정을 해두면 어떨까요? 마치 실제 API와 통신이 이루어지는것처럼 코드를 작성할 수 있고, 추후에는 코드를 최소한으로 건드리며 실제 API로 바꿔칠 수 있다면 프론트엔드 개발자들은 시간을 더 효율적으로 사용할 수 있습니다.
 
-![Mocking Service Worker](https://repository-images.githubusercontent.com/157397583/df5e7b5a-3bf9-4521-8f57-4d8ca4e3a3fe)
+![Mocking Service Worker](/images/posts/develop/msw-usage/msw.png)
 
 > 공식문서 바로가기: https://mswjs.io
 
@@ -189,11 +189,11 @@ export default App;
 
 과연 API의 응답값이 저희가 임의로 반환한 값으로 응답이 올까요?
 
-![MSW Mocking 실행 결과](https://github.com/yiyb0603/yiyb-blog/assets/50941453/68352bf6-978b-4d91-be14-8fe09e9269b1)
+![MSW Mocking 실행 결과](/images/posts/develop/msw-usage/msw-get-response.png)
 
 원래 JSONPlaceholder API를 호출했을때 임의의 100개 데이터를 전달해주는 반면, API Mocking을 설정해두니 저희가 임의로 반환한 데이터가 올바르게 응답되었네요! 동시에 네트워크 탭을 보시면 `200 OK`가 뜨면서 서비스 워커에서 반환되었음을 알 수 있습니다.
 
-![서비스 워커 반환](https://github.com/yiyb0603/yiyb-blog/assets/50941453/3282b193-b381-4b6e-89e6-9cdbe4df7039)
+![서비스 워커 반환](/images/posts/develop/msw-usage/from-service-worker.png)
 
 ### 2-3. POST Mocking
 
@@ -279,7 +279,7 @@ POST 요청에 대해서도 API Mocking이 성공했을까요?
 
 네! JSONPlaceholder API로 요청하는 데이터를 Mocking 서버에서 가로챈 후, 응답을 성공적으로 받을 수 있었습니다.
 
-![POST API Mocking](https://github.com/yiyb0603/yiyb-blog/assets/50941453/f632d59d-7d0e-4ad3-af50-df4c83542ded)
+![POST API Mocking](/images/posts/develop/msw-usage/msw-post-response.png)
 
 API Mocking이 적용되는 과정을 아래처럼 요약할 수 있습니다.
 

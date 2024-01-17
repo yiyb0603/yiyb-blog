@@ -2,7 +2,7 @@
 title: Next.js에서 contentlayer 사용하여 손쉽게 정적블로그 만들기
 description: contentlayer 라이브러리를 사용하여 손쉽게 정적블로그를 만드는 과정을 공유합니다.
 createdAt: 2023-02-26
-thumbnail: https://user-images.githubusercontent.com/50941453/221415312-71c7d9cc-9a07-4356-aa54-5f14cdc9ddc6.png
+thumbnail: /images/posts/next.js/nextjs-contentlayer-blog/thumbnail.png
 ---
 
 안녕하세요! 정적 블로그를 만들고나서, 처음으로 글을 작성해보네요.
@@ -14,18 +14,16 @@ thumbnail: https://user-images.githubusercontent.com/50941453/221415312-71c7d9cc
 저는 기존에 [Velog](https://velog.io/@yiyb0603) 플랫폼을 이용해서 개발에 관한 글들을 적어오곤 했는데요, 벨로그도 저한테는 굉장히 좋은 개발자 블로그 서비스였으나, 최근들어서 **나만의 Playground**를 목적으로 간단하게 정적블로그를 만들어보고 싶다. 라는 생각이 자주 들었습니다.
 
 <br />
-그러다가 이틀전인 금요일, 회사에서 [Vercel Templates](https://vercel.com/templates)
-페이지를 둘러보다가 `혹시 정적 블로그를 만들기 쉬운 템플릿 or 라이브러리가 있지 않을까?`
-하는 생각에 이것저것 찾아보게 되었습니다.
+
+그러다가 이틀전인 금요일, 회사에서 [Vercel Templates](https://vercel.com/templates) 페이지를 둘러보다가 `혹시 정적 블로그를 만들기 쉬운 템플릿 or 라이브러리가 있지 않을까?` 하는 생각에 이것저것 찾아보게 되었습니다.
 
 <br />
-그리고 [contentlayer](https://www.contentlayer.dev/) 라는 Next.js에서 정적블로그를
-손쉽게 제작할 수 있도록 도와주는 아주 Awesome한 라이브러리를 찾게되어, 당일에 퇴근하고나서부터
-주말까지 쭉 개발만하게 되었네요.
+
+그리고 [contentlayer](https://www.contentlayer.dev/) 라는 Next.js에서 정적블로그를 손쉽게 제작할 수 있도록 도와주는 아주 Awesome한 라이브러리를 찾게되어, 당일에 퇴근하고나서부터 주말까지 쭉 개발만하게 되었네요.
 
 <br />
-단순 개발 블로그가 아닌 **일상, 잡담, 취미** 등의 글들도 저 마음대로 작성할수 있게끔
-하고 싶었습니다.
+
+단순 개발 블로그가 아닌 **일상, 잡담, 취미** 등의 글들도 저 마음대로 작성할수 있게끔 하고 싶었습니다.
 
 > 아니 님아 그러면 그냥 네이버 블로그에다가 글 작성하면 되는거 아님??
 
@@ -34,19 +32,23 @@ thumbnail: https://user-images.githubusercontent.com/50941453/221415312-71c7d9cc
 일반적인 네이버, 티스토리 블로그 플랫폼의 가장 큰 단점은 커스텀 부분에서 한계가 있다라고 생각했기때문에 직접 만들어보고 싶었습니다.
 
 <br />
-추가적으로 나중에는 포트폴리오 페이지를 블로그에 추가시켜서 저를 더 표현하는 웹사이트를
-만들계획입니다.
+
+추가적으로 나중에는 포트폴리오 페이지를 블로그에 추가시켜서 저를 더 표현하는 웹사이트를 만들계획입니다.
 
 <br />
-예전에 [Gatsby.js](https://www.gatsbyjs.com/)도 눈여겨보았으나, Next.js를 사용하고싶다라는
-마음이 컸기에 패스했습니다. 만약 React.js만으로 블로그를 제작하시려는 분들에게는
-아주 좋은 도구에요.
+
+예전에 [Gatsby.js](https://www.gatsbyjs.com/)도 눈여겨보았으나, Next.js를 사용하고싶다라는 마음이 컸기에 패스했습니다.
+
+만약 React.js만으로 블로그를 제작하시려는 분들에게는 아주 좋은 도구에요.
 
 <br />
+
 (contentlayer에 대해서는 밑 섹션에 추가로 적어두었습니다.)
+
 <br />
 
 댓글 기능의 경우에는 [GitHub Utterances](https://utteranc.es/)가 정말 좋다고 생각되어 추가하였습니다.
+
 웹 배포는 회사에서 사용하면서 정말 간편하다고 생각되는 [Vercel](https://vercel.com) 플랫폼을 사용하여 배포하였습니다.
 
 <br />
@@ -178,6 +180,7 @@ export default contentSource;
 ```
 
 `contentlayer.config.ts`에서 작성한 내용중에서 **fields** 객체에 작성된 데이터 필드가 핵심인데요,
+
 항상 마크다운 글 최상단에 글에는 글에 대한 정보를 `---` 블록을 통해서 필드로 적어주어야 합니다.
 
 이제 프로젝트 Root 경로에 `posts` 폴더를 만든다음, **hello.mdx** 파일을 하나 만들어보겠습니다.
@@ -216,7 +219,7 @@ export default PostDetailPage;
 
 일단 여기까지만 하고나서, `npm run dev` 명령어를 입력해서 잠깐 개발서버를 실행하면 어떤일이 일어나는지 지켜봅시다.
 
-![contentlayer](https://user-images.githubusercontent.com/50941453/221409388-251cd493-628f-4b5e-9c69-e1189b699076.png)
+![contentlayer](/images/posts/next.js/nextjs-contentlayer-blog/contentlayer-generated.png)
 
 프로젝트 Root 경로에 `.contentlayer` 명의 폴더가 생기고, 하위 폴더와 파일들이 생겨난것을 볼 수 있습니다!
 
@@ -314,7 +317,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 `allPosts` 배열을 불러온다음, 동적으로 받는 id 파라미터를 통해서 렌더링할 마크다운 파일을 찾는 로직을 위와같이 구현할 수 있습니다. 그런 다음 `useMDXComponent` hooks를 통해서 손쉽게 마크다운 코드를 html 형식으로 렌더링을 할 수 있습니다.
 
-![](https://user-images.githubusercontent.com/50941453/221416002-6dc56441-f4c9-481a-832e-b7381256e786.png)
+![구현 성공](/images/posts/next.js/nextjs-contentlayer-blog/thumb.png)
 
 지금까지 **글 상세 페이지** 구현을 예제로 코드를 작성해봤는데, 만약 글 목록 페이지를 구현해도 정말 손쉽게 할 수 있겠죠? 😀
 그래서 이 과정은 이글에서 생략하겠습니다! (참고링크에서 도움이 됩니다.)
@@ -329,11 +332,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 이번 블로그 개발중에 상당히 골치아픈 버그를 하나 만났었는데요,
 개발중간에 production 모드로 실행을 해보았는데, **client side exception**이 발생하면서 아래의 오류가 출력되었습니다.
 
-![](https://user-images.githubusercontent.com/50941453/221411200-c4024984-08e9-40dc-84bb-26dfa21c7b0d.png)
+![한글 유니코드 오류](/images/posts/next.js/nextjs-contentlayer-blog/unicode-error.png)
 
 해당 오류는 **마크다운 내용에 한글이 들어간 경우**에만 발생했고, 한글 유니코드 관련된 오류로 보였습니다. 저는 한글이 없으면 생존이 불가능한 사람이기에 무조건 오류를 해결해야 했습니다.
 
-![](https://user-images.githubusercontent.com/50941453/221416235-29a82712-830f-4e28-bbcb-0c1918c1b090.png)
+![절망의 오류](/images/posts/next.js/nextjs-contentlayer-blog/despair.png)
 
 하지만 위에 제가 첨부한 **참고링크** 블로그 글, 공식문서, 다른분들이 작성한 contentlayer 프로젝트 코드 등등 닥치는데로 찾아봤지만 이 오류를 해결하는 방법을 전혀 찾을 수 없었습니다. 😥😥
 
@@ -341,20 +344,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 결국 그렇게 잠이들었고.. 다음날 기상한 저는 **혹시나하고** `next.config.js`의 `swcMinify` 속성을 **false**로 변경하고, production으로 실행해보니 이게 왠일!! **오류가 더이상 나타나지 않았습니다.**
 
-![](https://user-images.githubusercontent.com/50941453/221416461-7b5d3f05-4b9e-42c5-b713-28ca1018d926.png)
+![너무 많은 오류들](/images/posts/next.js/nextjs-contentlayer-blog/so-many-errors.png)
 
 <br />
-제가 인터넷에서 찾은 예제들에서 이 오류가 나타나지 않았던 것은, 많은분들이 Next 12
-버전으로 작성하셨는데 swcMinify 속성은 Next 13부터 기본값이 true로 변경되었습니다.
+
+제가 인터넷에서 찾은 예제들에서 이 오류가 나타나지 않았던 것은, 많은분들이 Next 12 버전으로 작성하셨는데 swcMinify 속성은 Next 13부터 기본값이 true로 변경되었습니다.
+
 저는 Next.js 13을 사용하고있었기 때문에 기본적으로 swcMinify가 활성화 되어있던 것이죠.
 
 <br />
-즉, 대부분이 swcMinify를 활성화하지 않은상태로 개발하셨기 때문에 이 오류에 대해서
-잘 나오지 않았던 것이었습니다.
+
+즉, 대부분이 swcMinify를 활성화하지 않은상태로 개발하셨기 때문에 이 오류에 대해서 잘 나오지 않았던 것이었습니다.
 
 ## 4. 앞으로의 계획
 
-![](https://user-images.githubusercontent.com/50941453/221416641-bd9611e7-6766-47a2-8bd4-a75ed96f757c.png)
+![넌 계획이 다 있구나](/images/posts/next.js/nextjs-contentlayer-blog/you-have-a-plan.png)
 
 자주는 아니지만 간간히 블로그 글을 작성하면서 블로그에 새로운 기능이나 `third-party`를 하나씩 추가해나가려고 합니다.
 
