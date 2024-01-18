@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import dotenv from '@/libs/dotenv';
-import { rootReducer } from '@/stores';
+import { RootState, rootReducer } from '.';
 
-export const createNextStore = () => {
+export const createNextStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
+    preloadedState,
     devTools: dotenv.DEV_MODE,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
