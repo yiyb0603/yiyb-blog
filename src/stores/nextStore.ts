@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import dotenv from '@/libs/dotenv';
-import { rootReducer } from '@/stores';
+import { RootState, rootReducer } from '.';
 
 export const createNextStore = () => {
   return configureStore({

@@ -13,9 +13,10 @@ export type StoreState = {
   user: UserState;
 };
 
-type RootReducer = Reducer<StoreState, AnyAction>;
-
-export const rootReducer: RootReducer = (state, action) => {
+export const rootReducer = (
+  state: StoreState | undefined,
+  action: AnyAction,
+) => {
   switch (action.type) {
     case HYDRATE:
       if (state?.config.hydratedOnServer) {
@@ -31,12 +32,14 @@ export const rootReducer: RootReducer = (state, action) => {
       };
 
     default:
-      return combineReducers({
+      const combinedReducers = combineReducers<StoreState, AnyAction>({
         theme: themeReducer,
         config: configReducer,
         dialog: dialogReducer,
         user: userReducer,
-      })(state, action);
+      });
+
+      return combinedReducers(state, action);
   }
 };
 
