@@ -20,11 +20,7 @@ type ExtendedRenderOptions = Omit<RenderOptions, 'queries'> & {
 
 export const customRender = (
   ui: React.ReactElement,
-  {
-    preloadedState = {},
-    store = createNextStore(preloadedState),
-    ...renderOptions
-  }: ExtendedRenderOptions = {},
+  { store = createNextStore(), ...renderOptions }: ExtendedRenderOptions = {},
 ) => {
   const Wrapper = ({ children }: WrapperProps): JSX.Element => {
     return (
