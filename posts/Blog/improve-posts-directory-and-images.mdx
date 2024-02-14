@@ -1,0 +1,95 @@
+---
+title: 블로그 개선 (1) - 글 파일 구조 및 이미지 개선
+description: 최근 제 블로그의 글 파일 구조 및 이미지를 개선한 경험을 공유합니다.
+createdAt: 2024-02-14
+thumbnail: /images/posts/blog/improve-posts-directory-and-images/thumbnail.png
+---
+
+안녕하세요! 오늘은 제가 최근에했던 **블로그 코드 개선(글 파일 구조 및 이미지)** 경험에 대해서 작성해보겠습니다. 😃
+
+앞으로도 블로그 코드 내에서 `기술부채` 항목을 없앤 경험이 있다면 이처럼 글을 작성해보려고 합니다.
+
+## 1. 글 파일 구조 📜
+
+> 읽기전에 아래의 글을 먼저 읽고오시는걸 추천드립니다. 😃
+> [Next.js에서 contentlayer 사용하여 손쉽게 정적블로그 만들기](https://yiyb-blog.vercel.app/posts/nextjs-contentlayer-blog)
+
+해당 블로그는 [contentlayer](https://contentlayer.dev)라는 도구를 사용해서 만든 블로그인데요. contentlayer 설정 파일에서 마크다운 글 파일들이 위치할 폴더를 지정할 수 있습니다.
+
+저는 `posts`라는 폴더로 지정을 했었고, 해당 폴더안에 여러개의 마크다운 글 파일들이 위치했습니다. 하지만 평탄화 된 구조의 특성상 글의 갯수가 많아질수록 **카테고리별로 글을 모아보는것이 어렵다**는 문제점이 있었습니다.
+
+![기존 posts 폴더 구조](/images/posts/blog/improve-posts-directory-and-images/original-posts-directory.png)
+
+그래서 저는 `posts` 폴더안의 글들을 **카테고리별로 폴더를 분리**하기로 했습니다.
+
+### 1-1. 카테고리별로 분리하기
+
+저의 블로그 메인 페이지의 왼쪽부분에는 글의 카테고리들이 쭉 나와있는데요. 글마다 `메타데이터`를 지정할때 기존에는 해당 글의 카테고리 정보를 적어두기 때문에, 글의 카테고리 데이터들만 뽑아서 목록을 보여줄 수 있었습니다.
+
+> 관련 코드파일 [바로가기](https://github.com/yiyb0603/yiyb-blog/blob/develop/src/utils/contentlayer/index.ts)
+
+하지만 카테고리를 `메타데이터`에 적지 않고 `posts/카테고리명`의 폴더를 만들면 자동으로 카테고리 목록에 포함되도록 만들면 어떨까요? **작성자는 카테고리 정보를 글마다 작성하지 않아도 되고**, 위에서 언급했던 **평탄화된 구조의 문제점을 해결**할 수 있습니다.
+
+![개선 posts 폴더 구조](/images/posts/blog/improve-posts-directory-and-images/improve-posts-directory.png)
+
+위 이미지처럼 `posts/TypeScript` 폴더를 만들고, TypeScript를 주제로 한 글 파일들이 위치해있죠? 이런식으로만 만들면 `TypeScript`라는 카테고리가 자동으로 만들어지도록 구현해보겠습니다.
+
+<br />
+
+방법은 간단합니다. `contentlayer.config.ts` 파일에서 `computedFields` 객체를 사용하면 되는데요. `computedFields`는 특정한 조건에 따라서 정해지는 필드값을 지정해야할때 사용할 수 있습니다.
+
+> `fields`는 정적 필드, `computedFields`는 동적 필드라고 생각하시면 됩니다.
+
+그리고 글 파일이 위치한 정보를 나타내는 필드 `posts._raw.flattenedPath`를 사용해서 카테고리 필드를 구성할 수 있습니다. 아래처럼 말이죠.
+
+```typescript
+import { defineDocumentType } from 'contentlayer/source-files';
+
+export const Post = defineDocumentType(() => ({
+  // ....
+  computedFields: {
+    category: {
+      type: 'string',
+      resolve: (post) => {
+        const [category] = post._raw.flattenedPath.split('/');
+
+        return category;
+      },
+    },
+  },
+}));
+```
+
+만약 `posts/TypeScript` 경로에 `tsconfig.mdx` 파일이 위치할때, `flattenedPath`는 `TypeScript/tsconfig`라는 값을 주는데요. 그래서 `split` 메소드를 사용하여 제일 첫번째 값을 카테고리로 지정할 수 있습니다.
+
+> 관련 코드파일 [바로가기](https://github.com/yiyb0603/yiyb-blog/blob/develop/contentlayer.config.ts)
+
+그러고나서 기존에 `fields`의 카테고리를 없앤다음, 글 `메타데이터`마다 지정된 카테고리 정보도 지워주면 됩니다.
+
+![블로그 메인](/images/posts/blog/improve-posts-directory-and-images/blog-main.png)
+
+이번 작업을 하면서 건드린 파일이 한군데밖에 없다보니, 쉽게쉽게 할 수 있었습니다.
+
+## 2. 이미지 경로 변경 🖼️
+
+저는 지금까지 글에 들어가는 이미지를 `github issues` 파일 업로드 후 생성된 링크를 이미지로 첨부했는데요. 이미지가 외부 링크로 되어있으면 추후 타 플랫폼으로 마이그레이션시, 용이할것이라고 생각했는데요.
+
+그러나 대부분의 플랫폼에서 글 내용을 복사 후 붙여넣으면 자동으로 이미지 링크를 생성하기에, 최근에 무의미하다고 생각했습니다.
+
+<br />
+
+그리고 이와 관련하여 문제도 하나 있었는데, github 이미지 서버의 **응답 속도가 빠르지 않고, 캐싱하지 않는 성능문제**가 있었습니다. `Google Search Console`에서도 이에대해 문제가 있었습니다. `(CLS 지표 문제)`
+
+![코어 웹 바이탈 문제](/images/posts/blog/improve-posts-directory-and-images/core-web-vital-issue.png)
+
+그래서 github 이미지 서버를 사용하는것이 아닌, **로컬에 이미지를 저장하여 불러오는 방식**으로 모두 변경했습니다. 그덕에 `코어 웹 바이탈`에서 발생하는 문제도 해결할 수 있었네요.
+
+![코어 웹 바이탈 해결](/images/posts/blog/improve-posts-directory-and-images/core-web-vital-issue.png)
+
+## 3. 마치며 📌
+
+오늘은 글 파일 구조와 이미지 개선을 통한 블로그 개선 경험에 대해서 작성해봤습니다. 이처럼 앞으로도 블로그 내부를 개선한 경험이 더 있다면, 관련 글을 계속 적어보도록 하겠습니다. 😃
+
+<br />
+
+이상으로 글을 마치겠습니다. 글 읽어주셔서 감사합니다!
