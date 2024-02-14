@@ -2,7 +2,7 @@
 title: Next.js에서 contentlayer 사용하여 손쉽게 정적블로그 만들기
 description: contentlayer 라이브러리를 사용하여 손쉽게 정적블로그를 만드는 과정을 공유합니다.
 createdAt: 2023-02-26
-thumbnail: /images/posts/next.js/nextjs-contentlayer-blog/thumbnail.png
+thumbnail: /images/posts/blog/nextjs-contentlayer-blog/thumbnail.png
 ---
 
 안녕하세요! 정적 블로그를 만들고나서, 처음으로 글을 작성해보네요.
@@ -219,7 +219,7 @@ export default PostDetailPage;
 
 일단 여기까지만 하고나서, `npm run dev` 명령어를 입력해서 잠깐 개발서버를 실행하면 어떤일이 일어나는지 지켜봅시다.
 
-![contentlayer](/images/posts/next.js/nextjs-contentlayer-blog/contentlayer-generated.png)
+![contentlayer](/images/posts/blog/nextjs-contentlayer-blog/contentlayer-generated.png)
 
 프로젝트 Root 경로에 `.contentlayer` 명의 폴더가 생기고, 하위 폴더와 파일들이 생겨난것을 볼 수 있습니다!
 
@@ -317,7 +317,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 `allPosts` 배열을 불러온다음, 동적으로 받는 id 파라미터를 통해서 렌더링할 마크다운 파일을 찾는 로직을 위와같이 구현할 수 있습니다. 그런 다음 `useMDXComponent` hooks를 통해서 손쉽게 마크다운 코드를 html 형식으로 렌더링을 할 수 있습니다.
 
-![구현 성공](/images/posts/next.js/nextjs-contentlayer-blog/thumb.png)
+![구현 성공](/images/posts/blog/nextjs-contentlayer-blog/thumb.png)
 
 지금까지 **글 상세 페이지** 구현을 예제로 코드를 작성해봤는데, 만약 글 목록 페이지를 구현해도 정말 손쉽게 할 수 있겠죠? 😀
 그래서 이 과정은 이글에서 생략하겠습니다! (참고링크에서 도움이 됩니다.)
@@ -332,11 +332,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 이번 블로그 개발중에 상당히 골치아픈 버그를 하나 만났었는데요,
 개발중간에 production 모드로 실행을 해보았는데, **client side exception**이 발생하면서 아래의 오류가 출력되었습니다.
 
-![한글 유니코드 오류](/images/posts/next.js/nextjs-contentlayer-blog/unicode-error.png)
+![한글 유니코드 오류](/images/posts/blog/nextjs-contentlayer-blog/unicode-error.png)
 
 해당 오류는 **마크다운 내용에 한글이 들어간 경우**에만 발생했고, 한글 유니코드 관련된 오류로 보였습니다. 저는 한글이 없으면 생존이 불가능한 사람이기에 무조건 오류를 해결해야 했습니다.
 
-![절망의 오류](/images/posts/next.js/nextjs-contentlayer-blog/despair.png)
+![절망의 오류](/images/posts/blog/nextjs-contentlayer-blog/despair.png)
 
 하지만 위에 제가 첨부한 **참고링크** 블로그 글, 공식문서, 다른분들이 작성한 contentlayer 프로젝트 코드 등등 닥치는데로 찾아봤지만 이 오류를 해결하는 방법을 전혀 찾을 수 없었습니다. 😥😥
 
@@ -344,7 +344,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 결국 그렇게 잠이들었고.. 다음날 기상한 저는 **혹시나하고** `next.config.js`의 `swcMinify` 속성을 **false**로 변경하고, production으로 실행해보니 이게 왠일!! **오류가 더이상 나타나지 않았습니다.**
 
-![너무 많은 오류들](/images/posts/next.js/nextjs-contentlayer-blog/so-many-errors.png)
+![너무 많은 오류들](/images/posts/blog/nextjs-contentlayer-blog/so-many-errors.png)
 
 <br />
 
@@ -358,7 +358,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 ## 4. 앞으로의 계획
 
-![넌 계획이 다 있구나](/images/posts/next.js/nextjs-contentlayer-blog/you-have-a-plan.png)
+![넌 계획이 다 있구나](/images/posts/blog/nextjs-contentlayer-blog/you-have-a-plan.png)
 
 자주는 아니지만 간간히 블로그 글을 작성하면서 블로그에 새로운 기능이나 `third-party`를 하나씩 추가해나가려고 합니다.
 
