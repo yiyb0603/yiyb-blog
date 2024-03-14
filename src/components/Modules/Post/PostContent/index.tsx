@@ -127,7 +127,7 @@ const PostContentContainer = styled.section`
 
   blockquote {
     margin: 1.5rem 0;
-    padding: 2rem;
+    padding: 2rem 2rem 2rem 2.5rem;
     border-left: ${({ theme }) => `5px solid ${theme.color.main}`};
     border-radius: 5px;
     background-color: ${({ theme }) => theme.color.background3};
